@@ -49,6 +49,8 @@ SetExitKey :: (key: KeyboardKey) -> void { return SetExitKey(cast(s32) key); }
 
 #if OS == .WINDOWS {
     #load "windows.jai";
+} else {
+    assert(false);
 }
 
 #import "Basic";

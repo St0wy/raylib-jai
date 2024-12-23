@@ -11,6 +11,7 @@ SUPPORT_MODULE_RTEXTURES :: 1;
 SUPPORT_MODULE_RTEXT :: 1;
 SUPPORT_MODULE_RMODELS :: 1;
 SUPPORT_MODULE_RAUDIO :: 1;
+PLATFORM_DESKTOP_RGFW :: 1;
 RAYLIB_VERSION_MAJOR :: 5;
 RAYLIB_VERSION_MINOR :: 5;
 RAYLIB_VERSION_PATCH :: 0;
@@ -420,23 +421,23 @@ AutomationEventList :: struct {
 // System/Window config flags
 // NOTE: Every bit registers one state (use it with bit masks)
 // By default all flags are set to 0
-ConfigFlags :: enum s32 {
-    VSYNC_HINT               :: 64;
-    FULLSCREEN_MODE          :: 2;
-    WINDOW_RESIZABLE         :: 4;
-    WINDOW_UNDECORATED       :: 8;
-    WINDOW_HIDDEN            :: 128;
-    WINDOW_MINIMIZED         :: 512;
-    WINDOW_MAXIMIZED         :: 1024;
-    WINDOW_UNFOCUSED         :: 2048;
-    WINDOW_TOPMOST           :: 4096;
-    WINDOW_ALWAYS_RUN        :: 256;
-    WINDOW_TRANSPARENT       :: 16;
-    WINDOW_HIGHDPI           :: 8192;
-    WINDOW_MOUSE_PASSTHROUGH :: 16384;
-    BORDERLESS_WINDOWED_MODE :: 32768;
-    MSAA_4X_HINT             :: 32;
-    INTERLACED_HINT          :: 65536;
+ConfigFlags :: enum_flags s32 {
+    VSYNC_HINT               :: 0x40;
+    FULLSCREEN_MODE          :: 0x2;
+    WINDOW_RESIZABLE         :: 0x4;
+    WINDOW_UNDECORATED       :: 0x8;
+    WINDOW_HIDDEN            :: 0x80;
+    WINDOW_MINIMIZED         :: 0x200;
+    WINDOW_MAXIMIZED         :: 0x400;
+    WINDOW_UNFOCUSED         :: 0x800;
+    WINDOW_TOPMOST           :: 0x1000;
+    WINDOW_ALWAYS_RUN        :: 0x100;
+    WINDOW_TRANSPARENT       :: 0x10;
+    WINDOW_HIGHDPI           :: 0x2000;
+    WINDOW_MOUSE_PASSTHROUGH :: 0x4000;
+    BORDERLESS_WINDOWED_MODE :: 0x8000;
+    MSAA_4X_HINT             :: 0x20;
+    INTERLACED_HINT          :: 0x10000;
 
     FLAG_VSYNC_HINT               :: VSYNC_HINT;
     FLAG_FULLSCREEN_MODE          :: FULLSCREEN_MODE;
@@ -1078,18 +1079,18 @@ BlendMode :: enum s32 {
 
 // Gesture
 // NOTE: Provided as bit-wise flags to enable only desired gestures
-Gesture :: enum s32 {
-    NONE        :: 0;
-    TAP         :: 1;
-    DOUBLETAP   :: 2;
-    HOLD        :: 4;
-    DRAG        :: 8;
-    SWIPE_RIGHT :: 16;
-    SWIPE_LEFT  :: 32;
-    SWIPE_UP    :: 64;
-    SWIPE_DOWN  :: 128;
-    PINCH_IN    :: 256;
-    PINCH_OUT   :: 512;
+Gesture :: enum_flags s32 {
+    NONE        :: 0x0;
+    TAP         :: 0x1;
+    DOUBLETAP   :: 0x2;
+    HOLD        :: 0x4;
+    DRAG        :: 0x8;
+    SWIPE_RIGHT :: 0x10;
+    SWIPE_LEFT  :: 0x20;
+    SWIPE_UP    :: 0x40;
+    SWIPE_DOWN  :: 0x80;
+    PINCH_IN    :: 0x100;
+    PINCH_OUT   :: 0x200;
 
     GESTURE_NONE        :: NONE;
     GESTURE_TAP         :: TAP;

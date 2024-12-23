@@ -98,6 +98,7 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RTEXT",
             "-DSUPPORT_MODULE_RMODELS",
             "-DSUPPORT_MODULE_RAUDIO",
+            "-DPLATFORM_DESKTOP_RGFW",
         );
         array_add(*strip_prefixes, "rl");
 
@@ -113,12 +114,17 @@ generate_bindings :: (args: [] string) -> bool
 
 raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declaration) -> Generator.Declaration_Visit_Result
 {
-    if !parent_decl
+    if !parent_decl && array_find(DECLARATIONS_TO_OMIT, decl.name)
     {
-        if array_find(DECLARATIONS_TO_OMIT, decl.name)
-        {
-            decl.decl_flags |= .OMIT_FROM_OUTPUT;
-            return .STOP;
+        decl.decl_flags |= .OMIT_FROM_OUTPUT;
+        return .STOP;
+    }
+
+    if decl.kind == .ENUM {
+        en := cast(*Generator.Enum)decl;
+        if String.contains(decl.name, "Flags") || decl.name == "Gesture" {
+            en.flags |= .IS_ENUM_FLAGS;
+            en.flags |= .VALUES_IN_HEX;
         }
     }
 
