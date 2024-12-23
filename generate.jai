@@ -125,6 +125,7 @@ raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declara
         if String.contains(decl.name, "Flags") || decl.name == "Gesture" {
             en.flags |= .IS_ENUM_FLAGS;
             en.flags |= .VALUES_IN_HEX;
+            en.type = context.generator.type_def_u32;
         }
     }
 

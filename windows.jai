@@ -421,7 +421,7 @@ AutomationEventList :: struct {
 // System/Window config flags
 // NOTE: Every bit registers one state (use it with bit masks)
 // By default all flags are set to 0
-ConfigFlags :: enum_flags s32 {
+ConfigFlags :: enum_flags u32 {
     VSYNC_HINT               :: 0x40;
     FULLSCREEN_MODE          :: 0x2;
     WINDOW_RESIZABLE         :: 0x4;
@@ -1079,7 +1079,7 @@ BlendMode :: enum s32 {
 
 // Gesture
 // NOTE: Provided as bit-wise flags to enable only desired gestures
-Gesture :: enum_flags s32 {
+Gesture :: enum_flags u32 {
     NONE        :: 0x0;
     TAP         :: 0x1;
     DOUBLETAP   :: 0x2;
