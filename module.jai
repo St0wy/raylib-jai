@@ -45,6 +45,13 @@ IsKeyReleased :: (key: KeyboardKey) -> bool { return IsKeyReleased(cast(s32) key
 IsKeyUp :: (key: KeyboardKey) -> bool { return IsKeyUp(cast(s32) key); }
 SetExitKey :: (key: KeyboardKey) -> void { return SetExitKey(cast(s32) key); }
 
+SetConfigFlags :: (flags: ConfigFlags) -> void { SetConfigFlags(cast(u32) flags); }
+SetGesturesEnabled :: (flags: Gesture) -> void { SetGesturesEnabled(cast(u32) flags); }
+IsGestureDetected :: (gesture: Gesture) -> bool { IsGestureDetected(cast(u32) gesture); }
+IsWindowState :: (flag: ConfigFlags) -> bool { IsWindowState(cast(u32) flag); }
+SetWindowState :: (flags: ConfigFlags) -> void { SetWindowState(cast(u32) flags); }
+ClearWindowState :: (flags: ConfigFlags) -> void { ClearWindowState(cast(u32) flags); }
+
 #scope_module
 
 #if OS == .WINDOWS {

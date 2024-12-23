@@ -1,7 +1,7 @@
 //
 // This file was auto-generated using the following command:
 //
-// jai ./generate.jai - -compile
+// jai d:/jai/raylib-jai//generate.jai jails_diagnostics modules import_dir c:/Users/Stowy/scoop/apps/vscode/1.96.2/data/extensions/apparentlystudio.jails-0.0.11/out/metaprogram
 //
 
 
