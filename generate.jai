@@ -12,6 +12,16 @@ DECLARATIONS_TO_OMIT :: string.[
     "PI",
 ];
 
+DUPLICATE_DECLARATIONS :: string.[
+    "rlTraceLogLevel",
+    "rlPixelFormat",
+    "rlTextureFilter",
+    "rlBlendMode",
+    "rlShaderLocationIndex",
+    "rlShaderAttributeDataType",
+    "rlShaderUniformDataType",
+];
+
 #if AT_COMPILE_TIME {
     #run,stallable {
         Compiler.set_build_options_dc(.{do_output=false});
@@ -65,6 +75,7 @@ generate_bindings :: (args: [] string) -> bool
                     "/DSUPPORT_MODULE_RAUDIO",
                     "/D_CRT_SECURE_NO_WARNINGS",
                     "/DPLATFORM_DESKTOP_RGFW",
+                    "/DGRAPHICS_API_OPENGL_43",
                 ]
             );
         } else {
@@ -99,6 +110,7 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RMODELS",
             "-DSUPPORT_MODULE_RAUDIO",
             "-DPLATFORM_DESKTOP_RGFW",
+            "-DGRAPHICS_API_OPENGL_43",
         );
         array_add(*strip_prefixes, "rl");
 
@@ -125,7 +137,24 @@ raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declara
         if String.contains(decl.name, "Flags") || decl.name == "Gesture" {
             en.flags |= .IS_ENUM_FLAGS;
             en.flags |= .VALUES_IN_HEX;
-            en.type = context.generator.type_def_u32;
+        }
+
+        if array_find(DUPLICATE_DECLARATIONS, decl.name) {
+            decl.decl_flags |= .OMIT_FROM_OUTPUT;
+            return .STOP;
+        }
+
+        if en.type {
+            if en.type.size == {
+                case 1;
+                    en.type = context.generator.type_def_u8;
+                case 2;
+                    en.type = context.generator.type_def_u16;
+                case 4;
+                    en.type = context.generator.type_def_u32;
+                case 8;
+                    en.type = context.generator.type_def_u64;
+            }
         }
     }
 

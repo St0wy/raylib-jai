@@ -1,7 +1,7 @@
 //
 // This file was auto-generated using the following command:
 //
-// jai d:/jai/raylib-jai//generate.jai jails_diagnostics modules import_dir c:/Users/Stowy/scoop/apps/vscode/1.96.2/data/extensions/apparentlystudio.jails-0.0.11/out/metaprogram
+// jai ./generate.jai - -compile
 //
 
 
@@ -12,6 +12,7 @@ SUPPORT_MODULE_RTEXT :: 1;
 SUPPORT_MODULE_RMODELS :: 1;
 SUPPORT_MODULE_RAUDIO :: 1;
 PLATFORM_DESKTOP_RGFW :: 1;
+GRAPHICS_API_OPENGL_43 :: 1;
 RAYLIB_VERSION_MAJOR :: 5;
 RAYLIB_VERSION_MINOR :: 5;
 RAYLIB_VERSION_PATCH :: 0;
@@ -459,7 +460,7 @@ ConfigFlags :: enum_flags u32 {
 
 // Trace log level
 // NOTE: Organized by priority level
-TraceLogLevel :: enum s32 {
+TraceLogLevel :: enum u32 {
     ALL     :: 0;
     TRACE   :: 1;
     DEBUG   :: 2;
@@ -482,7 +483,7 @@ TraceLogLevel :: enum s32 {
 // Keyboard keys (US keyboard layout)
 // NOTE: Use GetKeyPressed() to allow redefining
 // required keys for alternative layouts
-KeyboardKey :: enum s32 {
+KeyboardKey :: enum u32 {
     NULL          :: 0;
 
     APOSTROPHE    :: 39;
@@ -715,7 +716,7 @@ KeyboardKey :: enum s32 {
 }
 
 // Mouse buttons
-MouseButton :: enum s32 {
+MouseButton :: enum u32 {
     LEFT    :: 0;
     RIGHT   :: 1;
     MIDDLE  :: 2;
@@ -734,7 +735,7 @@ MouseButton :: enum s32 {
 }
 
 // Mouse cursor
-MouseCursor :: enum s32 {
+MouseCursor :: enum u32 {
     DEFAULT       :: 0;
     ARROW         :: 1;
     IBEAM         :: 2;
@@ -761,7 +762,7 @@ MouseCursor :: enum s32 {
 }
 
 // Gamepad buttons
-GamepadButton :: enum s32 {
+GamepadButton :: enum u32 {
     UNKNOWN          :: 0;
     LEFT_FACE_UP     :: 1;
     LEFT_FACE_RIGHT  :: 2;
@@ -802,7 +803,7 @@ GamepadButton :: enum s32 {
 }
 
 // Gamepad axis
-GamepadAxis :: enum s32 {
+GamepadAxis :: enum u32 {
     LEFT_X        :: 0;
     LEFT_Y        :: 1;
     RIGHT_X       :: 2;
@@ -819,7 +820,7 @@ GamepadAxis :: enum s32 {
 }
 
 // Material map index
-MaterialMapIndex :: enum s32 {
+MaterialMapIndex :: enum u32 {
     ALBEDO     :: 0;
     METALNESS  :: 1;
     NORMAL     :: 2;
@@ -846,7 +847,7 @@ MaterialMapIndex :: enum s32 {
 }
 
 // Shader location index
-ShaderLocationIndex :: enum s32 {
+ShaderLocationIndex :: enum u32 {
     VERTEX_POSITION    :: 0;
     VERTEX_TEXCOORD01  :: 1;
     VERTEX_TEXCOORD02  :: 2;
@@ -909,7 +910,7 @@ ShaderLocationIndex :: enum s32 {
 }
 
 // Shader uniform data type
-ShaderUniformDataType :: enum s32 {
+ShaderUniformDataType :: enum u32 {
     FLOAT     :: 0;
     VEC2      :: 1;
     VEC3      :: 2;
@@ -932,7 +933,7 @@ ShaderUniformDataType :: enum s32 {
 }
 
 // Shader attribute data types
-ShaderAttributeDataType :: enum s32 {
+ShaderAttributeDataType :: enum u32 {
     FLOAT :: 0;
     VEC2  :: 1;
     VEC3  :: 2;
@@ -946,7 +947,7 @@ ShaderAttributeDataType :: enum s32 {
 
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform
-PixelFormat :: enum s32 {
+PixelFormat :: enum u32 {
     UNCOMPRESSED_GRAYSCALE    :: 1;
     UNCOMPRESSED_GRAY_ALPHA   :: 2;
     UNCOMPRESSED_R5G6B5       :: 3;
@@ -1001,7 +1002,7 @@ PixelFormat :: enum s32 {
 // Texture parameters: filter mode
 // NOTE 1: Filtering considers mipmaps if available in the texture
 // NOTE 2: Filter is accordingly set for minification and magnification
-TextureFilter :: enum s32 {
+TextureFilter :: enum u32 {
     POINT           :: 0;
     BILINEAR        :: 1;
     TRILINEAR       :: 2;
@@ -1018,7 +1019,7 @@ TextureFilter :: enum s32 {
 }
 
 // Texture parameters: wrap mode
-TextureWrap :: enum s32 {
+TextureWrap :: enum u32 {
     REPEAT        :: 0;
     CLAMP         :: 1;
     MIRROR_REPEAT :: 2;
@@ -1031,7 +1032,7 @@ TextureWrap :: enum s32 {
 }
 
 // Cubemap layouts
-CubemapLayout :: enum s32 {
+CubemapLayout :: enum u32 {
     AUTO_DETECT         :: 0;
     LINE_VERTICAL       :: 1;
     LINE_HORIZONTAL     :: 2;
@@ -1046,7 +1047,7 @@ CubemapLayout :: enum s32 {
 }
 
 // Font type, defines generation method
-FontType :: enum s32 {
+FontType :: enum u32 {
     DEFAULT :: 0;
     BITMAP  :: 1;
     SDF     :: 2;
@@ -1057,7 +1058,7 @@ FontType :: enum s32 {
 }
 
 // Color blending modes (pre-defined)
-BlendMode :: enum s32 {
+BlendMode :: enum u32 {
     ALPHA             :: 0;
     ADDITIVE          :: 1;
     MULTIPLIED        :: 2;
@@ -1106,7 +1107,7 @@ Gesture :: enum_flags u32 {
 }
 
 // Camera system modes
-CameraMode :: enum s32 {
+CameraMode :: enum u32 {
     CUSTOM       :: 0;
     FREE         :: 1;
     ORBITAL      :: 2;
@@ -1121,7 +1122,7 @@ CameraMode :: enum s32 {
 }
 
 // Camera projection
-CameraProjection :: enum s32 {
+CameraProjection :: enum u32 {
     PERSPECTIVE  :: 0;
     ORTHOGRAPHIC :: 1;
 
@@ -1130,7 +1131,7 @@ CameraProjection :: enum s32 {
 }
 
 // N-patch layout
-NPatchLayout :: enum s32 {
+NPatchLayout :: enum u32 {
     NINE_PATCH             :: 0;
     THREE_PATCH_VERTICAL   :: 1;
     THREE_PATCH_HORIZONTAL :: 2;
@@ -1915,7 +1916,7 @@ RenderBatch :: struct {
 }
 
 // OpenGL version
-GlVersion :: enum s32 {
+GlVersion :: enum u32 {
     _11   :: 1;
     _21   :: 2;
     _33   :: 3;
@@ -1931,226 +1932,9 @@ GlVersion :: enum s32 {
     RL_OPENGL_ES_30 :: ES_30;
 }
 
-// Trace log level
-// NOTE: Organized by priority level
-TraceLogLevel :: enum s32 {
-    ALL     :: 0;
-    TRACE   :: 1;
-    DEBUG   :: 2;
-    INFO    :: 3;
-    WARNING :: 4;
-    ERROR   :: 5;
-    FATAL   :: 6;
-    NONE    :: 7;
-
-    RL_LOG_ALL     :: ALL;
-    RL_LOG_TRACE   :: TRACE;
-    RL_LOG_DEBUG   :: DEBUG;
-    RL_LOG_INFO    :: INFO;
-    RL_LOG_WARNING :: WARNING;
-    RL_LOG_ERROR   :: ERROR;
-    RL_LOG_FATAL   :: FATAL;
-    RL_LOG_NONE    :: NONE;
-}
-
-// Texture pixel formats
-// NOTE: Support depends on OpenGL version
-PixelFormat :: enum s32 {
-    UNCOMPRESSED_GRAYSCALE    :: 1;
-    UNCOMPRESSED_GRAY_ALPHA   :: 2;
-    UNCOMPRESSED_R5G6B5       :: 3;
-    UNCOMPRESSED_R8G8B8       :: 4;
-    UNCOMPRESSED_R5G5B5A1     :: 5;
-    UNCOMPRESSED_R4G4B4A4     :: 6;
-    UNCOMPRESSED_R8G8B8A8     :: 7;
-    UNCOMPRESSED_R32          :: 8;
-    UNCOMPRESSED_R32G32B32    :: 9;
-    UNCOMPRESSED_R32G32B32A32 :: 10;
-    UNCOMPRESSED_R16          :: 11;
-    UNCOMPRESSED_R16G16B16    :: 12;
-    UNCOMPRESSED_R16G16B16A16 :: 13;
-    COMPRESSED_DXT1_RGB       :: 14;
-    COMPRESSED_DXT1_RGBA      :: 15;
-    COMPRESSED_DXT3_RGBA      :: 16;
-    COMPRESSED_DXT5_RGBA      :: 17;
-    COMPRESSED_ETC1_RGB       :: 18;
-    COMPRESSED_ETC2_RGB       :: 19;
-    COMPRESSED_ETC2_EAC_RGBA  :: 20;
-    COMPRESSED_PVRT_RGB       :: 21;
-    COMPRESSED_PVRT_RGBA      :: 22;
-    COMPRESSED_ASTC_4x4_RGBA  :: 23;
-    COMPRESSED_ASTC_8x8_RGBA  :: 24;
-
-    RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE    :: UNCOMPRESSED_GRAYSCALE;
-    RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA   :: UNCOMPRESSED_GRAY_ALPHA;
-    RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5       :: UNCOMPRESSED_R5G6B5;
-    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8       :: UNCOMPRESSED_R8G8B8;
-    RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1     :: UNCOMPRESSED_R5G5B5A1;
-    RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4     :: UNCOMPRESSED_R4G4B4A4;
-    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8     :: UNCOMPRESSED_R8G8B8A8;
-    RL_PIXELFORMAT_UNCOMPRESSED_R32          :: UNCOMPRESSED_R32;
-    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32    :: UNCOMPRESSED_R32G32B32;
-    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 :: UNCOMPRESSED_R32G32B32A32;
-    RL_PIXELFORMAT_UNCOMPRESSED_R16          :: UNCOMPRESSED_R16;
-    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16    :: UNCOMPRESSED_R16G16B16;
-    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 :: UNCOMPRESSED_R16G16B16A16;
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB       :: COMPRESSED_DXT1_RGB;
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA      :: COMPRESSED_DXT1_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA      :: COMPRESSED_DXT3_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA      :: COMPRESSED_DXT5_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB       :: COMPRESSED_ETC1_RGB;
-    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB       :: COMPRESSED_ETC2_RGB;
-    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA  :: COMPRESSED_ETC2_EAC_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB       :: COMPRESSED_PVRT_RGB;
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA      :: COMPRESSED_PVRT_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA  :: COMPRESSED_ASTC_4x4_RGBA;
-    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA  :: COMPRESSED_ASTC_8x8_RGBA;
-}
-
-// Texture parameters: filter mode
-// NOTE 1: Filtering considers mipmaps if available in the texture
-// NOTE 2: Filter is accordingly set for minification and magnification
-TextureFilter :: enum s32 {
-    POINT           :: 0;
-    BILINEAR        :: 1;
-    TRILINEAR       :: 2;
-    ANISOTROPIC_4X  :: 3;
-    ANISOTROPIC_8X  :: 4;
-    ANISOTROPIC_16X :: 5;
-
-    RL_TEXTURE_FILTER_POINT           :: POINT;
-    RL_TEXTURE_FILTER_BILINEAR        :: BILINEAR;
-    RL_TEXTURE_FILTER_TRILINEAR       :: TRILINEAR;
-    RL_TEXTURE_FILTER_ANISOTROPIC_4X  :: ANISOTROPIC_4X;
-    RL_TEXTURE_FILTER_ANISOTROPIC_8X  :: ANISOTROPIC_8X;
-    RL_TEXTURE_FILTER_ANISOTROPIC_16X :: ANISOTROPIC_16X;
-}
-
-// Color blending modes (pre-defined)
-BlendMode :: enum s32 {
-    ALPHA             :: 0;
-    ADDITIVE          :: 1;
-    MULTIPLIED        :: 2;
-    ADD_COLORS        :: 3;
-    SUBTRACT_COLORS   :: 4;
-    ALPHA_PREMULTIPLY :: 5;
-    CUSTOM            :: 6;
-    CUSTOM_SEPARATE   :: 7;
-
-    RL_BLEND_ALPHA             :: ALPHA;
-    RL_BLEND_ADDITIVE          :: ADDITIVE;
-    RL_BLEND_MULTIPLIED        :: MULTIPLIED;
-    RL_BLEND_ADD_COLORS        :: ADD_COLORS;
-    RL_BLEND_SUBTRACT_COLORS   :: SUBTRACT_COLORS;
-    RL_BLEND_ALPHA_PREMULTIPLY :: ALPHA_PREMULTIPLY;
-    RL_BLEND_CUSTOM            :: CUSTOM;
-    RL_BLEND_CUSTOM_SEPARATE   :: CUSTOM_SEPARATE;
-}
-
-// Shader location point type
-ShaderLocationIndex :: enum s32 {
-    VERTEX_POSITION   :: 0;
-    VERTEX_TEXCOORD01 :: 1;
-    VERTEX_TEXCOORD02 :: 2;
-    VERTEX_NORMAL     :: 3;
-    VERTEX_TANGENT    :: 4;
-    VERTEX_COLOR      :: 5;
-    MATRIX_MVP        :: 6;
-    MATRIX_VIEW       :: 7;
-    MATRIX_PROJECTION :: 8;
-    MATRIX_MODEL      :: 9;
-    MATRIX_NORMAL     :: 10;
-    VECTOR_VIEW       :: 11;
-    COLOR_DIFFUSE     :: 12;
-    COLOR_SPECULAR    :: 13;
-    COLOR_AMBIENT     :: 14;
-    MAP_ALBEDO        :: 15;
-    MAP_METALNESS     :: 16;
-    MAP_NORMAL        :: 17;
-    MAP_ROUGHNESS     :: 18;
-    MAP_OCCLUSION     :: 19;
-    MAP_EMISSION      :: 20;
-    MAP_HEIGHT        :: 21;
-    MAP_CUBEMAP       :: 22;
-    MAP_IRRADIANCE    :: 23;
-    MAP_PREFILTER     :: 24;
-    MAP_BRDF          :: 25;
-
-    RL_SHADER_LOC_VERTEX_POSITION   :: VERTEX_POSITION;
-    RL_SHADER_LOC_VERTEX_TEXCOORD01 :: VERTEX_TEXCOORD01;
-    RL_SHADER_LOC_VERTEX_TEXCOORD02 :: VERTEX_TEXCOORD02;
-    RL_SHADER_LOC_VERTEX_NORMAL     :: VERTEX_NORMAL;
-    RL_SHADER_LOC_VERTEX_TANGENT    :: VERTEX_TANGENT;
-    RL_SHADER_LOC_VERTEX_COLOR      :: VERTEX_COLOR;
-    RL_SHADER_LOC_MATRIX_MVP        :: MATRIX_MVP;
-    RL_SHADER_LOC_MATRIX_VIEW       :: MATRIX_VIEW;
-    RL_SHADER_LOC_MATRIX_PROJECTION :: MATRIX_PROJECTION;
-    RL_SHADER_LOC_MATRIX_MODEL      :: MATRIX_MODEL;
-    RL_SHADER_LOC_MATRIX_NORMAL     :: MATRIX_NORMAL;
-    RL_SHADER_LOC_VECTOR_VIEW       :: VECTOR_VIEW;
-    RL_SHADER_LOC_COLOR_DIFFUSE     :: COLOR_DIFFUSE;
-    RL_SHADER_LOC_COLOR_SPECULAR    :: COLOR_SPECULAR;
-    RL_SHADER_LOC_COLOR_AMBIENT     :: COLOR_AMBIENT;
-    RL_SHADER_LOC_MAP_ALBEDO        :: MAP_ALBEDO;
-    RL_SHADER_LOC_MAP_METALNESS     :: MAP_METALNESS;
-    RL_SHADER_LOC_MAP_NORMAL        :: MAP_NORMAL;
-    RL_SHADER_LOC_MAP_ROUGHNESS     :: MAP_ROUGHNESS;
-    RL_SHADER_LOC_MAP_OCCLUSION     :: MAP_OCCLUSION;
-    RL_SHADER_LOC_MAP_EMISSION      :: MAP_EMISSION;
-    RL_SHADER_LOC_MAP_HEIGHT        :: MAP_HEIGHT;
-    RL_SHADER_LOC_MAP_CUBEMAP       :: MAP_CUBEMAP;
-    RL_SHADER_LOC_MAP_IRRADIANCE    :: MAP_IRRADIANCE;
-    RL_SHADER_LOC_MAP_PREFILTER     :: MAP_PREFILTER;
-    RL_SHADER_LOC_MAP_BRDF          :: MAP_BRDF;
-}
-
-// Shader uniform data type
-ShaderUniformDataType :: enum s32 {
-    FLOAT     :: 0;
-    VEC2      :: 1;
-    VEC3      :: 2;
-    VEC4      :: 3;
-    INT       :: 4;
-    IVEC2     :: 5;
-    IVEC3     :: 6;
-    IVEC4     :: 7;
-    UINT      :: 8;
-    UIVEC2    :: 9;
-    UIVEC3    :: 10;
-    UIVEC4    :: 11;
-    SAMPLER2D :: 12;
-
-    RL_SHADER_UNIFORM_FLOAT     :: FLOAT;
-    RL_SHADER_UNIFORM_VEC2      :: VEC2;
-    RL_SHADER_UNIFORM_VEC3      :: VEC3;
-    RL_SHADER_UNIFORM_VEC4      :: VEC4;
-    RL_SHADER_UNIFORM_INT       :: INT;
-    RL_SHADER_UNIFORM_IVEC2     :: IVEC2;
-    RL_SHADER_UNIFORM_IVEC3     :: IVEC3;
-    RL_SHADER_UNIFORM_IVEC4     :: IVEC4;
-    RL_SHADER_UNIFORM_UINT      :: UINT;
-    RL_SHADER_UNIFORM_UIVEC2    :: UIVEC2;
-    RL_SHADER_UNIFORM_UIVEC3    :: UIVEC3;
-    RL_SHADER_UNIFORM_UIVEC4    :: UIVEC4;
-    RL_SHADER_UNIFORM_SAMPLER2D :: SAMPLER2D;
-}
-
-// Shader attribute data types
-ShaderAttributeDataType :: enum s32 {
-    FLOAT :: 0;
-    VEC2  :: 1;
-    VEC3  :: 2;
-    VEC4  :: 3;
-
-    RL_SHADER_ATTRIB_FLOAT :: FLOAT;
-    RL_SHADER_ATTRIB_VEC2  :: VEC2;
-    RL_SHADER_ATTRIB_VEC3  :: VEC3;
-    RL_SHADER_ATTRIB_VEC4  :: VEC4;
-}
-
 // Framebuffer attachment type
 // NOTE: By default up to 8 color channels defined, but it can be more
-FramebufferAttachType :: enum s32 {
+FramebufferAttachType :: enum u32 {
     COLOR_CHANNEL0 :: 0;
     COLOR_CHANNEL1 :: 1;
     COLOR_CHANNEL2 :: 2;
@@ -2175,7 +1959,7 @@ FramebufferAttachType :: enum s32 {
 }
 
 // Framebuffer texture attachment type
-FramebufferAttachTextureType :: enum s32 {
+FramebufferAttachTextureType :: enum u32 {
     CUBEMAP_POSITIVE_X :: 0;
     CUBEMAP_NEGATIVE_X :: 1;
     CUBEMAP_POSITIVE_Y :: 2;
@@ -2196,7 +1980,7 @@ FramebufferAttachTextureType :: enum s32 {
 }
 
 // Face culling mode
-CullMode :: enum s32 {
+CullMode :: enum u32 {
     FRONT :: 0;
     BACK  :: 1;
 
