@@ -33,6 +33,8 @@ BLANK :: Color.{  0, 0, 0, 0  };
 MAGENTA :: Color.{  255, 0, 255, 255  };
 RAYWHITE :: Color.{  245, 245, 245, 255  };
 
+GetGamepadButtonPressed :: () -> GamepadButton #foreign raylib;
+
 IsMouseButtonPressed :: (button: MouseButton) -> bool { return IsMouseButtonPressed(cast(s32) button); }
 IsMouseButtonDown :: (button: MouseButton) -> bool { return IsMouseButtonDown(cast(s32) button); }
 IsMouseButtonReleased :: (button: MouseButton) -> bool { return IsMouseButtonReleased(cast(s32) button); }
@@ -54,7 +56,7 @@ IsWindowState :: (flag: ConfigFlags) -> bool { return IsWindowState(cast(u32) fl
 SetWindowState :: (flags: ConfigFlags) -> void { return SetWindowState(cast(u32) flags); }
 ClearWindowState :: (flags: ConfigFlags) -> void { return ClearWindowState(cast(u32) flags); }
 
-UpdateCamera :: (camera: *Camera, mode: CameraMode) -> void { return UpdateCamera(cast(s32) mode); }
+UpdateCamera :: (camera: *Camera, mode: CameraMode) -> void { return UpdateCamera(camera, cast(s32) mode); }
 
 SetTraceLogLevel :: (logLevel: TraceLogLevel) -> void { return SetTraceLogLevel(cast(s32) logLevel); }
 TraceLog :: (logLevel: TraceLogLevel, text: string, __args: ..Any) { TraceLog(cast(s32) logLevel, text, __args); }
@@ -70,8 +72,6 @@ IsGamepadButtonPressed  :: (gamepad: s32, button: GamepadButton) -> bool { retur
 IsGamepadButtonDown     :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonDown(gamepad, cast(s32) button); }
 IsGamepadButtonReleased :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonReleased(gamepad, cast(s32) button); }
 IsGamepadButtonUp       :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonUp(gamepad, cast(s32) button); }
-// This is not possible since the arguments are the same, maybe there's a way to replace with an enum in generate.jai
-// GetGamepadButtonPressed :: () -> GamepadButton { return cast(GamepadButton) GetGamepadButtonPressed(); }
 
 GetGamepadAxisMovement :: (gamepad: s32, axis: GamepadAxis) -> float { return GetGamepadAxisMovement(gamepad, cast(s32) axis); }
 
@@ -104,6 +104,14 @@ SetUniform :: (locIndex: s32, value: *void, uniformType: ShaderUniformDataType, 
 
 SetMaterialTexture :: (material: *Material, mapType: MaterialMapIndex, texture: Texture2D) -> void { return SetMaterialTexture(material, mapType, texture); }
 
+Camera3D :: struct {
+    position:   Vector3; // Camera position
+    target:     Vector3; // Camera target it looks-at
+    up:         Vector3; // Camera up vector (rotation over its axis)
+    fovy:       float; // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+    projection: CameraProjection; // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+}
+
 #scope_module
 
 #if OS == .WINDOWS {
@@ -113,6 +121,8 @@ SetMaterialTexture :: (material: *Material, mapType: MaterialMapIndex, texture: 
     gdi32 :: #system_library,link_always "gdi32";
     shell32 :: #system_library,link_always "shell32";
     shcore :: #system_library,link_always "shcore";
+
+    raylib :: #library,no_dll "windows/raylib";
     
     #load "windows.jai";
 } else {

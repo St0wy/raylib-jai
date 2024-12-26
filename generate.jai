@@ -10,6 +10,8 @@ DECLARATIONS_TO_OMIT :: string.[
     "Quaternion",
     "Matrix",
     "PI",
+    "Camera3D",
+    "GetGamepadButtonPressed",
 ];
 
 // These are already defined in an non-rl-prefixed version, they come from rlgl
@@ -116,6 +118,9 @@ generate_bindings :: (args: [] string) -> bool
         );
         array_add(*strip_prefixes, "rl");
 
+        // This is because we want to be able to add declarations in module.jai that bind to stuff in raylib
+        generate_library_declarations = false;
+
         visitor   = raylib_visitor;
     }
 
@@ -135,24 +140,24 @@ raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declara
         if String.contains(decl.name, "Flags") || decl.name == "Gesture" {
             en.flags |= .IS_ENUM_FLAGS;
             en.flags |= .VALUES_IN_HEX;
+
+            if en.type {
+                if en.type.size == {
+                    case 1;
+                        en.type = context.generator.type_def_u8;
+                    case 2;
+                        en.type = context.generator.type_def_u16;
+                    case 4;
+                        en.type = context.generator.type_def_u32;
+                    case 8;
+                        en.type = context.generator.type_def_u64;
+                }
+            }
         }
 
         if array_find(DUPLICATE_DECLARATIONS, decl.name) {
             decl.decl_flags |= .OMIT_FROM_OUTPUT;
             return .STOP;
-        }
-
-        if en.type {
-            if en.type.size == {
-                case 1;
-                    en.type = context.generator.type_def_u8;
-                case 2;
-                    en.type = context.generator.type_def_u16;
-                case 4;
-                    en.type = context.generator.type_def_u32;
-                case 8;
-                    en.type = context.generator.type_def_u64;
-            }
         }
     }
 

@@ -212,15 +212,6 @@ Font :: struct {
     glyphs:       *GlyphInfo; // Glyphs info data
 }
 
-// Camera, defines position/orientation in 3d space
-Camera3D :: struct {
-    position:   Vector3; // Camera position
-    target:     Vector3; // Camera target it looks-at
-    up:         Vector3; // Camera up vector (rotation over its axis)
-    fovy:       float; // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
-    projection: s32; // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
-}
-
 Camera :: Camera3D;
 
 // Camera2D, defines position/orientation in 2d space
@@ -460,7 +451,7 @@ ConfigFlags :: enum_flags u32 {
 
 // Trace log level
 // NOTE: Organized by priority level
-TraceLogLevel :: enum u32 {
+TraceLogLevel :: enum s32 {
     ALL     :: 0;
     TRACE   :: 1;
     DEBUG   :: 2;
@@ -483,7 +474,7 @@ TraceLogLevel :: enum u32 {
 // Keyboard keys (US keyboard layout)
 // NOTE: Use GetKeyPressed() to allow redefining
 // required keys for alternative layouts
-KeyboardKey :: enum u32 {
+KeyboardKey :: enum s32 {
     NULL          :: 0;
 
     APOSTROPHE    :: 39;
@@ -716,7 +707,7 @@ KeyboardKey :: enum u32 {
 }
 
 // Mouse buttons
-MouseButton :: enum u32 {
+MouseButton :: enum s32 {
     LEFT    :: 0;
     RIGHT   :: 1;
     MIDDLE  :: 2;
@@ -735,7 +726,7 @@ MouseButton :: enum u32 {
 }
 
 // Mouse cursor
-MouseCursor :: enum u32 {
+MouseCursor :: enum s32 {
     DEFAULT       :: 0;
     ARROW         :: 1;
     IBEAM         :: 2;
@@ -762,7 +753,7 @@ MouseCursor :: enum u32 {
 }
 
 // Gamepad buttons
-GamepadButton :: enum u32 {
+GamepadButton :: enum s32 {
     UNKNOWN          :: 0;
     LEFT_FACE_UP     :: 1;
     LEFT_FACE_RIGHT  :: 2;
@@ -803,7 +794,7 @@ GamepadButton :: enum u32 {
 }
 
 // Gamepad axis
-GamepadAxis :: enum u32 {
+GamepadAxis :: enum s32 {
     LEFT_X        :: 0;
     LEFT_Y        :: 1;
     RIGHT_X       :: 2;
@@ -820,7 +811,7 @@ GamepadAxis :: enum u32 {
 }
 
 // Material map index
-MaterialMapIndex :: enum u32 {
+MaterialMapIndex :: enum s32 {
     ALBEDO     :: 0;
     METALNESS  :: 1;
     NORMAL     :: 2;
@@ -847,7 +838,7 @@ MaterialMapIndex :: enum u32 {
 }
 
 // Shader location index
-ShaderLocationIndex :: enum u32 {
+ShaderLocationIndex :: enum s32 {
     VERTEX_POSITION    :: 0;
     VERTEX_TEXCOORD01  :: 1;
     VERTEX_TEXCOORD02  :: 2;
@@ -910,7 +901,7 @@ ShaderLocationIndex :: enum u32 {
 }
 
 // Shader uniform data type
-ShaderUniformDataType :: enum u32 {
+ShaderUniformDataType :: enum s32 {
     FLOAT     :: 0;
     VEC2      :: 1;
     VEC3      :: 2;
@@ -933,7 +924,7 @@ ShaderUniformDataType :: enum u32 {
 }
 
 // Shader attribute data types
-ShaderAttributeDataType :: enum u32 {
+ShaderAttributeDataType :: enum s32 {
     FLOAT :: 0;
     VEC2  :: 1;
     VEC3  :: 2;
@@ -947,7 +938,7 @@ ShaderAttributeDataType :: enum u32 {
 
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform
-PixelFormat :: enum u32 {
+PixelFormat :: enum s32 {
     UNCOMPRESSED_GRAYSCALE    :: 1;
     UNCOMPRESSED_GRAY_ALPHA   :: 2;
     UNCOMPRESSED_R5G6B5       :: 3;
@@ -1002,7 +993,7 @@ PixelFormat :: enum u32 {
 // Texture parameters: filter mode
 // NOTE 1: Filtering considers mipmaps if available in the texture
 // NOTE 2: Filter is accordingly set for minification and magnification
-TextureFilter :: enum u32 {
+TextureFilter :: enum s32 {
     POINT           :: 0;
     BILINEAR        :: 1;
     TRILINEAR       :: 2;
@@ -1019,7 +1010,7 @@ TextureFilter :: enum u32 {
 }
 
 // Texture parameters: wrap mode
-TextureWrap :: enum u32 {
+TextureWrap :: enum s32 {
     REPEAT        :: 0;
     CLAMP         :: 1;
     MIRROR_REPEAT :: 2;
@@ -1032,7 +1023,7 @@ TextureWrap :: enum u32 {
 }
 
 // Cubemap layouts
-CubemapLayout :: enum u32 {
+CubemapLayout :: enum s32 {
     AUTO_DETECT         :: 0;
     LINE_VERTICAL       :: 1;
     LINE_HORIZONTAL     :: 2;
@@ -1047,7 +1038,7 @@ CubemapLayout :: enum u32 {
 }
 
 // Font type, defines generation method
-FontType :: enum u32 {
+FontType :: enum s32 {
     DEFAULT :: 0;
     BITMAP  :: 1;
     SDF     :: 2;
@@ -1058,7 +1049,7 @@ FontType :: enum u32 {
 }
 
 // Color blending modes (pre-defined)
-BlendMode :: enum u32 {
+BlendMode :: enum s32 {
     ALPHA             :: 0;
     ADDITIVE          :: 1;
     MULTIPLIED        :: 2;
@@ -1107,7 +1098,7 @@ Gesture :: enum_flags u32 {
 }
 
 // Camera system modes
-CameraMode :: enum u32 {
+CameraMode :: enum s32 {
     CUSTOM       :: 0;
     FREE         :: 1;
     ORBITAL      :: 2;
@@ -1122,7 +1113,7 @@ CameraMode :: enum u32 {
 }
 
 // Camera projection
-CameraProjection :: enum u32 {
+CameraProjection :: enum s32 {
     PERSPECTIVE  :: 0;
     ORTHOGRAPHIC :: 1;
 
@@ -1131,7 +1122,7 @@ CameraProjection :: enum u32 {
 }
 
 // N-patch layout
-NPatchLayout :: enum u32 {
+NPatchLayout :: enum s32 {
     NINE_PATCH             :: 0;
     THREE_PATCH_VERTICAL   :: 1;
     THREE_PATCH_HORIZONTAL :: 2;
@@ -1371,7 +1362,7 @@ IsGamepadButtonPressed :: (gamepad: s32, button: s32) -> bool #foreign raylib;
 IsGamepadButtonDown :: (gamepad: s32, button: s32) -> bool #foreign raylib;
 IsGamepadButtonReleased :: (gamepad: s32, button: s32) -> bool #foreign raylib;
 IsGamepadButtonUp :: (gamepad: s32, button: s32) -> bool #foreign raylib;
-GetGamepadButtonPressed :: () -> s32 #foreign raylib;
+
 GetGamepadAxisCount :: (gamepad: s32) -> s32 #foreign raylib;
 GetGamepadAxisMovement :: (gamepad: s32, axis: s32) -> float #foreign raylib;
 SetGamepadMappings :: (mappings: *u8) -> s32 #foreign raylib;
@@ -1916,7 +1907,7 @@ RenderBatch :: struct {
 }
 
 // OpenGL version
-GlVersion :: enum u32 {
+GlVersion :: enum s32 {
     _11   :: 1;
     _21   :: 2;
     _33   :: 3;
@@ -1934,7 +1925,7 @@ GlVersion :: enum u32 {
 
 // Framebuffer attachment type
 // NOTE: By default up to 8 color channels defined, but it can be more
-FramebufferAttachType :: enum u32 {
+FramebufferAttachType :: enum s32 {
     COLOR_CHANNEL0 :: 0;
     COLOR_CHANNEL1 :: 1;
     COLOR_CHANNEL2 :: 2;
@@ -1959,7 +1950,7 @@ FramebufferAttachType :: enum u32 {
 }
 
 // Framebuffer texture attachment type
-FramebufferAttachTextureType :: enum u32 {
+FramebufferAttachTextureType :: enum s32 {
     CUBEMAP_POSITIVE_X :: 0;
     CUBEMAP_NEGATIVE_X :: 1;
     CUBEMAP_POSITIVE_Y :: 2;
@@ -1980,7 +1971,7 @@ FramebufferAttachTextureType :: enum u32 {
 }
 
 // Face culling mode
-CullMode :: enum u32 {
+CullMode :: enum s32 {
     FRONT :: 0;
     BACK  :: 1;
 
@@ -2191,7 +2182,6 @@ LoadDrawQuad :: () -> void #foreign raylib "rlLoadDrawQuad";
 
 #import "Basic"; // For assert, push_context
 
-raylib :: #library,no_dll "windows/raylib";
 
 #run {
     {
@@ -2308,21 +2298,6 @@ raylib :: #library,no_dll "windows/raylib";
         assert(((cast(*void)(*instance.glyphs)) - cast(*void)(*instance)) == 40, "Font.glyphs has unexpected offset % instead of 40", ((cast(*void)(*instance.glyphs)) - cast(*void)(*instance)));
         assert(size_of(type_of(Font.glyphs)) == 8, "Font.glyphs has unexpected size % instead of 8", size_of(type_of(Font.glyphs)));
         assert(size_of(Font) == 48, "Font has size % instead of 48", size_of(Font));
-    }
-
-    {
-        instance: Camera3D;
-        assert(((cast(*void)(*instance.position)) - cast(*void)(*instance)) == 0, "Camera3D.position has unexpected offset % instead of 0", ((cast(*void)(*instance.position)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera3D.position)) == 12, "Camera3D.position has unexpected size % instead of 12", size_of(type_of(Camera3D.position)));
-        assert(((cast(*void)(*instance.target)) - cast(*void)(*instance)) == 12, "Camera3D.target has unexpected offset % instead of 12", ((cast(*void)(*instance.target)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera3D.target)) == 12, "Camera3D.target has unexpected size % instead of 12", size_of(type_of(Camera3D.target)));
-        assert(((cast(*void)(*instance.up)) - cast(*void)(*instance)) == 24, "Camera3D.up has unexpected offset % instead of 24", ((cast(*void)(*instance.up)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera3D.up)) == 12, "Camera3D.up has unexpected size % instead of 12", size_of(type_of(Camera3D.up)));
-        assert(((cast(*void)(*instance.fovy)) - cast(*void)(*instance)) == 36, "Camera3D.fovy has unexpected offset % instead of 36", ((cast(*void)(*instance.fovy)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera3D.fovy)) == 4, "Camera3D.fovy has unexpected size % instead of 4", size_of(type_of(Camera3D.fovy)));
-        assert(((cast(*void)(*instance.projection)) - cast(*void)(*instance)) == 40, "Camera3D.projection has unexpected offset % instead of 40", ((cast(*void)(*instance.projection)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera3D.projection)) == 4, "Camera3D.projection has unexpected size % instead of 4", size_of(type_of(Camera3D.projection)));
-        assert(size_of(Camera3D) == 44, "Camera3D has size % instead of 44", size_of(Camera3D));
     }
 
     {
