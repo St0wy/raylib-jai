@@ -46,16 +46,67 @@ IsKeyUp :: (key: KeyboardKey) -> bool { return IsKeyUp(cast(s32) key); }
 SetExitKey :: (key: KeyboardKey) -> void { return SetExitKey(cast(s32) key); }
 
 SetConfigFlags :: (flags: ConfigFlags) -> void { return SetConfigFlags(cast(u32) flags); }
+
 SetGesturesEnabled :: (flags: Gesture) -> void { return SetGesturesEnabled(cast(u32) flags); }
 IsGestureDetected :: (gesture: Gesture) -> bool { return IsGestureDetected(cast(u32) gesture); }
+
 IsWindowState :: (flag: ConfigFlags) -> bool { return IsWindowState(cast(u32) flag); }
 SetWindowState :: (flags: ConfigFlags) -> void { return SetWindowState(cast(u32) flags); }
 ClearWindowState :: (flags: ConfigFlags) -> void { return ClearWindowState(cast(u32) flags); }
 
+UpdateCamera :: (camera: *Camera, mode: CameraMode) -> void { return UpdateCamera(cast(s32) mode); }
+
+SetTraceLogLevel :: (logLevel: TraceLogLevel) -> void { return SetTraceLogLevel(cast(s32) logLevel); }
+TraceLog :: (logLevel: TraceLogLevel, text: string, __args: ..Any) { TraceLog(cast(s32) logLevel, text, __args); }
+
+SetShaderValue :: (shader: Shader, locIndex: s32, value: *void, uniformType: ShaderUniformDataType) -> void { 
+    return SetShaderValue(shader, locIndex, value, cast(s32) uniformType); 
+}
+SetShaderValueV :: (shader: Shader, locIndex: s32, value: *void, uniformType: ShaderUniformDataType, count: s32) -> void { 
+    return SetShaderValue(shader, locIndex, value, cast(s32) uniformType, count); 
+}
+
+IsGamepadButtonPressed  :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonPressed(gamepad, cast(s32) button); }
+IsGamepadButtonDown     :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonDown(gamepad, cast(s32) button); }
+IsGamepadButtonReleased :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonReleased(gamepad, cast(s32) button); }
+IsGamepadButtonUp       :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonUp(gamepad, cast(s32) button); }
+// This is not possible since the arguments are the same, maybe there's a way to replace with an enum in generate.jai
+// GetGamepadButtonPressed :: () -> GamepadButton { return cast(GamepadButton) GetGamepadButtonPressed(); }
+
+GetGamepadAxisMovement :: (gamepad: s32, axis: GamepadAxis) -> float { return GetGamepadAxisMovement(gamepad, cast(s32) axis); }
+
+SetTextureFilter :: (texture: Texture2D, filter: TextureFilter) -> void { return SetTextureFilter(texture, cast(s32) filter); }
+SetTextureWrap :: (texture: Texture2D, wrap: TextureWrap) -> void { return SetTextureWrap(textuer, cast(s32) wrap); }
+
+BeginBlendMode :: (mode: BlendMode) -> void { return BeginBlendMode(cast(s32) mode); }
+
+ImageFormat :: (image: *Image, newFormat: PixelFormat) -> void { return ImageFormat(image, cast(s32) newFormat); }
+
+LoadImageRaw :: (fileName: *u8, width: s32, height: s32, format: PixelFormat, headerSize: s32) -> Image { 
+    return LoadImageRaw(fileName, width, height, cast(s32) format, headerSize); 
+}
+
+LoadFontData :: (fileData: *u8, dataSize: s32, fontSize: s32, codepoints: *s32, codepointCount: s32, type: FontType) -> *GlyphInfo {
+    return LoadFontData(fileData, dataSize, fontSize, codepoints, codepointCount, cast(s32) type);
+}
+
+SetMouseCursor :: (cursor: MouseCursor) -> void { return SetMouseCursor(cast(s32) cursor); }
+
+LoadTexture :: (data: *void, width: s32, height: s32, format: PixelFormat, mipmapCount: s32) -> u32 {
+    return LoadTexture(data, width, height, cast(s32) format, mipmapCount);
+}
+
+FramebufferAttach :: (fboId: u32, texId: u32, attachType: FramebufferAttachType, texType: FramebufferAttachTextureType, mipLevel: s32) -> void {
+    return FramebufferAttach(fbiId, texId, cast(s32) attachType, cast(s32) texType, mipLevel);
+}
+
+SetUniform :: (locIndex: s32, value: *void, uniformType: ShaderUniformDataType, count: s32) -> void { return SetUniform(locIndex, value, cast(s32) uniformType, count); }
+
+SetMaterialTexture :: (material: *Material, mapType: MaterialMapIndex, texture: Texture2D) -> void { return SetMaterialTexture(material, mapType, texture); }
+
 #scope_module
 
 #if OS == .WINDOWS {
-    #load "windows.jai";
     winmm :: #system_library,link_always "winmm";
     user32 :: #system_library,link_always "user32";
     opengl32 :: #system_library,link_always "opengl32";
@@ -63,6 +114,7 @@ ClearWindowState :: (flags: ConfigFlags) -> void { return ClearWindowState(cast(
     shell32 :: #system_library,link_always "shell32";
     shcore :: #system_library,link_always "shcore";
     
+    #load "windows.jai";
 } else {
     assert(false);
 }

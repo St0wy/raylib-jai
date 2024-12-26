@@ -2,8 +2,8 @@ AT_COMPILE_TIME :: true;
 
 RAYLIB_PATH :: "raylib";
 
+// These have custom declarations in module.jai
 DECLARATIONS_TO_OMIT :: string.[
-    // These have custom declarations in module.jai
     "Vector2",
     "Vector3",
     "Vector4",
@@ -12,6 +12,8 @@ DECLARATIONS_TO_OMIT :: string.[
     "PI",
 ];
 
+// These are already defined in an non-rl-prefixed version, they come from rlgl
+// It is necessary to omit them otherwise the bindings will generate two TraceLogLevel for example
 DUPLICATE_DECLARATIONS :: string.[
     "rlTraceLogLevel",
     "rlPixelFormat",
@@ -113,10 +115,6 @@ generate_bindings :: (args: [] string) -> bool
             "-DGRAPHICS_API_OPENGL_43",
         );
         array_add(*strip_prefixes, "rl");
-
-        // auto_detect_enum_prefixes = true;
-        // log_stripped_declarations = false;
-        // generate_compile_time_struct_checks = true;
 
         visitor   = raylib_visitor;
     }
