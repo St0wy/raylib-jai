@@ -2,8 +2,8 @@ AT_COMPILE_TIME :: true;
 
 RAYLIB_PATH :: "raylib";
 
-// These have custom declarations in module.jai
 DECLARATIONS_TO_OMIT :: string.[
+    // These have custom declarations in module.jai
     "Vector2",
     "Vector3",
     "Vector4",
@@ -95,16 +95,22 @@ generate_bindings :: (args: [] string) -> bool
         #if OS == .WINDOWS {
             array_add(*libpaths, "windows");
             output_filename = "windows.jai";
+
+            // This will replace `#include <math.h>` with `#include "math.h"` in raymath.h and place it in raymath_pachted.h
+            // Needed because clang doesn't have math.h so we want it to use our local math.h.
+            could_patch := patch_raymath();
+            assert(could_patch);
+            array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
         } else {
             assert(false);
+            // Hopefully this will work on other platforms...
+            array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
         }
 
         array_add(*libnames, "raylib");
         array_add(*include_paths, RAYLIB_PATH);
         array_add(*include_paths, glfw_include);
         array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
-        // Can't be compiled on windows because of missing math.h ? Leaving it out for now since Jai has the functions we need
-        // array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
         array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
         array_add(
             *extra_clang_arguments, 
@@ -116,6 +122,7 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RAUDIO",
             "-DPLATFORM_DESKTOP_GLFW",
             "-DGRAPHICS_API_OPENGL_43",
+            "-Wno-microsoft-include",
         );
         array_add(*strip_prefixes, "rl");
 
@@ -169,6 +176,19 @@ check_has_cmake :: () -> bool {
     command := Process.break_command_into_strings("cmake --version");
     result := Process.run_command(..command);
     return result.exit_code == 0;
+}
+
+patch_raymath :: () -> bool {
+    // If this file is there, raylib was already patched
+    patched_raymath_path := tprint("%/src/raymath_patched.h", RAYLIB_PATH);
+    already_patched := FileUtils.file_exists(patched_raymath_path);
+    if already_patched then return true;
+
+    raymath_content := File.read_entire_file(tprint("%/src/raymath.h", RAYLIB_PATH));
+    patched_raymath_content := String.replace(raymath_content, "#include <math.h>", "#include \"math.h\"",, temp);
+    success := File.write_entire_file(patched_raymath_path, patched_raymath_content);
+
+    return success;
 }
 
 using Basic :: #import "Basic";

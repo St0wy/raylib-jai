@@ -24,6 +24,8 @@ RAD2DEG :: 180.0/PI;
 
 GetMouseRay :: GetScreenToWorldRay;
 
+EPSILON :: 0.000001;
+
 RLGL_VERSION :: "5.0";
 
 RL_DEFAULT_BATCH_BUFFER_ELEMENTS :: 8192;
@@ -1866,6 +1868,467 @@ DetachAudioStreamProcessor :: (stream: AudioStream, processor: AudioCallback) ->
 AttachAudioMixedProcessor :: (processor: AudioCallback) -> void #foreign raylib;
 DetachAudioMixedProcessor :: (processor: AudioCallback) -> void #foreign raylib;
 
+// NOTE: Helper types to be used instead of array return types for *ToFloat functions
+float3 :: struct {
+    v: [3] float;
+}
+
+float16 :: struct {
+    v: [16] float;
+}
+
+// Clamp float value
+Clamp :: (value: float, min: float, max: float) -> float #foreign raylib;
+
+// Calculate linear interpolation between two floats
+Lerp :: (start: float, end: float, amount: float) -> float #foreign raylib;
+
+// Normalize input value within input range
+Normalize :: (value: float, start: float, end: float) -> float #foreign raylib;
+
+// Remap input value within input range to output range
+Remap :: (value: float, inputStart: float, inputEnd: float, outputStart: float, outputEnd: float) -> float #foreign raylib;
+
+// Wrap input value from min to max
+Wrap :: (value: float, min: float, max: float) -> float #foreign raylib;
+
+// Check whether two given floats are almost equal
+FloatEquals :: (x: float, y: float) -> s32 #foreign raylib;
+
+// Vector with components value 0.0f
+Vector2Zero :: () -> Vector2 #foreign raylib;
+
+// Vector with components value 1.0f
+Vector2One :: () -> Vector2 #foreign raylib;
+
+// Add two vectors (v1 + v2)
+Vector2Add :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Add vector and float value
+Vector2AddValue :: (v: Vector2, add: float) -> Vector2 #foreign raylib;
+
+// Subtract two vectors (v1 - v2)
+Vector2Subtract :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Subtract vector by float value
+Vector2SubtractValue :: (v: Vector2, sub: float) -> Vector2 #foreign raylib;
+
+// Calculate vector length
+Vector2Length :: (v: Vector2) -> float #foreign raylib;
+
+// Calculate vector square length
+Vector2LengthSqr :: (v: Vector2) -> float #foreign raylib;
+
+// Calculate two vectors dot product
+Vector2DotProduct :: (v1: Vector2, v2: Vector2) -> float #foreign raylib;
+
+// Calculate distance between two vectors
+Vector2Distance :: (v1: Vector2, v2: Vector2) -> float #foreign raylib;
+
+// Calculate square distance between two vectors
+Vector2DistanceSqr :: (v1: Vector2, v2: Vector2) -> float #foreign raylib;
+
+// Calculate angle between two vectors
+// NOTE: Angle is calculated from origin point (0, 0)
+Vector2Angle :: (v1: Vector2, v2: Vector2) -> float #foreign raylib;
+
+// Calculate angle defined by a two vectors line
+// NOTE: Parameters need to be normalized
+// Current implementation should be aligned with glm::angle
+Vector2LineAngle :: (start: Vector2, end: Vector2) -> float #foreign raylib;
+
+// Scale vector (multiply by value)
+Vector2Scale :: (v: Vector2, scale: float) -> Vector2 #foreign raylib;
+
+// Multiply vector by vector
+Vector2Multiply :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Negate vector
+Vector2Negate :: (v: Vector2) -> Vector2 #foreign raylib;
+
+// Divide vector by vector
+Vector2Divide :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Normalize provided vector
+Vector2Normalize :: (v: Vector2) -> Vector2 #foreign raylib;
+
+// Transforms a Vector2 by a given Matrix
+Vector2Transform :: (v: Vector2, mat: Matrix) -> Vector2 #foreign raylib;
+
+// Calculate linear interpolation between two vectors
+Vector2Lerp :: (v1: Vector2, v2: Vector2, amount: float) -> Vector2 #foreign raylib;
+
+// Calculate reflected vector to normal
+Vector2Reflect :: (v: Vector2, normal: Vector2) -> Vector2 #foreign raylib;
+
+// Get min value for each pair of components
+Vector2Min :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Get max value for each pair of components
+Vector2Max :: (v1: Vector2, v2: Vector2) -> Vector2 #foreign raylib;
+
+// Rotate vector by angle
+Vector2Rotate :: (v: Vector2, angle: float) -> Vector2 #foreign raylib;
+
+// Move Vector towards target
+Vector2MoveTowards :: (v: Vector2, target: Vector2, maxDistance: float) -> Vector2 #foreign raylib;
+
+// Invert the given vector
+Vector2Invert :: (v: Vector2) -> Vector2 #foreign raylib;
+
+// Clamp the components of the vector between
+// min and max values specified by the given vectors
+Vector2Clamp :: (v: Vector2, min: Vector2, max: Vector2) -> Vector2 #foreign raylib;
+
+// Clamp the magnitude of the vector between two min and max values
+Vector2ClampValue :: (v: Vector2, min: float, max: float) -> Vector2 #foreign raylib;
+
+// Check whether two given vectors are almost equal
+Vector2Equals :: (p: Vector2, q: Vector2) -> s32 #foreign raylib;
+
+// Compute the direction of a refracted ray
+// v: normalized direction of the incoming ray
+// n: normalized normal vector of the interface of two optical media
+// r: ratio of the refractive index of the medium from where the ray comes
+//    to the refractive index of the medium on the other side of the surface
+Vector2Refract :: (v: Vector2, n: Vector2, r: float) -> Vector2 #foreign raylib;
+
+// Vector with components value 0.0f
+Vector3Zero :: () -> Vector3 #foreign raylib;
+
+// Vector with components value 1.0f
+Vector3One :: () -> Vector3 #foreign raylib;
+
+// Add two vectors
+Vector3Add :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Add vector and float value
+Vector3AddValue :: (v: Vector3, add: float) -> Vector3 #foreign raylib;
+
+// Subtract two vectors
+Vector3Subtract :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Subtract vector by float value
+Vector3SubtractValue :: (v: Vector3, sub: float) -> Vector3 #foreign raylib;
+
+// Multiply vector by scalar
+Vector3Scale :: (v: Vector3, scalar: float) -> Vector3 #foreign raylib;
+
+// Multiply vector by vector
+Vector3Multiply :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Calculate two vectors cross product
+Vector3CrossProduct :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Calculate one vector perpendicular vector
+Vector3Perpendicular :: (v: Vector3) -> Vector3 #foreign raylib;
+
+// Calculate vector length
+Vector3Length :: (v: Vector3) -> float #foreign raylib;
+
+// Calculate vector square length
+Vector3LengthSqr :: (v: Vector3) -> float #foreign raylib;
+
+// Calculate two vectors dot product
+Vector3DotProduct :: (v1: Vector3, v2: Vector3) -> float #foreign raylib;
+
+// Calculate distance between two vectors
+Vector3Distance :: (v1: Vector3, v2: Vector3) -> float #foreign raylib;
+
+// Calculate square distance between two vectors
+Vector3DistanceSqr :: (v1: Vector3, v2: Vector3) -> float #foreign raylib;
+
+// Calculate angle between two vectors
+Vector3Angle :: (v1: Vector3, v2: Vector3) -> float #foreign raylib;
+
+// Negate provided vector (invert direction)
+Vector3Negate :: (v: Vector3) -> Vector3 #foreign raylib;
+
+// Divide vector by vector
+Vector3Divide :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Normalize provided vector
+Vector3Normalize :: (v: Vector3) -> Vector3 #foreign raylib;
+
+//Calculate the projection of the vector v1 on to v2
+Vector3Project :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+//Calculate the rejection of the vector v1 on to v2
+Vector3Reject :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Orthonormalize provided vectors
+// Makes vectors normalized and orthogonal to each other
+// Gram-Schmidt function implementation
+Vector3OrthoNormalize :: (v1: *Vector3, v2: *Vector3) -> void #foreign raylib;
+
+// Transforms a Vector3 by a given Matrix
+Vector3Transform :: (v: Vector3, mat: Matrix) -> Vector3 #foreign raylib;
+
+// Transform a vector by quaternion rotation
+Vector3RotateByQuaternion :: (v: Vector3, q: Quaternion) -> Vector3 #foreign raylib;
+
+// Rotates a vector around an axis
+Vector3RotateByAxisAngle :: (v: Vector3, axis: Vector3, angle: float) -> Vector3 #foreign raylib;
+
+// Move Vector towards target
+Vector3MoveTowards :: (v: Vector3, target: Vector3, maxDistance: float) -> Vector3 #foreign raylib;
+
+// Calculate linear interpolation between two vectors
+Vector3Lerp :: (v1: Vector3, v2: Vector3, amount: float) -> Vector3 #foreign raylib;
+
+// Calculate cubic hermite interpolation between two vectors and their tangents
+// as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+Vector3CubicHermite :: (v1: Vector3, tangent1: Vector3, v2: Vector3, tangent2: Vector3, amount: float) -> Vector3 #foreign raylib;
+
+// Calculate reflected vector to normal
+Vector3Reflect :: (v: Vector3, normal: Vector3) -> Vector3 #foreign raylib;
+
+// Get min value for each pair of components
+Vector3Min :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Get max value for each pair of components
+Vector3Max :: (v1: Vector3, v2: Vector3) -> Vector3 #foreign raylib;
+
+// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
+// NOTE: Assumes P is on the plane of the triangle
+Vector3Barycenter :: (p: Vector3, a: Vector3, b: Vector3, c: Vector3) -> Vector3 #foreign raylib;
+
+// Projects a Vector3 from screen space into object space
+// NOTE: We are avoiding calling other raymath functions despite available
+Vector3Unproject :: (source: Vector3, projection: Matrix, view: Matrix) -> Vector3 #foreign raylib;
+
+// Get Vector3 as float array
+Vector3ToFloatV :: (v: Vector3) -> float3 #foreign raylib;
+
+// Invert the given vector
+Vector3Invert :: (v: Vector3) -> Vector3 #foreign raylib;
+
+// Clamp the components of the vector between
+// min and max values specified by the given vectors
+Vector3Clamp :: (v: Vector3, min: Vector3, max: Vector3) -> Vector3 #foreign raylib;
+
+// Clamp the magnitude of the vector between two values
+Vector3ClampValue :: (v: Vector3, min: float, max: float) -> Vector3 #foreign raylib;
+
+// Check whether two given vectors are almost equal
+Vector3Equals :: (p: Vector3, q: Vector3) -> s32 #foreign raylib;
+
+// Compute the direction of a refracted ray
+// v: normalized direction of the incoming ray
+// n: normalized normal vector of the interface of two optical media
+// r: ratio of the refractive index of the medium from where the ray comes
+//    to the refractive index of the medium on the other side of the surface
+Vector3Refract :: (v: Vector3, n: Vector3, r: float) -> Vector3 #foreign raylib;
+
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Vector4 math
+//----------------------------------------------------------------------------------
+Vector4Zero :: () -> Vector4 #foreign raylib;
+
+Vector4One :: () -> Vector4 #foreign raylib;
+
+Vector4Add :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+Vector4AddValue :: (v: Vector4, add: float) -> Vector4 #foreign raylib;
+
+Vector4Subtract :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+Vector4SubtractValue :: (v: Vector4, add: float) -> Vector4 #foreign raylib;
+
+Vector4Length :: (v: Vector4) -> float #foreign raylib;
+
+Vector4LengthSqr :: (v: Vector4) -> float #foreign raylib;
+
+Vector4DotProduct :: (v1: Vector4, v2: Vector4) -> float #foreign raylib;
+
+// Calculate distance between two vectors
+Vector4Distance :: (v1: Vector4, v2: Vector4) -> float #foreign raylib;
+
+// Calculate square distance between two vectors
+Vector4DistanceSqr :: (v1: Vector4, v2: Vector4) -> float #foreign raylib;
+
+Vector4Scale :: (v: Vector4, scale: float) -> Vector4 #foreign raylib;
+
+// Multiply vector by vector
+Vector4Multiply :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+// Negate vector
+Vector4Negate :: (v: Vector4) -> Vector4 #foreign raylib;
+
+// Divide vector by vector
+Vector4Divide :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+// Normalize provided vector
+Vector4Normalize :: (v: Vector4) -> Vector4 #foreign raylib;
+
+// Get min value for each pair of components
+Vector4Min :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+// Get max value for each pair of components
+Vector4Max :: (v1: Vector4, v2: Vector4) -> Vector4 #foreign raylib;
+
+// Calculate linear interpolation between two vectors
+Vector4Lerp :: (v1: Vector4, v2: Vector4, amount: float) -> Vector4 #foreign raylib;
+
+// Move Vector towards target
+Vector4MoveTowards :: (v: Vector4, target: Vector4, maxDistance: float) -> Vector4 #foreign raylib;
+
+// Invert the given vector
+Vector4Invert :: (v: Vector4) -> Vector4 #foreign raylib;
+
+// Check whether two given vectors are almost equal
+Vector4Equals :: (p: Vector4, q: Vector4) -> s32 #foreign raylib;
+
+// Compute matrix determinant
+MatrixDeterminant :: (mat: Matrix) -> float #foreign raylib;
+
+// Get the trace of the matrix (sum of the values along the diagonal)
+MatrixTrace :: (mat: Matrix) -> float #foreign raylib;
+
+// Transposes provided matrix
+MatrixTranspose :: (mat: Matrix) -> Matrix #foreign raylib;
+
+// Invert provided matrix
+MatrixInvert :: (mat: Matrix) -> Matrix #foreign raylib;
+
+// Get identity matrix
+MatrixIdentity :: () -> Matrix #foreign raylib;
+
+// Add two matrices
+MatrixAdd :: (left: Matrix, right: Matrix) -> Matrix #foreign raylib;
+
+// Subtract two matrices (left - right)
+MatrixSubtract :: (left: Matrix, right: Matrix) -> Matrix #foreign raylib;
+
+// Get two matrix multiplication
+// NOTE: When multiplying matrices... the order matters!
+MatrixMultiply :: (left: Matrix, right: Matrix) -> Matrix #foreign raylib;
+
+// Get translation matrix
+MatrixTranslate :: (x: float, y: float, z: float) -> Matrix #foreign raylib;
+
+// Create rotation matrix from axis and angle
+// NOTE: Angle should be provided in radians
+MatrixRotate :: (axis: Vector3, angle: float) -> Matrix #foreign raylib;
+
+// Get x-rotation matrix
+// NOTE: Angle must be provided in radians
+MatrixRotateX :: (angle: float) -> Matrix #foreign raylib;
+
+// Get y-rotation matrix
+// NOTE: Angle must be provided in radians
+MatrixRotateY :: (angle: float) -> Matrix #foreign raylib;
+
+// Get z-rotation matrix
+// NOTE: Angle must be provided in radians
+MatrixRotateZ :: (angle: float) -> Matrix #foreign raylib;
+
+// Get xyz-rotation matrix
+// NOTE: Angle must be provided in radians
+MatrixRotateXYZ :: (angle: Vector3) -> Matrix #foreign raylib;
+
+// Get zyx-rotation matrix
+// NOTE: Angle must be provided in radians
+MatrixRotateZYX :: (angle: Vector3) -> Matrix #foreign raylib;
+
+// Get scaling matrix
+MatrixScale :: (x: float, y: float, z: float) -> Matrix #foreign raylib;
+
+// Get perspective projection matrix
+MatrixFrustum :: (left: float64, right: float64, bottom: float64, top: float64, nearPlane: float64, farPlane: float64) -> Matrix #foreign raylib;
+
+// Get perspective projection matrix
+// NOTE: Fovy angle must be provided in radians
+MatrixPerspective :: (fovY: float64, aspect: float64, nearPlane: float64, farPlane: float64) -> Matrix #foreign raylib;
+
+// Get orthographic projection matrix
+MatrixOrtho :: (left: float64, right: float64, bottom: float64, top: float64, nearPlane: float64, farPlane: float64) -> Matrix #foreign raylib;
+
+// Get camera look-at matrix (view matrix)
+MatrixLookAt :: (eye: Vector3, target: Vector3, up: Vector3) -> Matrix #foreign raylib;
+
+// Get float array of matrix data
+MatrixToFloatV :: (mat: Matrix) -> float16 #foreign raylib;
+
+// Add two quaternions
+QuaternionAdd :: (q1: Quaternion, q2: Quaternion) -> Quaternion #foreign raylib;
+
+// Add quaternion and float value
+QuaternionAddValue :: (q: Quaternion, add: float) -> Quaternion #foreign raylib;
+
+// Subtract two quaternions
+QuaternionSubtract :: (q1: Quaternion, q2: Quaternion) -> Quaternion #foreign raylib;
+
+// Subtract quaternion and float value
+QuaternionSubtractValue :: (q: Quaternion, sub: float) -> Quaternion #foreign raylib;
+
+// Get identity quaternion
+QuaternionIdentity :: () -> Quaternion #foreign raylib;
+
+// Computes the length of a quaternion
+QuaternionLength :: (q: Quaternion) -> float #foreign raylib;
+
+// Normalize provided quaternion
+QuaternionNormalize :: (q: Quaternion) -> Quaternion #foreign raylib;
+
+// Invert provided quaternion
+QuaternionInvert :: (q: Quaternion) -> Quaternion #foreign raylib;
+
+// Calculate two quaternion multiplication
+QuaternionMultiply :: (q1: Quaternion, q2: Quaternion) -> Quaternion #foreign raylib;
+
+// Scale quaternion by float value
+QuaternionScale :: (q: Quaternion, mul: float) -> Quaternion #foreign raylib;
+
+// Divide two quaternions
+QuaternionDivide :: (q1: Quaternion, q2: Quaternion) -> Quaternion #foreign raylib;
+
+// Calculate linear interpolation between two quaternions
+QuaternionLerp :: (q1: Quaternion, q2: Quaternion, amount: float) -> Quaternion #foreign raylib;
+
+// Calculate slerp-optimized interpolation between two quaternions
+QuaternionNlerp :: (q1: Quaternion, q2: Quaternion, amount: float) -> Quaternion #foreign raylib;
+
+// Calculates spherical linear interpolation between two quaternions
+QuaternionSlerp :: (q1: Quaternion, q2: Quaternion, amount: float) -> Quaternion #foreign raylib;
+
+// Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+// as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+QuaternionCubicHermiteSpline :: (q1: Quaternion, outTangent1: Quaternion, q2: Quaternion, inTangent2: Quaternion, t: float) -> Quaternion #foreign raylib;
+
+// Calculate quaternion based on the rotation from one vector to another
+QuaternionFromVector3ToVector3 :: (from: Vector3, to: Vector3) -> Quaternion #foreign raylib;
+
+// Get a quaternion for a given rotation matrix
+QuaternionFromMatrix :: (mat: Matrix) -> Quaternion #foreign raylib;
+
+// Get a matrix for a given quaternion
+QuaternionToMatrix :: (q: Quaternion) -> Matrix #foreign raylib;
+
+// Get rotation quaternion for an angle and axis
+// NOTE: Angle must be provided in radians
+QuaternionFromAxisAngle :: (axis: Vector3, angle: float) -> Quaternion #foreign raylib;
+
+// Get the rotation angle and axis for a given quaternion
+QuaternionToAxisAngle :: (q: Quaternion, outAxis: *Vector3, outAngle: *float) -> void #foreign raylib;
+
+// Get the quaternion equivalent to Euler angles
+// NOTE: Rotation order is ZYX
+QuaternionFromEuler :: (pitch: float, yaw: float, roll: float) -> Quaternion #foreign raylib;
+
+// Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
+// NOTE: Angles are returned in a Vector3 struct in radians
+QuaternionToEuler :: (q: Quaternion) -> Vector3 #foreign raylib;
+
+// Transform a quaternion given a transformation matrix
+QuaternionTransform :: (q: Quaternion, mat: Matrix) -> Quaternion #foreign raylib;
+
+// Check whether two given quaternions are almost equal
+QuaternionEquals :: (p: Quaternion, q: Quaternion) -> s32 #foreign raylib;
+
+// Decompose a transformation matrix into its rotational, translational and scaling components
+MatrixDecompose :: (mat: Matrix, translation: *Vector3, rotation: *Quaternion, scale: *Vector3) -> void #foreign raylib;
+
 // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
 VertexBuffer :: struct {
     elementCount: s32; // Number of elements in the buffer (QUADS)
@@ -2599,6 +3062,20 @@ LoadDrawQuad :: () -> void #foreign raylib "rlLoadDrawQuad";
         assert(((cast(*void)(*instance.events)) - cast(*void)(*instance)) == 8, "AutomationEventList.events has unexpected offset % instead of 8", ((cast(*void)(*instance.events)) - cast(*void)(*instance)));
         assert(size_of(type_of(AutomationEventList.events)) == 8, "AutomationEventList.events has unexpected size % instead of 8", size_of(type_of(AutomationEventList.events)));
         assert(size_of(AutomationEventList) == 16, "AutomationEventList has size % instead of 16", size_of(AutomationEventList));
+    }
+
+    {
+        instance: float3;
+        assert(((cast(*void)(*instance.v)) - cast(*void)(*instance)) == 0, "float3.v has unexpected offset % instead of 0", ((cast(*void)(*instance.v)) - cast(*void)(*instance)));
+        assert(size_of(type_of(float3.v)) == 12, "float3.v has unexpected size % instead of 12", size_of(type_of(float3.v)));
+        assert(size_of(float3) == 12, "float3 has size % instead of 12", size_of(float3));
+    }
+
+    {
+        instance: float16;
+        assert(((cast(*void)(*instance.v)) - cast(*void)(*instance)) == 0, "float16.v has unexpected offset % instead of 0", ((cast(*void)(*instance.v)) - cast(*void)(*instance)));
+        assert(size_of(type_of(float16.v)) == 64, "float16.v has unexpected size % instead of 64", size_of(type_of(float16.v)));
+        assert(size_of(float16) == 64, "float16 has size % instead of 64", size_of(float16));
     }
 
     {
