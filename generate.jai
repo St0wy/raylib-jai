@@ -100,18 +100,22 @@ generate_bindings :: (args: [] string) -> bool
             // Needed because clang doesn't have math.h so we want it to use our local math.h.
             could_patch := patch_raymath();
             assert(could_patch);
+            array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
+            // raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
             array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
+            array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
+            array_add(*extra_clang_arguments, "-Wno-microsoft-include");
         } else {
             assert(false);
             // Hopefully this will work on other platforms...
+            array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
             array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
+            array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
         }
 
         array_add(*libnames, "raylib");
         array_add(*include_paths, RAYLIB_PATH);
         array_add(*include_paths, glfw_include);
-        array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
-        array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
         array_add(
             *extra_clang_arguments, 
             "-c",
@@ -122,7 +126,6 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RAUDIO",
             "-DPLATFORM_DESKTOP_GLFW",
             "-DGRAPHICS_API_OPENGL_43",
-            "-Wno-microsoft-include",
         );
         array_add(*strip_prefixes, "rl");
 
