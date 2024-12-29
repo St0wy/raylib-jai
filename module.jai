@@ -121,8 +121,6 @@ TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_
     gdi32 :: #system_library,link_always "gdi32";
     shell32 :: #system_library,link_always "shell32";
     winmm :: #system_library,link_always "winmm";
-    // opengl32 :: #system_library,link_always "opengl32";
-    // shcore :: #system_library,link_always "shcore";
 
     raylib :: #library,no_dll "windows/raylib";
     
