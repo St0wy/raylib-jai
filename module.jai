@@ -112,15 +112,17 @@ Camera3D :: struct {
     projection: CameraProjection; // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
+TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_call;
+
 #scope_module
 
 #if OS == .WINDOWS {
-    winmm :: #system_library,link_always "winmm";
     user32 :: #system_library,link_always "user32";
-    opengl32 :: #system_library,link_always "opengl32";
     gdi32 :: #system_library,link_always "gdi32";
     shell32 :: #system_library,link_always "shell32";
-    shcore :: #system_library,link_always "shcore";
+    winmm :: #system_library,link_always "winmm";
+    // opengl32 :: #system_library,link_always "opengl32";
+    // shcore :: #system_library,link_always "shcore";
 
     raylib :: #library,no_dll "windows/raylib";
     

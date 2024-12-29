@@ -12,6 +12,7 @@ DECLARATIONS_TO_OMIT :: string.[
     "PI",
     "Camera3D",
     "GetGamepadButtonPressed",
+    "TraceLogCallback",
 ];
 
 // These are already defined in an non-rl-prefixed version, they come from rlgl
@@ -52,36 +53,35 @@ generate_bindings :: (args: [] string) -> bool
     compile := array_find(args, "-compile");
     compile_debug := array_find(args, "-debug");
 
-    if compile {
-        raylib_source_files: [..] string;
-        array_add(*raylib_source_files,  tprint("%/src/rcore.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/utils.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/rshapes.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/rtextures.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/rtext.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/rmodels.c", RAYLIB_PATH));
-        array_add(*raylib_source_files,  tprint("%/src/raudio.c", RAYLIB_PATH));
+    glfw_include := tprint("%/src/external/glfw/include", RAYLIB_PATH);
 
-        success := true;
+    if compile {
+        if !check_has_cmake() {
+            write_string("Building raylib requires CMake but it seems like it is not installed on your system.\n");
+            write_string("Other building methods could be added to this library (such as Zig, or Makefiles on Unix), feel free to raise an issue or create a pull request.\n");
+            return false;
+        }
+
+        File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
+
+        build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
+
+        config_command := Process.break_command_into_strings(tprint("cmake -DBUILD_EXAMPLES=OFF -DOPENGL_VERSION=4.3 -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type));
+        result, out, error := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+        if result.exit_code != 0 {
+            print("CMake configuration failed with exit code : %", result.exit_code);
+            return false;
+        }
+
+        build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
+        result, out, error = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+        if result.exit_code != 0 {
+            print("CMake build failed with exit code : %", result.exit_code);
+            return false;
+        }
 
         #if OS == .WINDOWS {
-            File.make_directory_if_it_does_not_exist("windows");
-
-            success &&= BuildCpp.build_cpp_static_lib(
-                "windows/raylib", 
-                ..raylib_source_files, 
-                extra = .[
-                    "/w",
-                    "/DSUPPORT_MODULE_RSHAPES", 
-                    "/DSUPPORT_MODULE_RTEXTURES",
-                    "/DSUPPORT_MODULE_RTEXT",
-                    "/DSUPPORT_MODULE_RMODELS",
-                    "/DSUPPORT_MODULE_RAUDIO",
-                    "/D_CRT_SECURE_NO_WARNINGS",
-                    "/DPLATFORM_DESKTOP_RGFW",
-                    "/DGRAPHICS_API_OPENGL_43",
-                ]
-            );
+            FileUtils.copy_file(tprint("%/build/raylib/Release/raylib.lib", RAYLIB_PATH), "windows/raylib.lib");
         } else {
             assert(false);
         }
@@ -101,6 +101,7 @@ generate_bindings :: (args: [] string) -> bool
 
         array_add(*libnames, "raylib");
         array_add(*include_paths, RAYLIB_PATH);
+        array_add(*include_paths, glfw_include);
         array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
         // Can't be compiled on windows because of missing math.h ? Leaving it out for now since Jai has the functions we need
         // array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
@@ -113,12 +114,12 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RTEXT",
             "-DSUPPORT_MODULE_RMODELS",
             "-DSUPPORT_MODULE_RAUDIO",
-            "-DPLATFORM_DESKTOP_RGFW",
+            "-DPLATFORM_DESKTOP_GLFW",
             "-DGRAPHICS_API_OPENGL_43",
         );
         array_add(*strip_prefixes, "rl");
 
-        // This is because we want to be able to add declarations in module.jai that bind to stuff in raylib
+        // This is because we want to be able to add function declarations in module.jai that are bound to functions in raylib.lib
         generate_library_declarations = false;
 
         visitor   = raylib_visitor;
@@ -164,6 +165,12 @@ raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declara
     return .RECURSE;
 }
 
+check_has_cmake :: () -> bool {
+    command := Process.break_command_into_strings("cmake --version");
+    result := Process.run_command(..command);
+    return result.exit_code == 0;
+}
+
 using Basic :: #import "Basic";
 Generator :: #import "Bindings_Generator";
 Compiler :: #import "Compiler";
@@ -171,3 +178,5 @@ String :: #import "String";
 BuildCpp :: #import "BuildCpp";
 File :: #import "File";
 WindowsResources :: #import "Windows_Resources";
+Process :: #import "Process";
+FileUtils :: #import "File_Utilities";

@@ -11,7 +11,7 @@ SUPPORT_MODULE_RTEXTURES :: 1;
 SUPPORT_MODULE_RTEXT :: 1;
 SUPPORT_MODULE_RMODELS :: 1;
 SUPPORT_MODULE_RAUDIO :: 1;
-PLATFORM_DESKTOP_RGFW :: 1;
+PLATFORM_DESKTOP_GLFW :: 1;
 GRAPHICS_API_OPENGL_43 :: 1;
 RAYLIB_VERSION_MAJOR :: 5;
 RAYLIB_VERSION_MINOR :: 5;
@@ -1132,9 +1132,6 @@ NPatchLayout :: enum s32 {
     NPATCH_THREE_PATCH_HORIZONTAL :: THREE_PATCH_HORIZONTAL;
 }
 
-// Callbacks to hook some internal functions
-// WARNING: These callbacks are intended for advanced users
-TraceLogCallback :: *void /* function type contained C va_list argument */;
 LoadFileDataCallback :: #type (fileName: *u8, dataSize: *s32) -> *u8 #c_call;
 SaveFileDataCallback :: #type (fileName: *u8, data: *void, dataSize: s32) -> bool #c_call;
 LoadFileTextCallback :: #type (fileName: *u8) -> *u8 #c_call;
@@ -1366,6 +1363,7 @@ IsGamepadButtonUp :: (gamepad: s32, button: s32) -> bool #foreign raylib;
 GetGamepadAxisCount :: (gamepad: s32) -> s32 #foreign raylib;
 GetGamepadAxisMovement :: (gamepad: s32, axis: s32) -> float #foreign raylib;
 SetGamepadMappings :: (mappings: *u8) -> s32 #foreign raylib;
+SetGamepadVibration :: (gamepad: s32, leftMotor: float, rightMotor: float, duration: float) -> void #foreign raylib;
 
 // Input-related functions: mouse
 IsMouseButtonPressed :: (button: s32) -> bool #foreign raylib;
