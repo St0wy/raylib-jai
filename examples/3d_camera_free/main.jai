@@ -23,10 +23,7 @@ main :: () {
 
     Raylib.SetTargetFPS(60);
 
-    frame_count := 0;
-
     while !Raylib.WindowShouldClose() {
-        print("Running frame %\n", frame_count);
         Raylib.UpdateCamera(*camera, Raylib.CameraMode.FREE);
 
         if Raylib.IsKeyPressed(.Z) then camera.target = Raylib.Vector3.{0, 0, 0};
@@ -55,7 +52,5 @@ main :: () {
             Raylib.DrawText("- Mouse Wheel Pressed to Pan", 40, 60, 10, Raylib.DARKGRAY);
             Raylib.DrawText("- Z to zoom to (0, 0, 0)", 40, 80, 10, Raylib.DARKGRAY);
         }
-
-        frame_count += 1;
     }
 }
