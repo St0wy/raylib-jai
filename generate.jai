@@ -94,6 +94,9 @@ generate_bindings :: (args: [] string) -> bool
     {
         using opts;
 
+        array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
+        array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
+
         #if OS == .WINDOWS {
             array_add(*libpaths, "windows");
             output_filename = "windows.jai";
@@ -102,20 +105,16 @@ generate_bindings :: (args: [] string) -> bool
             // Needed because clang doesn't have math.h so we want it to use our local math.h.
             could_patch := patch_raymath();
             assert(could_patch);
-            array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
+            
             // raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
             array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
-            array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
             array_add(*extra_clang_arguments, "-Wno-microsoft-include");
         } else {
-            // Hopefully this will work on other platforms...
             array_add(*libpaths, "linux");
             output_filename = "linux.jai";
 
-            array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
             // no need to patch raymath.h as we import the system math.h in module.jai
             array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
-            array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
         }
 
         array_add(*libnames, "raylib");
