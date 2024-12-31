@@ -207,6 +207,3 @@ File :: #import "File";
 Process :: #import "Process";
 FileUtils :: #import "File_Utilities";
 
-#if OS == .WINDOWS {
-    WindowsResources :: #import "Windows_Resources";
-}
