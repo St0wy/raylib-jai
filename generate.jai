@@ -82,6 +82,8 @@ generate_bindings :: (args: [] string) -> bool
 
         #if OS == .WINDOWS {
             FileUtils.copy_file(tprint("%/build/raylib/Release/raylib.lib", RAYLIB_PATH), "windows/raylib.lib");
+        } else #if OS == .LINUX {
+            FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
         } else {
             assert(false);
         }
@@ -106,10 +108,19 @@ generate_bindings :: (args: [] string) -> bool
             array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
             array_add(*extra_clang_arguments, "-Wno-microsoft-include");
         } else {
-            assert(false);
             // Hopefully this will work on other platforms...
+            array_add(*libpaths, "linux");
+            output_filename = "linux.jai";
+
+            // This will replace `#include <math.h>` with `#include "math.h"` in raymath.h and place it in raymath_pachted.h
+            // Needed because clang doesn't have math.h so we want it to use our local math.h.
+            could_patch := patch_raymath();
+            assert(could_patch);
+
             array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
-            array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
+            // raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
+            array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
+            //array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
             array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
         }
 
@@ -200,6 +211,9 @@ Compiler :: #import "Compiler";
 String :: #import "String";
 BuildCpp :: #import "BuildCpp";
 File :: #import "File";
-WindowsResources :: #import "Windows_Resources";
 Process :: #import "Process";
 FileUtils :: #import "File_Utilities";
+
+#if OS == .WINDOWS {
+    WindowsResources :: #import "Windows_Resources";
+}

@@ -123,8 +123,13 @@ TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_
     winmm :: #system_library,link_always "winmm";
 
     raylib :: #library,no_dll "windows/raylib";
-    
+
     #load "windows.jai";
+} else #if OS == .LINUX {
+    math :: #system_library,link_always "m";
+    raylib :: #library,no_dll "linux/raylib";
+
+    #load "linux.jai";
 } else {
     assert(false);
 }
