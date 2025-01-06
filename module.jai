@@ -130,6 +130,11 @@ TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_
     raylib :: #library,no_dll "linux/raylib";
 
     #load "linux.jai";
+} else #if OS == .MACOS {
+    // math :: #system_library,link_always "m";
+    raylib :: #library,no_dll "macos/raylib";
+
+    #load "macos.jai";
 } else {
     assert(false);
 }

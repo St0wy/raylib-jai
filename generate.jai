@@ -62,11 +62,16 @@ generate_bindings :: (args: [] string) -> bool
             return false;
         }
 
-        File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
+        could_make_dir := File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
+        assert(could_make_dir);
 
         build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
 
         config_command := Process.break_command_into_strings(tprint("cmake -DBUILD_EXAMPLES=OFF -DOPENGL_VERSION=4.3 -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type));
+        #if OS == .MACOS {
+            array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0.0");
+            array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64");
+        }
         result, out, error := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
         if result.exit_code != 0 {
             print("CMake configuration failed with exit code : %", result.exit_code);
@@ -81,9 +86,23 @@ generate_bindings :: (args: [] string) -> bool
         }
 
         #if OS == .WINDOWS {
-            FileUtils.copy_file(tprint("%/build/raylib/Release/raylib.lib", RAYLIB_PATH), "windows/raylib.lib");
+            could_make_lib_dir := File.make_directory_if_it_does_not_exist("windows");
+            assert(could_make_lib_dir);
+
+            could_copy := FileUtils.copy_file(tprint("%/build/raylib/Release/raylib.lib", RAYLIB_PATH), "windows/raylib.lib");
+            assert(could_copy);
         } else #if OS == .LINUX {
-            FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
+            could_make_lib_dir := File.make_directory_if_it_does_not_exist("linux");
+            assert(could_make_lib_dir);
+
+            could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
+            assert(could_copy);
+        } else #if OS == .MACOS {
+            could_make_lib_dir := File.make_directory_if_it_does_not_exist("macos");
+            assert(could_make_lib_dir);
+
+            could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib.a");
+            assert(could_copy);
         } else {
             assert(false);
         }
@@ -109,12 +128,20 @@ generate_bindings :: (args: [] string) -> bool
             // raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
             array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
             array_add(*extra_clang_arguments, "-Wno-microsoft-include");
-        } else {
+        } else #if OS == .LINUX {
             array_add(*libpaths, "linux");
             output_filename = "linux.jai";
 
             // no need to patch raymath.h as we import the system math.h in module.jai
             array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
+        } else #if OS == .MACOS {
+            array_add(*libpaths, "macos");
+            output_filename = "macos.jai";
+
+            // no need to patch raymath.h as we import the system math.h in module.jai
+            array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
+        } else {
+            assert(false);
         }
 
         array_add(*libnames, "raylib");
