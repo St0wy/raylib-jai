@@ -131,7 +131,12 @@ TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_
 
     #load "linux.jai";
 } else #if OS == .MACOS {
-    // math :: #system_library,link_always "m";
+    #system_library,link_always "Cocoa";
+    #system_library,link_always "OpenGL";
+    #system_library,link_always "CoreGraphics";
+    #system_library,link_always "AppKit";
+    #system_library,link_always "IOKit";
+
     raylib :: #library,no_dll "macos/raylib";
 
     #load "macos.jai";

@@ -13,11 +13,9 @@ DECLARATIONS_TO_OMIT :: string.[
     "Camera3D",
     "GetGamepadButtonPressed",
     "TraceLogCallback",
-];
 
-// These are already defined in an non-rl-prefixed version, they come from rlgl
-// It is necessary to omit them otherwise the bindings will generate two TraceLogLevel for example
-DUPLICATE_DECLARATIONS :: string.[
+    // These are already defined in an non-rl-prefixed version, they come from rlgl
+    // It is necessary to omit them otherwise the bindings will generate two TraceLogLevel for example
     "rlTraceLogLevel",
     "rlPixelFormat",
     "rlTextureFilter",
@@ -62,24 +60,30 @@ generate_bindings :: (args: [] string) -> bool
             return false;
         }
 
+        could_delete_build_dir := File.delete_directory(tprint("%/build", RAYLIB_PATH));
+        assert(could_delete_build_dir);
         could_make_dir := File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
         assert(could_make_dir);
 
         build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
 
-        config_command := Process.break_command_into_strings(tprint("cmake -DBUILD_EXAMPLES=OFF -DOPENGL_VERSION=4.3 -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type));
+        config_command := Process.break_command_into_strings(tprint("cmake -DBUILD_EXAMPLES=OFF -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type));
+
         #if OS == .MACOS {
             array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0.0");
             array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64");
+        } else {
+            array_add(*config_command, "-DOPENGL_VERSION=4.3");
         }
-        result, out, error := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+
+        result := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
         if result.exit_code != 0 {
             print("CMake configuration failed with exit code : %", result.exit_code);
             return false;
         }
 
         build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
-        result, out, error = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
         if result.exit_code != 0 {
             print("CMake build failed with exit code : %", result.exit_code);
             return false;
@@ -156,8 +160,13 @@ generate_bindings :: (args: [] string) -> bool
             "-DSUPPORT_MODULE_RMODELS",
             "-DSUPPORT_MODULE_RAUDIO",
             "-DPLATFORM_DESKTOP_GLFW",
-            "-DGRAPHICS_API_OPENGL_43",
         );
+        #if OS == .MACOS {
+            array_add(*extra_clang_arguments, "-DGRAPHICS_API_OPENGL_33");
+        } else {
+            array_add(*extra_clang_arguments, "-DGRAPHICS_API_OPENGL_43");
+        }
+
         array_add(*strip_prefixes, "rl");
 
         // This is because we want to be able to add function declarations in module.jai that are bound to functions in raylib.lib
@@ -195,11 +204,6 @@ raylib_visitor :: (decl: *Generator.Declaration, parent_decl: *Generator.Declara
                         en.type = context.generator.type_def_u64;
                 }
             }
-        }
-
-        if array_find(DUPLICATE_DECLARATIONS, decl.name) {
-            decl.decl_flags |= .OMIT_FROM_OUTPUT;
-            return .STOP;
         }
     }
 

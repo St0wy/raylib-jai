@@ -2,3 +2,5 @@
 *.pdb
 *.lib
 *.rdi
+*.dSYM
+main

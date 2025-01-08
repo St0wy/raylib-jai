@@ -8,7 +8,7 @@ main :: () {
     WINDOW_HEIGHT :: 768;
 
 	Raylib.InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "raylib [core] example - basic window");
-	Raylib.SetTargetFPS(60);
+	Raylib.SetTargetFPS(Raylib.GetMonitorRefreshRate(0));
 
 	while !Raylib.WindowShouldClose() {
 		Raylib.BeginDrawing();

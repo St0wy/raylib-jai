@@ -21,7 +21,7 @@ main :: () {
 
     Raylib.DisableCursor();
 
-    Raylib.SetTargetFPS(60);
+    Raylib.SetTargetFPS(Raylib.GetMonitorRefreshRate(0));
 
     while !Raylib.WindowShouldClose() {
         Raylib.UpdateCamera(*camera, Raylib.CameraMode.FREE);
