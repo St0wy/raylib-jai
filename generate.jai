@@ -67,26 +67,65 @@ generate_bindings :: (args: [] string) -> bool
 
         build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
 
-        config_command := Process.break_command_into_strings(tprint("cmake -DBUILD_EXAMPLES=OFF -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type));
+		config_command_string := tprint("cmake -DBUILD_EXAMPLES=OFF -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type);
+
 
         #if OS == .MACOS {
+        	could_make_lib_dir := File.make_directory_if_it_does_not_exist("macos");
+            assert(could_make_lib_dir);
+
+        	// Build arm64
+        	config_command := Process.break_command_into_strings(config_command_string);
             array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0.0");
-            array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64");
+            array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=arm64");
+
+            result := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake configuration failed with exit code : %", result.exit_code);
+	            return false;
+	        }
+
+	        build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
+	        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake build failed with exit code : %", result.exit_code);
+	            return false;
+	        }
+
+	        could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib_arm64.a");
+            assert(could_copy);
+
+	        could_delete_build_dir = File.delete_directory(tprint("%/build", RAYLIB_PATH));
+        	assert(could_delete_build_dir);
+
+        	// Build x86
+        	config_command = Process.break_command_into_strings(config_command_string);
+        	array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.13.0");
+            array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=x86_64");
+
+            result = Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake configuration failed with exit code : %", result.exit_code);
+	            return false;
+	        }
+
+	        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake build failed with exit code : %", result.exit_code);
+	            return false;
+	        }
+
+	        could_copy = FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib_x86.a");
+            assert(could_copy);
+
+            // Make universal binary
+            result = Process.run_command("lipo", "-create", "macos/raylib_x86.a", "macos/raylib_arm64.a", "-output", "macos/raylib.a");
+            assert(result.exit_code == 0);
+            File.file_delete("macos/raylib_x86.a");
+            File.file_delete("macos/raylib_arm64.a");
         } else {
+        	config_command := Process.break_command_into_strings(config_command_string);
             array_add(*config_command, "-DOPENGL_VERSION=4.3");
-        }
-
-        result := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
-        if result.exit_code != 0 {
-            print("CMake configuration failed with exit code : %", result.exit_code);
-            return false;
-        }
-
-        build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
-        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
-        if result.exit_code != 0 {
-            print("CMake build failed with exit code : %", result.exit_code);
-            return false;
         }
 
         #if OS == .WINDOWS {
@@ -102,11 +141,9 @@ generate_bindings :: (args: [] string) -> bool
             could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
             assert(could_copy);
         } else #if OS == .MACOS {
-            could_make_lib_dir := File.make_directory_if_it_does_not_exist("macos");
-            assert(could_make_lib_dir);
 
-            could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib.a");
-            assert(could_copy);
+
+
         } else {
             assert(false);
         }
@@ -128,7 +165,7 @@ generate_bindings :: (args: [] string) -> bool
             // Needed because clang doesn't have math.h so we want it to use our local math.h.
             could_patch := patch_raymath();
             assert(could_patch);
-            
+
             // raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
             array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
             array_add(*extra_clang_arguments, "-Wno-microsoft-include");
@@ -152,7 +189,7 @@ generate_bindings :: (args: [] string) -> bool
         array_add(*include_paths, RAYLIB_PATH);
         array_add(*include_paths, glfw_include);
         array_add(
-            *extra_clang_arguments, 
+            *extra_clang_arguments,
             "-c",
             "-DSUPPORT_MODULE_RSHAPES",
             "-DSUPPORT_MODULE_RTEXTURES",
