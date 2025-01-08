@@ -68,10 +68,10 @@ SetShaderValueV :: (shader: Shader, locIndex: s32, value: *void, uniformType: Sh
     return SetShaderValue(shader, locIndex, value, cast(s32) uniformType, count);
 }
 
-IsGamepadButtonPressed  :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonPressed(gamepad, cast(s32) button); }
-IsGamepadButtonDown     :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonDown(gamepad, cast(s32) button); }
+IsGamepadButtonPressed :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonPressed(gamepad, cast(s32) button); }
+IsGamepadButtonDown :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonDown(gamepad, cast(s32) button); }
 IsGamepadButtonReleased :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonReleased(gamepad, cast(s32) button); }
-IsGamepadButtonUp       :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonUp(gamepad, cast(s32) button); }
+IsGamepadButtonUp :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonUp(gamepad, cast(s32) button); }
 
 GetGamepadAxisMovement :: (gamepad: s32, axis: GamepadAxis) -> float { return GetGamepadAxisMovement(gamepad, cast(s32) axis); }
 

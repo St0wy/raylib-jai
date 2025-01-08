@@ -3,4 +3,8 @@
 *.lib
 *.rdi
 *.dSYM
-main
+3d_camera_free
+3d_camera_mode
+basic_screen_manager
+basic_window
+input_gamepad

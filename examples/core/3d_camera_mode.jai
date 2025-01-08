@@ -1,6 +1,6 @@
 using Basic :: #import "Basic";
 
-Raylib :: #import,file "../../../module.jai";
+Raylib :: #import,file "../../module.jai";
 
 main :: () {
 	SCREEN_WIDTH :: 800;
