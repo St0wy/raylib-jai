@@ -60,8 +60,10 @@ generate_bindings :: (args: [] string) -> bool
             return false;
         }
 
-        could_delete_build_dir := File.delete_directory(tprint("%/build", RAYLIB_PATH));
-        assert(could_delete_build_dir);
+        if FileUtils.is_directory(tprint("%/build", RAYLIB_PATH)) {
+            could_delete_build_dir := File.delete_directory(tprint("%/build", RAYLIB_PATH));
+            assert(could_delete_build_dir);
+        }
         could_make_dir := File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
         assert(could_make_dir);
 
@@ -123,6 +125,22 @@ generate_bindings :: (args: [] string) -> bool
             assert(result.exit_code == 0);
             File.file_delete("macos/raylib_x86.a");
             File.file_delete("macos/raylib_arm64.a");
+        } else #if OS == .WINDOWS {
+        	config_command := Process.break_command_into_strings(config_command_string);
+            array_add(*config_command, "-DOPENGL_VERSION=4.3");
+
+            result := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake configuration failed with exit code : %", result.exit_code);
+	            return false;
+	        }
+
+	        build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
+	        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        if result.exit_code != 0 {
+	            print("CMake build failed with exit code : %", result.exit_code);
+	            return false;
+	        }
         } else {
         	config_command := Process.break_command_into_strings(config_command_string);
             array_add(*config_command, "-DOPENGL_VERSION=4.3");
@@ -274,4 +292,3 @@ BuildCpp :: #import "BuildCpp";
 File :: #import "File";
 Process :: #import "Process";
 FileUtils :: #import "File_Utilities";
-

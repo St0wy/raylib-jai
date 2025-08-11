@@ -2646,486 +2646,779 @@ MatrixDecompose :: (mat: Matrix, translation: *Vector3, rotation: *Quaternion, s
 
 #run {
     {
-        instance: Color;
-        assert(((cast(*void)(*instance.r)) - cast(*void)(*instance)) == 0, "Color.r has unexpected offset % instead of 0", ((cast(*void)(*instance.r)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Color.r)) == 1, "Color.r has unexpected size % instead of 1", size_of(type_of(Color.r)));
-        assert(((cast(*void)(*instance.g)) - cast(*void)(*instance)) == 1, "Color.g has unexpected offset % instead of 1", ((cast(*void)(*instance.g)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Color.g)) == 1, "Color.g has unexpected size % instead of 1", size_of(type_of(Color.g)));
-        assert(((cast(*void)(*instance.b)) - cast(*void)(*instance)) == 2, "Color.b has unexpected offset % instead of 2", ((cast(*void)(*instance.b)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Color.b)) == 1, "Color.b has unexpected size % instead of 1", size_of(type_of(Color.b)));
-        assert(((cast(*void)(*instance.a)) - cast(*void)(*instance)) == 3, "Color.a has unexpected offset % instead of 3", ((cast(*void)(*instance.a)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Color.a)) == 1, "Color.a has unexpected size % instead of 1", size_of(type_of(Color.a)));
+        info := type_info(Color);
+        for info.members {
+            if it.name == {
+                case "r";
+                    assert(it.offset_in_bytes == 0, "Color.r has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "Color.r has unexpected size % instead of 1", it.type.runtime_size);
+                case "g";
+                    assert(it.offset_in_bytes == 1, "Color.g has unexpected offset % instead of 1", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "Color.g has unexpected size % instead of 1", it.type.runtime_size);
+                case "b";
+                    assert(it.offset_in_bytes == 2, "Color.b has unexpected offset % instead of 2", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "Color.b has unexpected size % instead of 1", it.type.runtime_size);
+                case "a";
+                    assert(it.offset_in_bytes == 3, "Color.a has unexpected offset % instead of 3", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "Color.a has unexpected size % instead of 1", it.type.runtime_size);
+            }
+        }
         assert(size_of(Color) == 4, "Color has size % instead of 4", size_of(Color));
     }
 
     {
-        instance: Rectangle;
-        assert(((cast(*void)(*instance.x)) - cast(*void)(*instance)) == 0, "Rectangle.x has unexpected offset % instead of 0", ((cast(*void)(*instance.x)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Rectangle.x)) == 4, "Rectangle.x has unexpected size % instead of 4", size_of(type_of(Rectangle.x)));
-        assert(((cast(*void)(*instance.y)) - cast(*void)(*instance)) == 4, "Rectangle.y has unexpected offset % instead of 4", ((cast(*void)(*instance.y)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Rectangle.y)) == 4, "Rectangle.y has unexpected size % instead of 4", size_of(type_of(Rectangle.y)));
-        assert(((cast(*void)(*instance.width)) - cast(*void)(*instance)) == 8, "Rectangle.width has unexpected offset % instead of 8", ((cast(*void)(*instance.width)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Rectangle.width)) == 4, "Rectangle.width has unexpected size % instead of 4", size_of(type_of(Rectangle.width)));
-        assert(((cast(*void)(*instance.height)) - cast(*void)(*instance)) == 12, "Rectangle.height has unexpected offset % instead of 12", ((cast(*void)(*instance.height)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Rectangle.height)) == 4, "Rectangle.height has unexpected size % instead of 4", size_of(type_of(Rectangle.height)));
+        info := type_info(Rectangle);
+        for info.members {
+            if it.name == {
+                case "x";
+                    assert(it.offset_in_bytes == 0, "Rectangle.x has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Rectangle.x has unexpected size % instead of 4", it.type.runtime_size);
+                case "y";
+                    assert(it.offset_in_bytes == 4, "Rectangle.y has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Rectangle.y has unexpected size % instead of 4", it.type.runtime_size);
+                case "width";
+                    assert(it.offset_in_bytes == 8, "Rectangle.width has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Rectangle.width has unexpected size % instead of 4", it.type.runtime_size);
+                case "height";
+                    assert(it.offset_in_bytes == 12, "Rectangle.height has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Rectangle.height has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(Rectangle) == 16, "Rectangle has size % instead of 16", size_of(Rectangle));
     }
 
     {
-        instance: Image;
-        assert(((cast(*void)(*instance.data)) - cast(*void)(*instance)) == 0, "Image.data has unexpected offset % instead of 0", ((cast(*void)(*instance.data)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Image.data)) == 8, "Image.data has unexpected size % instead of 8", size_of(type_of(Image.data)));
-        assert(((cast(*void)(*instance.width)) - cast(*void)(*instance)) == 8, "Image.width has unexpected offset % instead of 8", ((cast(*void)(*instance.width)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Image.width)) == 4, "Image.width has unexpected size % instead of 4", size_of(type_of(Image.width)));
-        assert(((cast(*void)(*instance.height)) - cast(*void)(*instance)) == 12, "Image.height has unexpected offset % instead of 12", ((cast(*void)(*instance.height)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Image.height)) == 4, "Image.height has unexpected size % instead of 4", size_of(type_of(Image.height)));
-        assert(((cast(*void)(*instance.mipmaps)) - cast(*void)(*instance)) == 16, "Image.mipmaps has unexpected offset % instead of 16", ((cast(*void)(*instance.mipmaps)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Image.mipmaps)) == 4, "Image.mipmaps has unexpected size % instead of 4", size_of(type_of(Image.mipmaps)));
-        assert(((cast(*void)(*instance.format)) - cast(*void)(*instance)) == 20, "Image.format has unexpected offset % instead of 20", ((cast(*void)(*instance.format)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Image.format)) == 4, "Image.format has unexpected size % instead of 4", size_of(type_of(Image.format)));
+        info := type_info(Image);
+        for info.members {
+            if it.name == {
+                case "data";
+                    assert(it.offset_in_bytes == 0, "Image.data has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Image.data has unexpected size % instead of 8", it.type.runtime_size);
+                case "width";
+                    assert(it.offset_in_bytes == 8, "Image.width has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Image.width has unexpected size % instead of 4", it.type.runtime_size);
+                case "height";
+                    assert(it.offset_in_bytes == 12, "Image.height has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Image.height has unexpected size % instead of 4", it.type.runtime_size);
+                case "mipmaps";
+                    assert(it.offset_in_bytes == 16, "Image.mipmaps has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Image.mipmaps has unexpected size % instead of 4", it.type.runtime_size);
+                case "format";
+                    assert(it.offset_in_bytes == 20, "Image.format has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Image.format has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(Image) == 24, "Image has size % instead of 24", size_of(Image));
     }
 
     {
-        instance: Texture;
-        assert(((cast(*void)(*instance.id)) - cast(*void)(*instance)) == 0, "Texture.id has unexpected offset % instead of 0", ((cast(*void)(*instance.id)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Texture.id)) == 4, "Texture.id has unexpected size % instead of 4", size_of(type_of(Texture.id)));
-        assert(((cast(*void)(*instance.width)) - cast(*void)(*instance)) == 4, "Texture.width has unexpected offset % instead of 4", ((cast(*void)(*instance.width)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Texture.width)) == 4, "Texture.width has unexpected size % instead of 4", size_of(type_of(Texture.width)));
-        assert(((cast(*void)(*instance.height)) - cast(*void)(*instance)) == 8, "Texture.height has unexpected offset % instead of 8", ((cast(*void)(*instance.height)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Texture.height)) == 4, "Texture.height has unexpected size % instead of 4", size_of(type_of(Texture.height)));
-        assert(((cast(*void)(*instance.mipmaps)) - cast(*void)(*instance)) == 12, "Texture.mipmaps has unexpected offset % instead of 12", ((cast(*void)(*instance.mipmaps)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Texture.mipmaps)) == 4, "Texture.mipmaps has unexpected size % instead of 4", size_of(type_of(Texture.mipmaps)));
-        assert(((cast(*void)(*instance.format)) - cast(*void)(*instance)) == 16, "Texture.format has unexpected offset % instead of 16", ((cast(*void)(*instance.format)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Texture.format)) == 4, "Texture.format has unexpected size % instead of 4", size_of(type_of(Texture.format)));
+        info := type_info(Texture);
+        for info.members {
+            if it.name == {
+                case "id";
+                    assert(it.offset_in_bytes == 0, "Texture.id has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Texture.id has unexpected size % instead of 4", it.type.runtime_size);
+                case "width";
+                    assert(it.offset_in_bytes == 4, "Texture.width has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Texture.width has unexpected size % instead of 4", it.type.runtime_size);
+                case "height";
+                    assert(it.offset_in_bytes == 8, "Texture.height has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Texture.height has unexpected size % instead of 4", it.type.runtime_size);
+                case "mipmaps";
+                    assert(it.offset_in_bytes == 12, "Texture.mipmaps has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Texture.mipmaps has unexpected size % instead of 4", it.type.runtime_size);
+                case "format";
+                    assert(it.offset_in_bytes == 16, "Texture.format has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Texture.format has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(Texture) == 20, "Texture has size % instead of 20", size_of(Texture));
     }
 
     {
-        instance: RenderTexture;
-        assert(((cast(*void)(*instance.id)) - cast(*void)(*instance)) == 0, "RenderTexture.id has unexpected offset % instead of 0", ((cast(*void)(*instance.id)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderTexture.id)) == 4, "RenderTexture.id has unexpected size % instead of 4", size_of(type_of(RenderTexture.id)));
-        assert(((cast(*void)(*instance.texture)) - cast(*void)(*instance)) == 4, "RenderTexture.texture has unexpected offset % instead of 4", ((cast(*void)(*instance.texture)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderTexture.texture)) == 20, "RenderTexture.texture has unexpected size % instead of 20", size_of(type_of(RenderTexture.texture)));
-        assert(((cast(*void)(*instance.depth)) - cast(*void)(*instance)) == 24, "RenderTexture.depth has unexpected offset % instead of 24", ((cast(*void)(*instance.depth)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderTexture.depth)) == 20, "RenderTexture.depth has unexpected size % instead of 20", size_of(type_of(RenderTexture.depth)));
+        info := type_info(RenderTexture);
+        for info.members {
+            if it.name == {
+                case "id";
+                    assert(it.offset_in_bytes == 0, "RenderTexture.id has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RenderTexture.id has unexpected size % instead of 4", it.type.runtime_size);
+                case "texture";
+                    assert(it.offset_in_bytes == 4, "RenderTexture.texture has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 20, "RenderTexture.texture has unexpected size % instead of 20", it.type.runtime_size);
+                case "depth";
+                    assert(it.offset_in_bytes == 24, "RenderTexture.depth has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 20, "RenderTexture.depth has unexpected size % instead of 20", it.type.runtime_size);
+            }
+        }
         assert(size_of(RenderTexture) == 44, "RenderTexture has size % instead of 44", size_of(RenderTexture));
     }
 
     {
-        instance: NPatchInfo;
-        assert(((cast(*void)(*instance.source)) - cast(*void)(*instance)) == 0, "NPatchInfo.source has unexpected offset % instead of 0", ((cast(*void)(*instance.source)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.source)) == 16, "NPatchInfo.source has unexpected size % instead of 16", size_of(type_of(NPatchInfo.source)));
-        assert(((cast(*void)(*instance.left)) - cast(*void)(*instance)) == 16, "NPatchInfo.left has unexpected offset % instead of 16", ((cast(*void)(*instance.left)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.left)) == 4, "NPatchInfo.left has unexpected size % instead of 4", size_of(type_of(NPatchInfo.left)));
-        assert(((cast(*void)(*instance.top)) - cast(*void)(*instance)) == 20, "NPatchInfo.top has unexpected offset % instead of 20", ((cast(*void)(*instance.top)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.top)) == 4, "NPatchInfo.top has unexpected size % instead of 4", size_of(type_of(NPatchInfo.top)));
-        assert(((cast(*void)(*instance.right)) - cast(*void)(*instance)) == 24, "NPatchInfo.right has unexpected offset % instead of 24", ((cast(*void)(*instance.right)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.right)) == 4, "NPatchInfo.right has unexpected size % instead of 4", size_of(type_of(NPatchInfo.right)));
-        assert(((cast(*void)(*instance.bottom)) - cast(*void)(*instance)) == 28, "NPatchInfo.bottom has unexpected offset % instead of 28", ((cast(*void)(*instance.bottom)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.bottom)) == 4, "NPatchInfo.bottom has unexpected size % instead of 4", size_of(type_of(NPatchInfo.bottom)));
-        assert(((cast(*void)(*instance.layout)) - cast(*void)(*instance)) == 32, "NPatchInfo.layout has unexpected offset % instead of 32", ((cast(*void)(*instance.layout)) - cast(*void)(*instance)));
-        assert(size_of(type_of(NPatchInfo.layout)) == 4, "NPatchInfo.layout has unexpected size % instead of 4", size_of(type_of(NPatchInfo.layout)));
+        info := type_info(NPatchInfo);
+        for info.members {
+            if it.name == {
+                case "source";
+                    assert(it.offset_in_bytes == 0, "NPatchInfo.source has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "NPatchInfo.source has unexpected size % instead of 16", it.type.runtime_size);
+                case "left";
+                    assert(it.offset_in_bytes == 16, "NPatchInfo.left has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "NPatchInfo.left has unexpected size % instead of 4", it.type.runtime_size);
+                case "top";
+                    assert(it.offset_in_bytes == 20, "NPatchInfo.top has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "NPatchInfo.top has unexpected size % instead of 4", it.type.runtime_size);
+                case "right";
+                    assert(it.offset_in_bytes == 24, "NPatchInfo.right has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "NPatchInfo.right has unexpected size % instead of 4", it.type.runtime_size);
+                case "bottom";
+                    assert(it.offset_in_bytes == 28, "NPatchInfo.bottom has unexpected offset % instead of 28", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "NPatchInfo.bottom has unexpected size % instead of 4", it.type.runtime_size);
+                case "layout";
+                    assert(it.offset_in_bytes == 32, "NPatchInfo.layout has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "NPatchInfo.layout has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(NPatchInfo) == 36, "NPatchInfo has size % instead of 36", size_of(NPatchInfo));
     }
 
     {
-        instance: GlyphInfo;
-        assert(((cast(*void)(*instance.value)) - cast(*void)(*instance)) == 0, "GlyphInfo.value has unexpected offset % instead of 0", ((cast(*void)(*instance.value)) - cast(*void)(*instance)));
-        assert(size_of(type_of(GlyphInfo.value)) == 4, "GlyphInfo.value has unexpected size % instead of 4", size_of(type_of(GlyphInfo.value)));
-        assert(((cast(*void)(*instance.offsetX)) - cast(*void)(*instance)) == 4, "GlyphInfo.offsetX has unexpected offset % instead of 4", ((cast(*void)(*instance.offsetX)) - cast(*void)(*instance)));
-        assert(size_of(type_of(GlyphInfo.offsetX)) == 4, "GlyphInfo.offsetX has unexpected size % instead of 4", size_of(type_of(GlyphInfo.offsetX)));
-        assert(((cast(*void)(*instance.offsetY)) - cast(*void)(*instance)) == 8, "GlyphInfo.offsetY has unexpected offset % instead of 8", ((cast(*void)(*instance.offsetY)) - cast(*void)(*instance)));
-        assert(size_of(type_of(GlyphInfo.offsetY)) == 4, "GlyphInfo.offsetY has unexpected size % instead of 4", size_of(type_of(GlyphInfo.offsetY)));
-        assert(((cast(*void)(*instance.advanceX)) - cast(*void)(*instance)) == 12, "GlyphInfo.advanceX has unexpected offset % instead of 12", ((cast(*void)(*instance.advanceX)) - cast(*void)(*instance)));
-        assert(size_of(type_of(GlyphInfo.advanceX)) == 4, "GlyphInfo.advanceX has unexpected size % instead of 4", size_of(type_of(GlyphInfo.advanceX)));
-        assert(((cast(*void)(*instance.image)) - cast(*void)(*instance)) == 16, "GlyphInfo.image has unexpected offset % instead of 16", ((cast(*void)(*instance.image)) - cast(*void)(*instance)));
-        assert(size_of(type_of(GlyphInfo.image)) == 24, "GlyphInfo.image has unexpected size % instead of 24", size_of(type_of(GlyphInfo.image)));
+        info := type_info(GlyphInfo);
+        for info.members {
+            if it.name == {
+                case "value";
+                    assert(it.offset_in_bytes == 0, "GlyphInfo.value has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "GlyphInfo.value has unexpected size % instead of 4", it.type.runtime_size);
+                case "offsetX";
+                    assert(it.offset_in_bytes == 4, "GlyphInfo.offsetX has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "GlyphInfo.offsetX has unexpected size % instead of 4", it.type.runtime_size);
+                case "offsetY";
+                    assert(it.offset_in_bytes == 8, "GlyphInfo.offsetY has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "GlyphInfo.offsetY has unexpected size % instead of 4", it.type.runtime_size);
+                case "advanceX";
+                    assert(it.offset_in_bytes == 12, "GlyphInfo.advanceX has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "GlyphInfo.advanceX has unexpected size % instead of 4", it.type.runtime_size);
+                case "image";
+                    assert(it.offset_in_bytes == 16, "GlyphInfo.image has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 24, "GlyphInfo.image has unexpected size % instead of 24", it.type.runtime_size);
+            }
+        }
         assert(size_of(GlyphInfo) == 40, "GlyphInfo has size % instead of 40", size_of(GlyphInfo));
     }
 
     {
-        instance: Font;
-        assert(((cast(*void)(*instance.baseSize)) - cast(*void)(*instance)) == 0, "Font.baseSize has unexpected offset % instead of 0", ((cast(*void)(*instance.baseSize)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.baseSize)) == 4, "Font.baseSize has unexpected size % instead of 4", size_of(type_of(Font.baseSize)));
-        assert(((cast(*void)(*instance.glyphCount)) - cast(*void)(*instance)) == 4, "Font.glyphCount has unexpected offset % instead of 4", ((cast(*void)(*instance.glyphCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.glyphCount)) == 4, "Font.glyphCount has unexpected size % instead of 4", size_of(type_of(Font.glyphCount)));
-        assert(((cast(*void)(*instance.glyphPadding)) - cast(*void)(*instance)) == 8, "Font.glyphPadding has unexpected offset % instead of 8", ((cast(*void)(*instance.glyphPadding)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.glyphPadding)) == 4, "Font.glyphPadding has unexpected size % instead of 4", size_of(type_of(Font.glyphPadding)));
-        assert(((cast(*void)(*instance.texture)) - cast(*void)(*instance)) == 12, "Font.texture has unexpected offset % instead of 12", ((cast(*void)(*instance.texture)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.texture)) == 20, "Font.texture has unexpected size % instead of 20", size_of(type_of(Font.texture)));
-        assert(((cast(*void)(*instance.recs)) - cast(*void)(*instance)) == 32, "Font.recs has unexpected offset % instead of 32", ((cast(*void)(*instance.recs)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.recs)) == 8, "Font.recs has unexpected size % instead of 8", size_of(type_of(Font.recs)));
-        assert(((cast(*void)(*instance.glyphs)) - cast(*void)(*instance)) == 40, "Font.glyphs has unexpected offset % instead of 40", ((cast(*void)(*instance.glyphs)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Font.glyphs)) == 8, "Font.glyphs has unexpected size % instead of 8", size_of(type_of(Font.glyphs)));
+        info := type_info(Font);
+        for info.members {
+            if it.name == {
+                case "baseSize";
+                    assert(it.offset_in_bytes == 0, "Font.baseSize has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Font.baseSize has unexpected size % instead of 4", it.type.runtime_size);
+                case "glyphCount";
+                    assert(it.offset_in_bytes == 4, "Font.glyphCount has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Font.glyphCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "glyphPadding";
+                    assert(it.offset_in_bytes == 8, "Font.glyphPadding has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Font.glyphPadding has unexpected size % instead of 4", it.type.runtime_size);
+                case "texture";
+                    assert(it.offset_in_bytes == 12, "Font.texture has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 20, "Font.texture has unexpected size % instead of 20", it.type.runtime_size);
+                case "recs";
+                    assert(it.offset_in_bytes == 32, "Font.recs has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Font.recs has unexpected size % instead of 8", it.type.runtime_size);
+                case "glyphs";
+                    assert(it.offset_in_bytes == 40, "Font.glyphs has unexpected offset % instead of 40", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Font.glyphs has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Font) == 48, "Font has size % instead of 48", size_of(Font));
     }
 
     {
-        instance: Camera2D;
-        assert(((cast(*void)(*instance.offset)) - cast(*void)(*instance)) == 0, "Camera2D.offset has unexpected offset % instead of 0", ((cast(*void)(*instance.offset)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera2D.offset)) == 8, "Camera2D.offset has unexpected size % instead of 8", size_of(type_of(Camera2D.offset)));
-        assert(((cast(*void)(*instance.target)) - cast(*void)(*instance)) == 8, "Camera2D.target has unexpected offset % instead of 8", ((cast(*void)(*instance.target)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera2D.target)) == 8, "Camera2D.target has unexpected size % instead of 8", size_of(type_of(Camera2D.target)));
-        assert(((cast(*void)(*instance.rotation)) - cast(*void)(*instance)) == 16, "Camera2D.rotation has unexpected offset % instead of 16", ((cast(*void)(*instance.rotation)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera2D.rotation)) == 4, "Camera2D.rotation has unexpected size % instead of 4", size_of(type_of(Camera2D.rotation)));
-        assert(((cast(*void)(*instance.zoom)) - cast(*void)(*instance)) == 20, "Camera2D.zoom has unexpected offset % instead of 20", ((cast(*void)(*instance.zoom)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Camera2D.zoom)) == 4, "Camera2D.zoom has unexpected size % instead of 4", size_of(type_of(Camera2D.zoom)));
+        info := type_info(Camera2D);
+        for info.members {
+            if it.name == {
+                case "offset";
+                    assert(it.offset_in_bytes == 0, "Camera2D.offset has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Camera2D.offset has unexpected size % instead of 8", it.type.runtime_size);
+                case "target";
+                    assert(it.offset_in_bytes == 8, "Camera2D.target has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Camera2D.target has unexpected size % instead of 8", it.type.runtime_size);
+                case "rotation";
+                    assert(it.offset_in_bytes == 16, "Camera2D.rotation has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Camera2D.rotation has unexpected size % instead of 4", it.type.runtime_size);
+                case "zoom";
+                    assert(it.offset_in_bytes == 20, "Camera2D.zoom has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Camera2D.zoom has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(Camera2D) == 24, "Camera2D has size % instead of 24", size_of(Camera2D));
     }
 
     {
-        instance: Mesh;
-        assert(((cast(*void)(*instance.vertexCount)) - cast(*void)(*instance)) == 0, "Mesh.vertexCount has unexpected offset % instead of 0", ((cast(*void)(*instance.vertexCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.vertexCount)) == 4, "Mesh.vertexCount has unexpected size % instead of 4", size_of(type_of(Mesh.vertexCount)));
-        assert(((cast(*void)(*instance.triangleCount)) - cast(*void)(*instance)) == 4, "Mesh.triangleCount has unexpected offset % instead of 4", ((cast(*void)(*instance.triangleCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.triangleCount)) == 4, "Mesh.triangleCount has unexpected size % instead of 4", size_of(type_of(Mesh.triangleCount)));
-        assert(((cast(*void)(*instance.vertices)) - cast(*void)(*instance)) == 8, "Mesh.vertices has unexpected offset % instead of 8", ((cast(*void)(*instance.vertices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.vertices)) == 8, "Mesh.vertices has unexpected size % instead of 8", size_of(type_of(Mesh.vertices)));
-        assert(((cast(*void)(*instance.texcoords)) - cast(*void)(*instance)) == 16, "Mesh.texcoords has unexpected offset % instead of 16", ((cast(*void)(*instance.texcoords)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.texcoords)) == 8, "Mesh.texcoords has unexpected size % instead of 8", size_of(type_of(Mesh.texcoords)));
-        assert(((cast(*void)(*instance.texcoords2)) - cast(*void)(*instance)) == 24, "Mesh.texcoords2 has unexpected offset % instead of 24", ((cast(*void)(*instance.texcoords2)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.texcoords2)) == 8, "Mesh.texcoords2 has unexpected size % instead of 8", size_of(type_of(Mesh.texcoords2)));
-        assert(((cast(*void)(*instance.normals)) - cast(*void)(*instance)) == 32, "Mesh.normals has unexpected offset % instead of 32", ((cast(*void)(*instance.normals)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.normals)) == 8, "Mesh.normals has unexpected size % instead of 8", size_of(type_of(Mesh.normals)));
-        assert(((cast(*void)(*instance.tangents)) - cast(*void)(*instance)) == 40, "Mesh.tangents has unexpected offset % instead of 40", ((cast(*void)(*instance.tangents)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.tangents)) == 8, "Mesh.tangents has unexpected size % instead of 8", size_of(type_of(Mesh.tangents)));
-        assert(((cast(*void)(*instance.colors)) - cast(*void)(*instance)) == 48, "Mesh.colors has unexpected offset % instead of 48", ((cast(*void)(*instance.colors)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.colors)) == 8, "Mesh.colors has unexpected size % instead of 8", size_of(type_of(Mesh.colors)));
-        assert(((cast(*void)(*instance.indices)) - cast(*void)(*instance)) == 56, "Mesh.indices has unexpected offset % instead of 56", ((cast(*void)(*instance.indices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.indices)) == 8, "Mesh.indices has unexpected size % instead of 8", size_of(type_of(Mesh.indices)));
-        assert(((cast(*void)(*instance.animVertices)) - cast(*void)(*instance)) == 64, "Mesh.animVertices has unexpected offset % instead of 64", ((cast(*void)(*instance.animVertices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.animVertices)) == 8, "Mesh.animVertices has unexpected size % instead of 8", size_of(type_of(Mesh.animVertices)));
-        assert(((cast(*void)(*instance.animNormals)) - cast(*void)(*instance)) == 72, "Mesh.animNormals has unexpected offset % instead of 72", ((cast(*void)(*instance.animNormals)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.animNormals)) == 8, "Mesh.animNormals has unexpected size % instead of 8", size_of(type_of(Mesh.animNormals)));
-        assert(((cast(*void)(*instance.boneIds)) - cast(*void)(*instance)) == 80, "Mesh.boneIds has unexpected offset % instead of 80", ((cast(*void)(*instance.boneIds)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.boneIds)) == 8, "Mesh.boneIds has unexpected size % instead of 8", size_of(type_of(Mesh.boneIds)));
-        assert(((cast(*void)(*instance.boneWeights)) - cast(*void)(*instance)) == 88, "Mesh.boneWeights has unexpected offset % instead of 88", ((cast(*void)(*instance.boneWeights)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.boneWeights)) == 8, "Mesh.boneWeights has unexpected size % instead of 8", size_of(type_of(Mesh.boneWeights)));
-        assert(((cast(*void)(*instance.boneMatrices)) - cast(*void)(*instance)) == 96, "Mesh.boneMatrices has unexpected offset % instead of 96", ((cast(*void)(*instance.boneMatrices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.boneMatrices)) == 8, "Mesh.boneMatrices has unexpected size % instead of 8", size_of(type_of(Mesh.boneMatrices)));
-        assert(((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)) == 104, "Mesh.boneCount has unexpected offset % instead of 104", ((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.boneCount)) == 4, "Mesh.boneCount has unexpected size % instead of 4", size_of(type_of(Mesh.boneCount)));
-        assert(((cast(*void)(*instance.vaoId)) - cast(*void)(*instance)) == 108, "Mesh.vaoId has unexpected offset % instead of 108", ((cast(*void)(*instance.vaoId)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.vaoId)) == 4, "Mesh.vaoId has unexpected size % instead of 4", size_of(type_of(Mesh.vaoId)));
-        assert(((cast(*void)(*instance.vboId)) - cast(*void)(*instance)) == 112, "Mesh.vboId has unexpected offset % instead of 112", ((cast(*void)(*instance.vboId)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Mesh.vboId)) == 8, "Mesh.vboId has unexpected size % instead of 8", size_of(type_of(Mesh.vboId)));
+        info := type_info(Mesh);
+        for info.members {
+            if it.name == {
+                case "vertexCount";
+                    assert(it.offset_in_bytes == 0, "Mesh.vertexCount has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Mesh.vertexCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "triangleCount";
+                    assert(it.offset_in_bytes == 4, "Mesh.triangleCount has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Mesh.triangleCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "vertices";
+                    assert(it.offset_in_bytes == 8, "Mesh.vertices has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.vertices has unexpected size % instead of 8", it.type.runtime_size);
+                case "texcoords";
+                    assert(it.offset_in_bytes == 16, "Mesh.texcoords has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.texcoords has unexpected size % instead of 8", it.type.runtime_size);
+                case "texcoords2";
+                    assert(it.offset_in_bytes == 24, "Mesh.texcoords2 has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.texcoords2 has unexpected size % instead of 8", it.type.runtime_size);
+                case "normals";
+                    assert(it.offset_in_bytes == 32, "Mesh.normals has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.normals has unexpected size % instead of 8", it.type.runtime_size);
+                case "tangents";
+                    assert(it.offset_in_bytes == 40, "Mesh.tangents has unexpected offset % instead of 40", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.tangents has unexpected size % instead of 8", it.type.runtime_size);
+                case "colors";
+                    assert(it.offset_in_bytes == 48, "Mesh.colors has unexpected offset % instead of 48", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.colors has unexpected size % instead of 8", it.type.runtime_size);
+                case "indices";
+                    assert(it.offset_in_bytes == 56, "Mesh.indices has unexpected offset % instead of 56", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.indices has unexpected size % instead of 8", it.type.runtime_size);
+                case "animVertices";
+                    assert(it.offset_in_bytes == 64, "Mesh.animVertices has unexpected offset % instead of 64", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.animVertices has unexpected size % instead of 8", it.type.runtime_size);
+                case "animNormals";
+                    assert(it.offset_in_bytes == 72, "Mesh.animNormals has unexpected offset % instead of 72", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.animNormals has unexpected size % instead of 8", it.type.runtime_size);
+                case "boneIds";
+                    assert(it.offset_in_bytes == 80, "Mesh.boneIds has unexpected offset % instead of 80", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.boneIds has unexpected size % instead of 8", it.type.runtime_size);
+                case "boneWeights";
+                    assert(it.offset_in_bytes == 88, "Mesh.boneWeights has unexpected offset % instead of 88", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.boneWeights has unexpected size % instead of 8", it.type.runtime_size);
+                case "boneMatrices";
+                    assert(it.offset_in_bytes == 96, "Mesh.boneMatrices has unexpected offset % instead of 96", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.boneMatrices has unexpected size % instead of 8", it.type.runtime_size);
+                case "boneCount";
+                    assert(it.offset_in_bytes == 104, "Mesh.boneCount has unexpected offset % instead of 104", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Mesh.boneCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "vaoId";
+                    assert(it.offset_in_bytes == 108, "Mesh.vaoId has unexpected offset % instead of 108", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Mesh.vaoId has unexpected size % instead of 4", it.type.runtime_size);
+                case "vboId";
+                    assert(it.offset_in_bytes == 112, "Mesh.vboId has unexpected offset % instead of 112", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Mesh.vboId has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Mesh) == 120, "Mesh has size % instead of 120", size_of(Mesh));
     }
 
     {
-        instance: Shader;
-        assert(((cast(*void)(*instance.id)) - cast(*void)(*instance)) == 0, "Shader.id has unexpected offset % instead of 0", ((cast(*void)(*instance.id)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Shader.id)) == 4, "Shader.id has unexpected size % instead of 4", size_of(type_of(Shader.id)));
-        assert(((cast(*void)(*instance.locs)) - cast(*void)(*instance)) == 8, "Shader.locs has unexpected offset % instead of 8", ((cast(*void)(*instance.locs)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Shader.locs)) == 8, "Shader.locs has unexpected size % instead of 8", size_of(type_of(Shader.locs)));
+        info := type_info(Shader);
+        for info.members {
+            if it.name == {
+                case "id";
+                    assert(it.offset_in_bytes == 0, "Shader.id has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Shader.id has unexpected size % instead of 4", it.type.runtime_size);
+                case "locs";
+                    assert(it.offset_in_bytes == 8, "Shader.locs has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Shader.locs has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Shader) == 16, "Shader has size % instead of 16", size_of(Shader));
     }
 
     {
-        instance: MaterialMap;
-        assert(((cast(*void)(*instance.texture)) - cast(*void)(*instance)) == 0, "MaterialMap.texture has unexpected offset % instead of 0", ((cast(*void)(*instance.texture)) - cast(*void)(*instance)));
-        assert(size_of(type_of(MaterialMap.texture)) == 20, "MaterialMap.texture has unexpected size % instead of 20", size_of(type_of(MaterialMap.texture)));
-        assert(((cast(*void)(*instance.color)) - cast(*void)(*instance)) == 20, "MaterialMap.color has unexpected offset % instead of 20", ((cast(*void)(*instance.color)) - cast(*void)(*instance)));
-        assert(size_of(type_of(MaterialMap.color)) == 4, "MaterialMap.color has unexpected size % instead of 4", size_of(type_of(MaterialMap.color)));
-        assert(((cast(*void)(*instance.value)) - cast(*void)(*instance)) == 24, "MaterialMap.value has unexpected offset % instead of 24", ((cast(*void)(*instance.value)) - cast(*void)(*instance)));
-        assert(size_of(type_of(MaterialMap.value)) == 4, "MaterialMap.value has unexpected size % instead of 4", size_of(type_of(MaterialMap.value)));
+        info := type_info(MaterialMap);
+        for info.members {
+            if it.name == {
+                case "texture";
+                    assert(it.offset_in_bytes == 0, "MaterialMap.texture has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 20, "MaterialMap.texture has unexpected size % instead of 20", it.type.runtime_size);
+                case "color";
+                    assert(it.offset_in_bytes == 20, "MaterialMap.color has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "MaterialMap.color has unexpected size % instead of 4", it.type.runtime_size);
+                case "value";
+                    assert(it.offset_in_bytes == 24, "MaterialMap.value has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "MaterialMap.value has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(MaterialMap) == 28, "MaterialMap has size % instead of 28", size_of(MaterialMap));
     }
 
     {
-        instance: Material;
-        assert(((cast(*void)(*instance.shader)) - cast(*void)(*instance)) == 0, "Material.shader has unexpected offset % instead of 0", ((cast(*void)(*instance.shader)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Material.shader)) == 16, "Material.shader has unexpected size % instead of 16", size_of(type_of(Material.shader)));
-        assert(((cast(*void)(*instance.maps)) - cast(*void)(*instance)) == 16, "Material.maps has unexpected offset % instead of 16", ((cast(*void)(*instance.maps)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Material.maps)) == 8, "Material.maps has unexpected size % instead of 8", size_of(type_of(Material.maps)));
-        assert(((cast(*void)(*instance.params)) - cast(*void)(*instance)) == 24, "Material.params has unexpected offset % instead of 24", ((cast(*void)(*instance.params)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Material.params)) == 16, "Material.params has unexpected size % instead of 16", size_of(type_of(Material.params)));
+        info := type_info(Material);
+        for info.members {
+            if it.name == {
+                case "shader";
+                    assert(it.offset_in_bytes == 0, "Material.shader has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "Material.shader has unexpected size % instead of 16", it.type.runtime_size);
+                case "maps";
+                    assert(it.offset_in_bytes == 16, "Material.maps has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Material.maps has unexpected size % instead of 8", it.type.runtime_size);
+                case "params";
+                    assert(it.offset_in_bytes == 24, "Material.params has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "Material.params has unexpected size % instead of 16", it.type.runtime_size);
+            }
+        }
         assert(size_of(Material) == 40, "Material has size % instead of 40", size_of(Material));
     }
 
     {
-        instance: Transform;
-        assert(((cast(*void)(*instance.translation)) - cast(*void)(*instance)) == 0, "Transform.translation has unexpected offset % instead of 0", ((cast(*void)(*instance.translation)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Transform.translation)) == 12, "Transform.translation has unexpected size % instead of 12", size_of(type_of(Transform.translation)));
-        assert(((cast(*void)(*instance.rotation)) - cast(*void)(*instance)) == 12, "Transform.rotation has unexpected offset % instead of 12", ((cast(*void)(*instance.rotation)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Transform.rotation)) == 16, "Transform.rotation has unexpected size % instead of 16", size_of(type_of(Transform.rotation)));
-        assert(((cast(*void)(*instance.scale)) - cast(*void)(*instance)) == 28, "Transform.scale has unexpected offset % instead of 28", ((cast(*void)(*instance.scale)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Transform.scale)) == 12, "Transform.scale has unexpected size % instead of 12", size_of(type_of(Transform.scale)));
+        info := type_info(Transform);
+        for info.members {
+            if it.name == {
+                case "translation";
+                    assert(it.offset_in_bytes == 0, "Transform.translation has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "Transform.translation has unexpected size % instead of 12", it.type.runtime_size);
+                case "rotation";
+                    assert(it.offset_in_bytes == 12, "Transform.rotation has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "Transform.rotation has unexpected size % instead of 16", it.type.runtime_size);
+                case "scale";
+                    assert(it.offset_in_bytes == 28, "Transform.scale has unexpected offset % instead of 28", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "Transform.scale has unexpected size % instead of 12", it.type.runtime_size);
+            }
+        }
         assert(size_of(Transform) == 40, "Transform has size % instead of 40", size_of(Transform));
     }
 
     {
-        instance: BoneInfo;
-        assert(((cast(*void)(*instance.name)) - cast(*void)(*instance)) == 0, "BoneInfo.name has unexpected offset % instead of 0", ((cast(*void)(*instance.name)) - cast(*void)(*instance)));
-        assert(size_of(type_of(BoneInfo.name)) == 32, "BoneInfo.name has unexpected size % instead of 32", size_of(type_of(BoneInfo.name)));
-        assert(((cast(*void)(*instance.parent)) - cast(*void)(*instance)) == 32, "BoneInfo.parent has unexpected offset % instead of 32", ((cast(*void)(*instance.parent)) - cast(*void)(*instance)));
-        assert(size_of(type_of(BoneInfo.parent)) == 4, "BoneInfo.parent has unexpected size % instead of 4", size_of(type_of(BoneInfo.parent)));
+        info := type_info(BoneInfo);
+        for info.members {
+            if it.name == {
+                case "name";
+                    assert(it.offset_in_bytes == 0, "BoneInfo.name has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 32, "BoneInfo.name has unexpected size % instead of 32", it.type.runtime_size);
+                case "parent";
+                    assert(it.offset_in_bytes == 32, "BoneInfo.parent has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "BoneInfo.parent has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(BoneInfo) == 36, "BoneInfo has size % instead of 36", size_of(BoneInfo));
     }
 
     {
-        instance: Model;
-        assert(((cast(*void)(*instance.transform)) - cast(*void)(*instance)) == 0, "Model.transform has unexpected offset % instead of 0", ((cast(*void)(*instance.transform)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.transform)) == 64, "Model.transform has unexpected size % instead of 64", size_of(type_of(Model.transform)));
-        assert(((cast(*void)(*instance.meshCount)) - cast(*void)(*instance)) == 64, "Model.meshCount has unexpected offset % instead of 64", ((cast(*void)(*instance.meshCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.meshCount)) == 4, "Model.meshCount has unexpected size % instead of 4", size_of(type_of(Model.meshCount)));
-        assert(((cast(*void)(*instance.materialCount)) - cast(*void)(*instance)) == 68, "Model.materialCount has unexpected offset % instead of 68", ((cast(*void)(*instance.materialCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.materialCount)) == 4, "Model.materialCount has unexpected size % instead of 4", size_of(type_of(Model.materialCount)));
-        assert(((cast(*void)(*instance.meshes)) - cast(*void)(*instance)) == 72, "Model.meshes has unexpected offset % instead of 72", ((cast(*void)(*instance.meshes)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.meshes)) == 8, "Model.meshes has unexpected size % instead of 8", size_of(type_of(Model.meshes)));
-        assert(((cast(*void)(*instance.materials)) - cast(*void)(*instance)) == 80, "Model.materials has unexpected offset % instead of 80", ((cast(*void)(*instance.materials)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.materials)) == 8, "Model.materials has unexpected size % instead of 8", size_of(type_of(Model.materials)));
-        assert(((cast(*void)(*instance.meshMaterial)) - cast(*void)(*instance)) == 88, "Model.meshMaterial has unexpected offset % instead of 88", ((cast(*void)(*instance.meshMaterial)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.meshMaterial)) == 8, "Model.meshMaterial has unexpected size % instead of 8", size_of(type_of(Model.meshMaterial)));
-        assert(((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)) == 96, "Model.boneCount has unexpected offset % instead of 96", ((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.boneCount)) == 4, "Model.boneCount has unexpected size % instead of 4", size_of(type_of(Model.boneCount)));
-        assert(((cast(*void)(*instance.bones)) - cast(*void)(*instance)) == 104, "Model.bones has unexpected offset % instead of 104", ((cast(*void)(*instance.bones)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.bones)) == 8, "Model.bones has unexpected size % instead of 8", size_of(type_of(Model.bones)));
-        assert(((cast(*void)(*instance.bindPose)) - cast(*void)(*instance)) == 112, "Model.bindPose has unexpected offset % instead of 112", ((cast(*void)(*instance.bindPose)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Model.bindPose)) == 8, "Model.bindPose has unexpected size % instead of 8", size_of(type_of(Model.bindPose)));
+        info := type_info(Model);
+        for info.members {
+            if it.name == {
+                case "transform";
+                    assert(it.offset_in_bytes == 0, "Model.transform has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 64, "Model.transform has unexpected size % instead of 64", it.type.runtime_size);
+                case "meshCount";
+                    assert(it.offset_in_bytes == 64, "Model.meshCount has unexpected offset % instead of 64", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Model.meshCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "materialCount";
+                    assert(it.offset_in_bytes == 68, "Model.materialCount has unexpected offset % instead of 68", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Model.materialCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "meshes";
+                    assert(it.offset_in_bytes == 72, "Model.meshes has unexpected offset % instead of 72", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Model.meshes has unexpected size % instead of 8", it.type.runtime_size);
+                case "materials";
+                    assert(it.offset_in_bytes == 80, "Model.materials has unexpected offset % instead of 80", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Model.materials has unexpected size % instead of 8", it.type.runtime_size);
+                case "meshMaterial";
+                    assert(it.offset_in_bytes == 88, "Model.meshMaterial has unexpected offset % instead of 88", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Model.meshMaterial has unexpected size % instead of 8", it.type.runtime_size);
+                case "boneCount";
+                    assert(it.offset_in_bytes == 96, "Model.boneCount has unexpected offset % instead of 96", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Model.boneCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "bones";
+                    assert(it.offset_in_bytes == 104, "Model.bones has unexpected offset % instead of 104", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Model.bones has unexpected size % instead of 8", it.type.runtime_size);
+                case "bindPose";
+                    assert(it.offset_in_bytes == 112, "Model.bindPose has unexpected offset % instead of 112", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Model.bindPose has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Model) == 120, "Model has size % instead of 120", size_of(Model));
     }
 
     {
-        instance: ModelAnimation;
-        assert(((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)) == 0, "ModelAnimation.boneCount has unexpected offset % instead of 0", ((cast(*void)(*instance.boneCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(ModelAnimation.boneCount)) == 4, "ModelAnimation.boneCount has unexpected size % instead of 4", size_of(type_of(ModelAnimation.boneCount)));
-        assert(((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)) == 4, "ModelAnimation.frameCount has unexpected offset % instead of 4", ((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(ModelAnimation.frameCount)) == 4, "ModelAnimation.frameCount has unexpected size % instead of 4", size_of(type_of(ModelAnimation.frameCount)));
-        assert(((cast(*void)(*instance.bones)) - cast(*void)(*instance)) == 8, "ModelAnimation.bones has unexpected offset % instead of 8", ((cast(*void)(*instance.bones)) - cast(*void)(*instance)));
-        assert(size_of(type_of(ModelAnimation.bones)) == 8, "ModelAnimation.bones has unexpected size % instead of 8", size_of(type_of(ModelAnimation.bones)));
-        assert(((cast(*void)(*instance.framePoses)) - cast(*void)(*instance)) == 16, "ModelAnimation.framePoses has unexpected offset % instead of 16", ((cast(*void)(*instance.framePoses)) - cast(*void)(*instance)));
-        assert(size_of(type_of(ModelAnimation.framePoses)) == 8, "ModelAnimation.framePoses has unexpected size % instead of 8", size_of(type_of(ModelAnimation.framePoses)));
-        assert(((cast(*void)(*instance.name)) - cast(*void)(*instance)) == 24, "ModelAnimation.name has unexpected offset % instead of 24", ((cast(*void)(*instance.name)) - cast(*void)(*instance)));
-        assert(size_of(type_of(ModelAnimation.name)) == 32, "ModelAnimation.name has unexpected size % instead of 32", size_of(type_of(ModelAnimation.name)));
+        info := type_info(ModelAnimation);
+        for info.members {
+            if it.name == {
+                case "boneCount";
+                    assert(it.offset_in_bytes == 0, "ModelAnimation.boneCount has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "ModelAnimation.boneCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "frameCount";
+                    assert(it.offset_in_bytes == 4, "ModelAnimation.frameCount has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "ModelAnimation.frameCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "bones";
+                    assert(it.offset_in_bytes == 8, "ModelAnimation.bones has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "ModelAnimation.bones has unexpected size % instead of 8", it.type.runtime_size);
+                case "framePoses";
+                    assert(it.offset_in_bytes == 16, "ModelAnimation.framePoses has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "ModelAnimation.framePoses has unexpected size % instead of 8", it.type.runtime_size);
+                case "name";
+                    assert(it.offset_in_bytes == 24, "ModelAnimation.name has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 32, "ModelAnimation.name has unexpected size % instead of 32", it.type.runtime_size);
+            }
+        }
         assert(size_of(ModelAnimation) == 56, "ModelAnimation has size % instead of 56", size_of(ModelAnimation));
     }
 
     {
-        instance: Ray;
-        assert(((cast(*void)(*instance.position)) - cast(*void)(*instance)) == 0, "Ray.position has unexpected offset % instead of 0", ((cast(*void)(*instance.position)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Ray.position)) == 12, "Ray.position has unexpected size % instead of 12", size_of(type_of(Ray.position)));
-        assert(((cast(*void)(*instance.direction)) - cast(*void)(*instance)) == 12, "Ray.direction has unexpected offset % instead of 12", ((cast(*void)(*instance.direction)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Ray.direction)) == 12, "Ray.direction has unexpected size % instead of 12", size_of(type_of(Ray.direction)));
+        info := type_info(Ray);
+        for info.members {
+            if it.name == {
+                case "position";
+                    assert(it.offset_in_bytes == 0, "Ray.position has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "Ray.position has unexpected size % instead of 12", it.type.runtime_size);
+                case "direction";
+                    assert(it.offset_in_bytes == 12, "Ray.direction has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "Ray.direction has unexpected size % instead of 12", it.type.runtime_size);
+            }
+        }
         assert(size_of(Ray) == 24, "Ray has size % instead of 24", size_of(Ray));
     }
 
     {
-        instance: RayCollision;
-        assert(((cast(*void)(*instance.hit)) - cast(*void)(*instance)) == 0, "RayCollision.hit has unexpected offset % instead of 0", ((cast(*void)(*instance.hit)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RayCollision.hit)) == 1, "RayCollision.hit has unexpected size % instead of 1", size_of(type_of(RayCollision.hit)));
-        assert(((cast(*void)(*instance.distance)) - cast(*void)(*instance)) == 4, "RayCollision.distance has unexpected offset % instead of 4", ((cast(*void)(*instance.distance)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RayCollision.distance)) == 4, "RayCollision.distance has unexpected size % instead of 4", size_of(type_of(RayCollision.distance)));
-        assert(((cast(*void)(*instance.point)) - cast(*void)(*instance)) == 8, "RayCollision.point has unexpected offset % instead of 8", ((cast(*void)(*instance.point)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RayCollision.point)) == 12, "RayCollision.point has unexpected size % instead of 12", size_of(type_of(RayCollision.point)));
-        assert(((cast(*void)(*instance.normal)) - cast(*void)(*instance)) == 20, "RayCollision.normal has unexpected offset % instead of 20", ((cast(*void)(*instance.normal)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RayCollision.normal)) == 12, "RayCollision.normal has unexpected size % instead of 12", size_of(type_of(RayCollision.normal)));
+        info := type_info(RayCollision);
+        for info.members {
+            if it.name == {
+                case "hit";
+                    assert(it.offset_in_bytes == 0, "RayCollision.hit has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "RayCollision.hit has unexpected size % instead of 1", it.type.runtime_size);
+                case "distance";
+                    assert(it.offset_in_bytes == 4, "RayCollision.distance has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RayCollision.distance has unexpected size % instead of 4", it.type.runtime_size);
+                case "point";
+                    assert(it.offset_in_bytes == 8, "RayCollision.point has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "RayCollision.point has unexpected size % instead of 12", it.type.runtime_size);
+                case "normal";
+                    assert(it.offset_in_bytes == 20, "RayCollision.normal has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "RayCollision.normal has unexpected size % instead of 12", it.type.runtime_size);
+            }
+        }
         assert(size_of(RayCollision) == 32, "RayCollision has size % instead of 32", size_of(RayCollision));
     }
 
     {
-        instance: BoundingBox;
-        assert(((cast(*void)(*instance.min)) - cast(*void)(*instance)) == 0, "BoundingBox.min has unexpected offset % instead of 0", ((cast(*void)(*instance.min)) - cast(*void)(*instance)));
-        assert(size_of(type_of(BoundingBox.min)) == 12, "BoundingBox.min has unexpected size % instead of 12", size_of(type_of(BoundingBox.min)));
-        assert(((cast(*void)(*instance.max)) - cast(*void)(*instance)) == 12, "BoundingBox.max has unexpected offset % instead of 12", ((cast(*void)(*instance.max)) - cast(*void)(*instance)));
-        assert(size_of(type_of(BoundingBox.max)) == 12, "BoundingBox.max has unexpected size % instead of 12", size_of(type_of(BoundingBox.max)));
+        info := type_info(BoundingBox);
+        for info.members {
+            if it.name == {
+                case "min";
+                    assert(it.offset_in_bytes == 0, "BoundingBox.min has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "BoundingBox.min has unexpected size % instead of 12", it.type.runtime_size);
+                case "max";
+                    assert(it.offset_in_bytes == 12, "BoundingBox.max has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "BoundingBox.max has unexpected size % instead of 12", it.type.runtime_size);
+            }
+        }
         assert(size_of(BoundingBox) == 24, "BoundingBox has size % instead of 24", size_of(BoundingBox));
     }
 
     {
-        instance: Wave;
-        assert(((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)) == 0, "Wave.frameCount has unexpected offset % instead of 0", ((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Wave.frameCount)) == 4, "Wave.frameCount has unexpected size % instead of 4", size_of(type_of(Wave.frameCount)));
-        assert(((cast(*void)(*instance.sampleRate)) - cast(*void)(*instance)) == 4, "Wave.sampleRate has unexpected offset % instead of 4", ((cast(*void)(*instance.sampleRate)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Wave.sampleRate)) == 4, "Wave.sampleRate has unexpected size % instead of 4", size_of(type_of(Wave.sampleRate)));
-        assert(((cast(*void)(*instance.sampleSize)) - cast(*void)(*instance)) == 8, "Wave.sampleSize has unexpected offset % instead of 8", ((cast(*void)(*instance.sampleSize)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Wave.sampleSize)) == 4, "Wave.sampleSize has unexpected size % instead of 4", size_of(type_of(Wave.sampleSize)));
-        assert(((cast(*void)(*instance.channels)) - cast(*void)(*instance)) == 12, "Wave.channels has unexpected offset % instead of 12", ((cast(*void)(*instance.channels)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Wave.channels)) == 4, "Wave.channels has unexpected size % instead of 4", size_of(type_of(Wave.channels)));
-        assert(((cast(*void)(*instance.data)) - cast(*void)(*instance)) == 16, "Wave.data has unexpected offset % instead of 16", ((cast(*void)(*instance.data)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Wave.data)) == 8, "Wave.data has unexpected size % instead of 8", size_of(type_of(Wave.data)));
+        info := type_info(Wave);
+        for info.members {
+            if it.name == {
+                case "frameCount";
+                    assert(it.offset_in_bytes == 0, "Wave.frameCount has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Wave.frameCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "sampleRate";
+                    assert(it.offset_in_bytes == 4, "Wave.sampleRate has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Wave.sampleRate has unexpected size % instead of 4", it.type.runtime_size);
+                case "sampleSize";
+                    assert(it.offset_in_bytes == 8, "Wave.sampleSize has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Wave.sampleSize has unexpected size % instead of 4", it.type.runtime_size);
+                case "channels";
+                    assert(it.offset_in_bytes == 12, "Wave.channels has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Wave.channels has unexpected size % instead of 4", it.type.runtime_size);
+                case "data";
+                    assert(it.offset_in_bytes == 16, "Wave.data has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Wave.data has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Wave) == 24, "Wave has size % instead of 24", size_of(Wave));
     }
 
     {
-        instance: AudioStream;
-        assert(((cast(*void)(*instance.buffer)) - cast(*void)(*instance)) == 0, "AudioStream.buffer has unexpected offset % instead of 0", ((cast(*void)(*instance.buffer)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AudioStream.buffer)) == 8, "AudioStream.buffer has unexpected size % instead of 8", size_of(type_of(AudioStream.buffer)));
-        assert(((cast(*void)(*instance.processor)) - cast(*void)(*instance)) == 8, "AudioStream.processor has unexpected offset % instead of 8", ((cast(*void)(*instance.processor)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AudioStream.processor)) == 8, "AudioStream.processor has unexpected size % instead of 8", size_of(type_of(AudioStream.processor)));
-        assert(((cast(*void)(*instance.sampleRate)) - cast(*void)(*instance)) == 16, "AudioStream.sampleRate has unexpected offset % instead of 16", ((cast(*void)(*instance.sampleRate)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AudioStream.sampleRate)) == 4, "AudioStream.sampleRate has unexpected size % instead of 4", size_of(type_of(AudioStream.sampleRate)));
-        assert(((cast(*void)(*instance.sampleSize)) - cast(*void)(*instance)) == 20, "AudioStream.sampleSize has unexpected offset % instead of 20", ((cast(*void)(*instance.sampleSize)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AudioStream.sampleSize)) == 4, "AudioStream.sampleSize has unexpected size % instead of 4", size_of(type_of(AudioStream.sampleSize)));
-        assert(((cast(*void)(*instance.channels)) - cast(*void)(*instance)) == 24, "AudioStream.channels has unexpected offset % instead of 24", ((cast(*void)(*instance.channels)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AudioStream.channels)) == 4, "AudioStream.channels has unexpected size % instead of 4", size_of(type_of(AudioStream.channels)));
+        info := type_info(AudioStream);
+        for info.members {
+            if it.name == {
+                case "buffer";
+                    assert(it.offset_in_bytes == 0, "AudioStream.buffer has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "AudioStream.buffer has unexpected size % instead of 8", it.type.runtime_size);
+                case "processor";
+                    assert(it.offset_in_bytes == 8, "AudioStream.processor has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "AudioStream.processor has unexpected size % instead of 8", it.type.runtime_size);
+                case "sampleRate";
+                    assert(it.offset_in_bytes == 16, "AudioStream.sampleRate has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AudioStream.sampleRate has unexpected size % instead of 4", it.type.runtime_size);
+                case "sampleSize";
+                    assert(it.offset_in_bytes == 20, "AudioStream.sampleSize has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AudioStream.sampleSize has unexpected size % instead of 4", it.type.runtime_size);
+                case "channels";
+                    assert(it.offset_in_bytes == 24, "AudioStream.channels has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AudioStream.channels has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(AudioStream) == 32, "AudioStream has size % instead of 32", size_of(AudioStream));
     }
 
     {
-        instance: Sound;
-        assert(((cast(*void)(*instance.stream)) - cast(*void)(*instance)) == 0, "Sound.stream has unexpected offset % instead of 0", ((cast(*void)(*instance.stream)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Sound.stream)) == 32, "Sound.stream has unexpected size % instead of 32", size_of(type_of(Sound.stream)));
-        assert(((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)) == 32, "Sound.frameCount has unexpected offset % instead of 32", ((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Sound.frameCount)) == 4, "Sound.frameCount has unexpected size % instead of 4", size_of(type_of(Sound.frameCount)));
+        info := type_info(Sound);
+        for info.members {
+            if it.name == {
+                case "stream";
+                    assert(it.offset_in_bytes == 0, "Sound.stream has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 32, "Sound.stream has unexpected size % instead of 32", it.type.runtime_size);
+                case "frameCount";
+                    assert(it.offset_in_bytes == 32, "Sound.frameCount has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Sound.frameCount has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(Sound) == 40, "Sound has size % instead of 40", size_of(Sound));
     }
 
     {
-        instance: Music;
-        assert(((cast(*void)(*instance.stream)) - cast(*void)(*instance)) == 0, "Music.stream has unexpected offset % instead of 0", ((cast(*void)(*instance.stream)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Music.stream)) == 32, "Music.stream has unexpected size % instead of 32", size_of(type_of(Music.stream)));
-        assert(((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)) == 32, "Music.frameCount has unexpected offset % instead of 32", ((cast(*void)(*instance.frameCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Music.frameCount)) == 4, "Music.frameCount has unexpected size % instead of 4", size_of(type_of(Music.frameCount)));
-        assert(((cast(*void)(*instance.looping)) - cast(*void)(*instance)) == 36, "Music.looping has unexpected offset % instead of 36", ((cast(*void)(*instance.looping)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Music.looping)) == 1, "Music.looping has unexpected size % instead of 1", size_of(type_of(Music.looping)));
-        assert(((cast(*void)(*instance.ctxType)) - cast(*void)(*instance)) == 40, "Music.ctxType has unexpected offset % instead of 40", ((cast(*void)(*instance.ctxType)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Music.ctxType)) == 4, "Music.ctxType has unexpected size % instead of 4", size_of(type_of(Music.ctxType)));
-        assert(((cast(*void)(*instance.ctxData)) - cast(*void)(*instance)) == 48, "Music.ctxData has unexpected offset % instead of 48", ((cast(*void)(*instance.ctxData)) - cast(*void)(*instance)));
-        assert(size_of(type_of(Music.ctxData)) == 8, "Music.ctxData has unexpected size % instead of 8", size_of(type_of(Music.ctxData)));
+        info := type_info(Music);
+        for info.members {
+            if it.name == {
+                case "stream";
+                    assert(it.offset_in_bytes == 0, "Music.stream has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 32, "Music.stream has unexpected size % instead of 32", it.type.runtime_size);
+                case "frameCount";
+                    assert(it.offset_in_bytes == 32, "Music.frameCount has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Music.frameCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "looping";
+                    assert(it.offset_in_bytes == 36, "Music.looping has unexpected offset % instead of 36", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 1, "Music.looping has unexpected size % instead of 1", it.type.runtime_size);
+                case "ctxType";
+                    assert(it.offset_in_bytes == 40, "Music.ctxType has unexpected offset % instead of 40", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "Music.ctxType has unexpected size % instead of 4", it.type.runtime_size);
+                case "ctxData";
+                    assert(it.offset_in_bytes == 48, "Music.ctxData has unexpected offset % instead of 48", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "Music.ctxData has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(Music) == 56, "Music has size % instead of 56", size_of(Music));
     }
 
     {
-        instance: VrDeviceInfo;
-        assert(((cast(*void)(*instance.hResolution)) - cast(*void)(*instance)) == 0, "VrDeviceInfo.hResolution has unexpected offset % instead of 0", ((cast(*void)(*instance.hResolution)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.hResolution)) == 4, "VrDeviceInfo.hResolution has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.hResolution)));
-        assert(((cast(*void)(*instance.vResolution)) - cast(*void)(*instance)) == 4, "VrDeviceInfo.vResolution has unexpected offset % instead of 4", ((cast(*void)(*instance.vResolution)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.vResolution)) == 4, "VrDeviceInfo.vResolution has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.vResolution)));
-        assert(((cast(*void)(*instance.hScreenSize)) - cast(*void)(*instance)) == 8, "VrDeviceInfo.hScreenSize has unexpected offset % instead of 8", ((cast(*void)(*instance.hScreenSize)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.hScreenSize)) == 4, "VrDeviceInfo.hScreenSize has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.hScreenSize)));
-        assert(((cast(*void)(*instance.vScreenSize)) - cast(*void)(*instance)) == 12, "VrDeviceInfo.vScreenSize has unexpected offset % instead of 12", ((cast(*void)(*instance.vScreenSize)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.vScreenSize)) == 4, "VrDeviceInfo.vScreenSize has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.vScreenSize)));
-        assert(((cast(*void)(*instance.eyeToScreenDistance)) - cast(*void)(*instance)) == 16, "VrDeviceInfo.eyeToScreenDistance has unexpected offset % instead of 16", ((cast(*void)(*instance.eyeToScreenDistance)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.eyeToScreenDistance)) == 4, "VrDeviceInfo.eyeToScreenDistance has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.eyeToScreenDistance)));
-        assert(((cast(*void)(*instance.lensSeparationDistance)) - cast(*void)(*instance)) == 20, "VrDeviceInfo.lensSeparationDistance has unexpected offset % instead of 20", ((cast(*void)(*instance.lensSeparationDistance)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.lensSeparationDistance)) == 4, "VrDeviceInfo.lensSeparationDistance has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.lensSeparationDistance)));
-        assert(((cast(*void)(*instance.interpupillaryDistance)) - cast(*void)(*instance)) == 24, "VrDeviceInfo.interpupillaryDistance has unexpected offset % instead of 24", ((cast(*void)(*instance.interpupillaryDistance)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.interpupillaryDistance)) == 4, "VrDeviceInfo.interpupillaryDistance has unexpected size % instead of 4", size_of(type_of(VrDeviceInfo.interpupillaryDistance)));
-        assert(((cast(*void)(*instance.lensDistortionValues)) - cast(*void)(*instance)) == 28, "VrDeviceInfo.lensDistortionValues has unexpected offset % instead of 28", ((cast(*void)(*instance.lensDistortionValues)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.lensDistortionValues)) == 16, "VrDeviceInfo.lensDistortionValues has unexpected size % instead of 16", size_of(type_of(VrDeviceInfo.lensDistortionValues)));
-        assert(((cast(*void)(*instance.chromaAbCorrection)) - cast(*void)(*instance)) == 44, "VrDeviceInfo.chromaAbCorrection has unexpected offset % instead of 44", ((cast(*void)(*instance.chromaAbCorrection)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrDeviceInfo.chromaAbCorrection)) == 16, "VrDeviceInfo.chromaAbCorrection has unexpected size % instead of 16", size_of(type_of(VrDeviceInfo.chromaAbCorrection)));
+        info := type_info(VrDeviceInfo);
+        for info.members {
+            if it.name == {
+                case "hResolution";
+                    assert(it.offset_in_bytes == 0, "VrDeviceInfo.hResolution has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.hResolution has unexpected size % instead of 4", it.type.runtime_size);
+                case "vResolution";
+                    assert(it.offset_in_bytes == 4, "VrDeviceInfo.vResolution has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.vResolution has unexpected size % instead of 4", it.type.runtime_size);
+                case "hScreenSize";
+                    assert(it.offset_in_bytes == 8, "VrDeviceInfo.hScreenSize has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.hScreenSize has unexpected size % instead of 4", it.type.runtime_size);
+                case "vScreenSize";
+                    assert(it.offset_in_bytes == 12, "VrDeviceInfo.vScreenSize has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.vScreenSize has unexpected size % instead of 4", it.type.runtime_size);
+                case "eyeToScreenDistance";
+                    assert(it.offset_in_bytes == 16, "VrDeviceInfo.eyeToScreenDistance has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.eyeToScreenDistance has unexpected size % instead of 4", it.type.runtime_size);
+                case "lensSeparationDistance";
+                    assert(it.offset_in_bytes == 20, "VrDeviceInfo.lensSeparationDistance has unexpected offset % instead of 20", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.lensSeparationDistance has unexpected size % instead of 4", it.type.runtime_size);
+                case "interpupillaryDistance";
+                    assert(it.offset_in_bytes == 24, "VrDeviceInfo.interpupillaryDistance has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VrDeviceInfo.interpupillaryDistance has unexpected size % instead of 4", it.type.runtime_size);
+                case "lensDistortionValues";
+                    assert(it.offset_in_bytes == 28, "VrDeviceInfo.lensDistortionValues has unexpected offset % instead of 28", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "VrDeviceInfo.lensDistortionValues has unexpected size % instead of 16", it.type.runtime_size);
+                case "chromaAbCorrection";
+                    assert(it.offset_in_bytes == 44, "VrDeviceInfo.chromaAbCorrection has unexpected offset % instead of 44", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "VrDeviceInfo.chromaAbCorrection has unexpected size % instead of 16", it.type.runtime_size);
+            }
+        }
         assert(size_of(VrDeviceInfo) == 60, "VrDeviceInfo has size % instead of 60", size_of(VrDeviceInfo));
     }
 
     {
-        instance: VrStereoConfig;
-        assert(((cast(*void)(*instance.projection)) - cast(*void)(*instance)) == 0, "VrStereoConfig.projection has unexpected offset % instead of 0", ((cast(*void)(*instance.projection)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.projection)) == 128, "VrStereoConfig.projection has unexpected size % instead of 128", size_of(type_of(VrStereoConfig.projection)));
-        assert(((cast(*void)(*instance.viewOffset)) - cast(*void)(*instance)) == 128, "VrStereoConfig.viewOffset has unexpected offset % instead of 128", ((cast(*void)(*instance.viewOffset)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.viewOffset)) == 128, "VrStereoConfig.viewOffset has unexpected size % instead of 128", size_of(type_of(VrStereoConfig.viewOffset)));
-        assert(((cast(*void)(*instance.leftLensCenter)) - cast(*void)(*instance)) == 256, "VrStereoConfig.leftLensCenter has unexpected offset % instead of 256", ((cast(*void)(*instance.leftLensCenter)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.leftLensCenter)) == 8, "VrStereoConfig.leftLensCenter has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.leftLensCenter)));
-        assert(((cast(*void)(*instance.rightLensCenter)) - cast(*void)(*instance)) == 264, "VrStereoConfig.rightLensCenter has unexpected offset % instead of 264", ((cast(*void)(*instance.rightLensCenter)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.rightLensCenter)) == 8, "VrStereoConfig.rightLensCenter has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.rightLensCenter)));
-        assert(((cast(*void)(*instance.leftScreenCenter)) - cast(*void)(*instance)) == 272, "VrStereoConfig.leftScreenCenter has unexpected offset % instead of 272", ((cast(*void)(*instance.leftScreenCenter)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.leftScreenCenter)) == 8, "VrStereoConfig.leftScreenCenter has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.leftScreenCenter)));
-        assert(((cast(*void)(*instance.rightScreenCenter)) - cast(*void)(*instance)) == 280, "VrStereoConfig.rightScreenCenter has unexpected offset % instead of 280", ((cast(*void)(*instance.rightScreenCenter)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.rightScreenCenter)) == 8, "VrStereoConfig.rightScreenCenter has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.rightScreenCenter)));
-        assert(((cast(*void)(*instance.scale)) - cast(*void)(*instance)) == 288, "VrStereoConfig.scale has unexpected offset % instead of 288", ((cast(*void)(*instance.scale)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.scale)) == 8, "VrStereoConfig.scale has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.scale)));
-        assert(((cast(*void)(*instance.scaleIn)) - cast(*void)(*instance)) == 296, "VrStereoConfig.scaleIn has unexpected offset % instead of 296", ((cast(*void)(*instance.scaleIn)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VrStereoConfig.scaleIn)) == 8, "VrStereoConfig.scaleIn has unexpected size % instead of 8", size_of(type_of(VrStereoConfig.scaleIn)));
+        info := type_info(VrStereoConfig);
+        for info.members {
+            if it.name == {
+                case "projection";
+                    assert(it.offset_in_bytes == 0, "VrStereoConfig.projection has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 128, "VrStereoConfig.projection has unexpected size % instead of 128", it.type.runtime_size);
+                case "viewOffset";
+                    assert(it.offset_in_bytes == 128, "VrStereoConfig.viewOffset has unexpected offset % instead of 128", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 128, "VrStereoConfig.viewOffset has unexpected size % instead of 128", it.type.runtime_size);
+                case "leftLensCenter";
+                    assert(it.offset_in_bytes == 256, "VrStereoConfig.leftLensCenter has unexpected offset % instead of 256", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.leftLensCenter has unexpected size % instead of 8", it.type.runtime_size);
+                case "rightLensCenter";
+                    assert(it.offset_in_bytes == 264, "VrStereoConfig.rightLensCenter has unexpected offset % instead of 264", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.rightLensCenter has unexpected size % instead of 8", it.type.runtime_size);
+                case "leftScreenCenter";
+                    assert(it.offset_in_bytes == 272, "VrStereoConfig.leftScreenCenter has unexpected offset % instead of 272", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.leftScreenCenter has unexpected size % instead of 8", it.type.runtime_size);
+                case "rightScreenCenter";
+                    assert(it.offset_in_bytes == 280, "VrStereoConfig.rightScreenCenter has unexpected offset % instead of 280", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.rightScreenCenter has unexpected size % instead of 8", it.type.runtime_size);
+                case "scale";
+                    assert(it.offset_in_bytes == 288, "VrStereoConfig.scale has unexpected offset % instead of 288", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.scale has unexpected size % instead of 8", it.type.runtime_size);
+                case "scaleIn";
+                    assert(it.offset_in_bytes == 296, "VrStereoConfig.scaleIn has unexpected offset % instead of 296", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VrStereoConfig.scaleIn has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(VrStereoConfig) == 304, "VrStereoConfig has size % instead of 304", size_of(VrStereoConfig));
     }
 
     {
-        instance: FilePathList;
-        assert(((cast(*void)(*instance.capacity)) - cast(*void)(*instance)) == 0, "FilePathList.capacity has unexpected offset % instead of 0", ((cast(*void)(*instance.capacity)) - cast(*void)(*instance)));
-        assert(size_of(type_of(FilePathList.capacity)) == 4, "FilePathList.capacity has unexpected size % instead of 4", size_of(type_of(FilePathList.capacity)));
-        assert(((cast(*void)(*instance.count)) - cast(*void)(*instance)) == 4, "FilePathList.count has unexpected offset % instead of 4", ((cast(*void)(*instance.count)) - cast(*void)(*instance)));
-        assert(size_of(type_of(FilePathList.count)) == 4, "FilePathList.count has unexpected size % instead of 4", size_of(type_of(FilePathList.count)));
-        assert(((cast(*void)(*instance.paths)) - cast(*void)(*instance)) == 8, "FilePathList.paths has unexpected offset % instead of 8", ((cast(*void)(*instance.paths)) - cast(*void)(*instance)));
-        assert(size_of(type_of(FilePathList.paths)) == 8, "FilePathList.paths has unexpected size % instead of 8", size_of(type_of(FilePathList.paths)));
+        info := type_info(FilePathList);
+        for info.members {
+            if it.name == {
+                case "capacity";
+                    assert(it.offset_in_bytes == 0, "FilePathList.capacity has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "FilePathList.capacity has unexpected size % instead of 4", it.type.runtime_size);
+                case "count";
+                    assert(it.offset_in_bytes == 4, "FilePathList.count has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "FilePathList.count has unexpected size % instead of 4", it.type.runtime_size);
+                case "paths";
+                    assert(it.offset_in_bytes == 8, "FilePathList.paths has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "FilePathList.paths has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(FilePathList) == 16, "FilePathList has size % instead of 16", size_of(FilePathList));
     }
 
     {
-        instance: AutomationEvent;
-        assert(((cast(*void)(*instance.frame)) - cast(*void)(*instance)) == 0, "AutomationEvent.frame has unexpected offset % instead of 0", ((cast(*void)(*instance.frame)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEvent.frame)) == 4, "AutomationEvent.frame has unexpected size % instead of 4", size_of(type_of(AutomationEvent.frame)));
-        assert(((cast(*void)(*instance.type)) - cast(*void)(*instance)) == 4, "AutomationEvent.type has unexpected offset % instead of 4", ((cast(*void)(*instance.type)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEvent.type)) == 4, "AutomationEvent.type has unexpected size % instead of 4", size_of(type_of(AutomationEvent.type)));
-        assert(((cast(*void)(*instance.params)) - cast(*void)(*instance)) == 8, "AutomationEvent.params has unexpected offset % instead of 8", ((cast(*void)(*instance.params)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEvent.params)) == 16, "AutomationEvent.params has unexpected size % instead of 16", size_of(type_of(AutomationEvent.params)));
+        info := type_info(AutomationEvent);
+        for info.members {
+            if it.name == {
+                case "frame";
+                    assert(it.offset_in_bytes == 0, "AutomationEvent.frame has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AutomationEvent.frame has unexpected size % instead of 4", it.type.runtime_size);
+                case "type";
+                    assert(it.offset_in_bytes == 4, "AutomationEvent.type has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AutomationEvent.type has unexpected size % instead of 4", it.type.runtime_size);
+                case "params";
+                    assert(it.offset_in_bytes == 8, "AutomationEvent.params has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 16, "AutomationEvent.params has unexpected size % instead of 16", it.type.runtime_size);
+            }
+        }
         assert(size_of(AutomationEvent) == 24, "AutomationEvent has size % instead of 24", size_of(AutomationEvent));
     }
 
     {
-        instance: AutomationEventList;
-        assert(((cast(*void)(*instance.capacity)) - cast(*void)(*instance)) == 0, "AutomationEventList.capacity has unexpected offset % instead of 0", ((cast(*void)(*instance.capacity)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEventList.capacity)) == 4, "AutomationEventList.capacity has unexpected size % instead of 4", size_of(type_of(AutomationEventList.capacity)));
-        assert(((cast(*void)(*instance.count)) - cast(*void)(*instance)) == 4, "AutomationEventList.count has unexpected offset % instead of 4", ((cast(*void)(*instance.count)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEventList.count)) == 4, "AutomationEventList.count has unexpected size % instead of 4", size_of(type_of(AutomationEventList.count)));
-        assert(((cast(*void)(*instance.events)) - cast(*void)(*instance)) == 8, "AutomationEventList.events has unexpected offset % instead of 8", ((cast(*void)(*instance.events)) - cast(*void)(*instance)));
-        assert(size_of(type_of(AutomationEventList.events)) == 8, "AutomationEventList.events has unexpected size % instead of 8", size_of(type_of(AutomationEventList.events)));
+        info := type_info(AutomationEventList);
+        for info.members {
+            if it.name == {
+                case "capacity";
+                    assert(it.offset_in_bytes == 0, "AutomationEventList.capacity has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AutomationEventList.capacity has unexpected size % instead of 4", it.type.runtime_size);
+                case "count";
+                    assert(it.offset_in_bytes == 4, "AutomationEventList.count has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "AutomationEventList.count has unexpected size % instead of 4", it.type.runtime_size);
+                case "events";
+                    assert(it.offset_in_bytes == 8, "AutomationEventList.events has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "AutomationEventList.events has unexpected size % instead of 8", it.type.runtime_size);
+            }
+        }
         assert(size_of(AutomationEventList) == 16, "AutomationEventList has size % instead of 16", size_of(AutomationEventList));
     }
 
     {
-        instance: VertexBuffer;
-        assert(((cast(*void)(*instance.elementCount)) - cast(*void)(*instance)) == 0, "VertexBuffer.elementCount has unexpected offset % instead of 0", ((cast(*void)(*instance.elementCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.elementCount)) == 4, "VertexBuffer.elementCount has unexpected size % instead of 4", size_of(type_of(VertexBuffer.elementCount)));
-        assert(((cast(*void)(*instance.vertices)) - cast(*void)(*instance)) == 8, "VertexBuffer.vertices has unexpected offset % instead of 8", ((cast(*void)(*instance.vertices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.vertices)) == 8, "VertexBuffer.vertices has unexpected size % instead of 8", size_of(type_of(VertexBuffer.vertices)));
-        assert(((cast(*void)(*instance.texcoords)) - cast(*void)(*instance)) == 16, "VertexBuffer.texcoords has unexpected offset % instead of 16", ((cast(*void)(*instance.texcoords)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.texcoords)) == 8, "VertexBuffer.texcoords has unexpected size % instead of 8", size_of(type_of(VertexBuffer.texcoords)));
-        assert(((cast(*void)(*instance.normals)) - cast(*void)(*instance)) == 24, "VertexBuffer.normals has unexpected offset % instead of 24", ((cast(*void)(*instance.normals)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.normals)) == 8, "VertexBuffer.normals has unexpected size % instead of 8", size_of(type_of(VertexBuffer.normals)));
-        assert(((cast(*void)(*instance.colors)) - cast(*void)(*instance)) == 32, "VertexBuffer.colors has unexpected offset % instead of 32", ((cast(*void)(*instance.colors)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.colors)) == 8, "VertexBuffer.colors has unexpected size % instead of 8", size_of(type_of(VertexBuffer.colors)));
-        assert(((cast(*void)(*instance.indices)) - cast(*void)(*instance)) == 40, "VertexBuffer.indices has unexpected offset % instead of 40", ((cast(*void)(*instance.indices)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.indices)) == 8, "VertexBuffer.indices has unexpected size % instead of 8", size_of(type_of(VertexBuffer.indices)));
-        assert(((cast(*void)(*instance.vaoId)) - cast(*void)(*instance)) == 48, "VertexBuffer.vaoId has unexpected offset % instead of 48", ((cast(*void)(*instance.vaoId)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.vaoId)) == 4, "VertexBuffer.vaoId has unexpected size % instead of 4", size_of(type_of(VertexBuffer.vaoId)));
-        assert(((cast(*void)(*instance.vboId)) - cast(*void)(*instance)) == 52, "VertexBuffer.vboId has unexpected offset % instead of 52", ((cast(*void)(*instance.vboId)) - cast(*void)(*instance)));
-        assert(size_of(type_of(VertexBuffer.vboId)) == 20, "VertexBuffer.vboId has unexpected size % instead of 20", size_of(type_of(VertexBuffer.vboId)));
+        info := type_info(VertexBuffer);
+        for info.members {
+            if it.name == {
+                case "elementCount";
+                    assert(it.offset_in_bytes == 0, "VertexBuffer.elementCount has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VertexBuffer.elementCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "vertices";
+                    assert(it.offset_in_bytes == 8, "VertexBuffer.vertices has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VertexBuffer.vertices has unexpected size % instead of 8", it.type.runtime_size);
+                case "texcoords";
+                    assert(it.offset_in_bytes == 16, "VertexBuffer.texcoords has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VertexBuffer.texcoords has unexpected size % instead of 8", it.type.runtime_size);
+                case "normals";
+                    assert(it.offset_in_bytes == 24, "VertexBuffer.normals has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VertexBuffer.normals has unexpected size % instead of 8", it.type.runtime_size);
+                case "colors";
+                    assert(it.offset_in_bytes == 32, "VertexBuffer.colors has unexpected offset % instead of 32", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VertexBuffer.colors has unexpected size % instead of 8", it.type.runtime_size);
+                case "indices";
+                    assert(it.offset_in_bytes == 40, "VertexBuffer.indices has unexpected offset % instead of 40", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "VertexBuffer.indices has unexpected size % instead of 8", it.type.runtime_size);
+                case "vaoId";
+                    assert(it.offset_in_bytes == 48, "VertexBuffer.vaoId has unexpected offset % instead of 48", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "VertexBuffer.vaoId has unexpected size % instead of 4", it.type.runtime_size);
+                case "vboId";
+                    assert(it.offset_in_bytes == 52, "VertexBuffer.vboId has unexpected offset % instead of 52", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 20, "VertexBuffer.vboId has unexpected size % instead of 20", it.type.runtime_size);
+            }
+        }
         assert(size_of(VertexBuffer) == 72, "VertexBuffer has size % instead of 72", size_of(VertexBuffer));
     }
 
     {
-        instance: DrawCall;
-        assert(((cast(*void)(*instance.mode)) - cast(*void)(*instance)) == 0, "DrawCall.mode has unexpected offset % instead of 0", ((cast(*void)(*instance.mode)) - cast(*void)(*instance)));
-        assert(size_of(type_of(DrawCall.mode)) == 4, "DrawCall.mode has unexpected size % instead of 4", size_of(type_of(DrawCall.mode)));
-        assert(((cast(*void)(*instance.vertexCount)) - cast(*void)(*instance)) == 4, "DrawCall.vertexCount has unexpected offset % instead of 4", ((cast(*void)(*instance.vertexCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(DrawCall.vertexCount)) == 4, "DrawCall.vertexCount has unexpected size % instead of 4", size_of(type_of(DrawCall.vertexCount)));
-        assert(((cast(*void)(*instance.vertexAlignment)) - cast(*void)(*instance)) == 8, "DrawCall.vertexAlignment has unexpected offset % instead of 8", ((cast(*void)(*instance.vertexAlignment)) - cast(*void)(*instance)));
-        assert(size_of(type_of(DrawCall.vertexAlignment)) == 4, "DrawCall.vertexAlignment has unexpected size % instead of 4", size_of(type_of(DrawCall.vertexAlignment)));
-        assert(((cast(*void)(*instance.textureId)) - cast(*void)(*instance)) == 12, "DrawCall.textureId has unexpected offset % instead of 12", ((cast(*void)(*instance.textureId)) - cast(*void)(*instance)));
-        assert(size_of(type_of(DrawCall.textureId)) == 4, "DrawCall.textureId has unexpected size % instead of 4", size_of(type_of(DrawCall.textureId)));
+        info := type_info(DrawCall);
+        for info.members {
+            if it.name == {
+                case "mode";
+                    assert(it.offset_in_bytes == 0, "DrawCall.mode has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "DrawCall.mode has unexpected size % instead of 4", it.type.runtime_size);
+                case "vertexCount";
+                    assert(it.offset_in_bytes == 4, "DrawCall.vertexCount has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "DrawCall.vertexCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "vertexAlignment";
+                    assert(it.offset_in_bytes == 8, "DrawCall.vertexAlignment has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "DrawCall.vertexAlignment has unexpected size % instead of 4", it.type.runtime_size);
+                case "textureId";
+                    assert(it.offset_in_bytes == 12, "DrawCall.textureId has unexpected offset % instead of 12", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "DrawCall.textureId has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(DrawCall) == 16, "DrawCall has size % instead of 16", size_of(DrawCall));
     }
 
     {
-        instance: RenderBatch;
-        assert(((cast(*void)(*instance.bufferCount)) - cast(*void)(*instance)) == 0, "RenderBatch.bufferCount has unexpected offset % instead of 0", ((cast(*void)(*instance.bufferCount)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.bufferCount)) == 4, "RenderBatch.bufferCount has unexpected size % instead of 4", size_of(type_of(RenderBatch.bufferCount)));
-        assert(((cast(*void)(*instance.currentBuffer)) - cast(*void)(*instance)) == 4, "RenderBatch.currentBuffer has unexpected offset % instead of 4", ((cast(*void)(*instance.currentBuffer)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.currentBuffer)) == 4, "RenderBatch.currentBuffer has unexpected size % instead of 4", size_of(type_of(RenderBatch.currentBuffer)));
-        assert(((cast(*void)(*instance.vertexBuffer)) - cast(*void)(*instance)) == 8, "RenderBatch.vertexBuffer has unexpected offset % instead of 8", ((cast(*void)(*instance.vertexBuffer)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.vertexBuffer)) == 8, "RenderBatch.vertexBuffer has unexpected size % instead of 8", size_of(type_of(RenderBatch.vertexBuffer)));
-        assert(((cast(*void)(*instance.draws)) - cast(*void)(*instance)) == 16, "RenderBatch.draws has unexpected offset % instead of 16", ((cast(*void)(*instance.draws)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.draws)) == 8, "RenderBatch.draws has unexpected size % instead of 8", size_of(type_of(RenderBatch.draws)));
-        assert(((cast(*void)(*instance.drawCounter)) - cast(*void)(*instance)) == 24, "RenderBatch.drawCounter has unexpected offset % instead of 24", ((cast(*void)(*instance.drawCounter)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.drawCounter)) == 4, "RenderBatch.drawCounter has unexpected size % instead of 4", size_of(type_of(RenderBatch.drawCounter)));
-        assert(((cast(*void)(*instance.currentDepth)) - cast(*void)(*instance)) == 28, "RenderBatch.currentDepth has unexpected offset % instead of 28", ((cast(*void)(*instance.currentDepth)) - cast(*void)(*instance)));
-        assert(size_of(type_of(RenderBatch.currentDepth)) == 4, "RenderBatch.currentDepth has unexpected size % instead of 4", size_of(type_of(RenderBatch.currentDepth)));
+        info := type_info(RenderBatch);
+        for info.members {
+            if it.name == {
+                case "bufferCount";
+                    assert(it.offset_in_bytes == 0, "RenderBatch.bufferCount has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RenderBatch.bufferCount has unexpected size % instead of 4", it.type.runtime_size);
+                case "currentBuffer";
+                    assert(it.offset_in_bytes == 4, "RenderBatch.currentBuffer has unexpected offset % instead of 4", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RenderBatch.currentBuffer has unexpected size % instead of 4", it.type.runtime_size);
+                case "vertexBuffer";
+                    assert(it.offset_in_bytes == 8, "RenderBatch.vertexBuffer has unexpected offset % instead of 8", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "RenderBatch.vertexBuffer has unexpected size % instead of 8", it.type.runtime_size);
+                case "draws";
+                    assert(it.offset_in_bytes == 16, "RenderBatch.draws has unexpected offset % instead of 16", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 8, "RenderBatch.draws has unexpected size % instead of 8", it.type.runtime_size);
+                case "drawCounter";
+                    assert(it.offset_in_bytes == 24, "RenderBatch.drawCounter has unexpected offset % instead of 24", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RenderBatch.drawCounter has unexpected size % instead of 4", it.type.runtime_size);
+                case "currentDepth";
+                    assert(it.offset_in_bytes == 28, "RenderBatch.currentDepth has unexpected offset % instead of 28", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 4, "RenderBatch.currentDepth has unexpected size % instead of 4", it.type.runtime_size);
+            }
+        }
         assert(size_of(RenderBatch) == 32, "RenderBatch has size % instead of 32", size_of(RenderBatch));
     }
 
     {
-        instance: float3;
-        assert(((cast(*void)(*instance.v)) - cast(*void)(*instance)) == 0, "float3.v has unexpected offset % instead of 0", ((cast(*void)(*instance.v)) - cast(*void)(*instance)));
-        assert(size_of(type_of(float3.v)) == 12, "float3.v has unexpected size % instead of 12", size_of(type_of(float3.v)));
+        info := type_info(float3);
+        for info.members {
+            if it.name == {
+                case "v";
+                    assert(it.offset_in_bytes == 0, "float3.v has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 12, "float3.v has unexpected size % instead of 12", it.type.runtime_size);
+            }
+        }
         assert(size_of(float3) == 12, "float3 has size % instead of 12", size_of(float3));
     }
 
     {
-        instance: float16;
-        assert(((cast(*void)(*instance.v)) - cast(*void)(*instance)) == 0, "float16.v has unexpected offset % instead of 0", ((cast(*void)(*instance.v)) - cast(*void)(*instance)));
-        assert(size_of(type_of(float16.v)) == 64, "float16.v has unexpected size % instead of 64", size_of(type_of(float16.v)));
+        info := type_info(float16);
+        for info.members {
+            if it.name == {
+                case "v";
+                    assert(it.offset_in_bytes == 0, "float16.v has unexpected offset % instead of 0", it.offset_in_bytes);
+                    assert(it.type.runtime_size == 64, "float16.v has unexpected size % instead of 64", it.type.runtime_size);
+            }
+        }
         assert(size_of(float16) == 64, "float16 has size % instead of 64", size_of(float16));
     }
 }
