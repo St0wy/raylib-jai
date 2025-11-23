@@ -127,7 +127,7 @@ generate_bindings :: (args: [] string) -> bool
 			assert(result.exit_code == 0);
 			File.file_delete("macos/raylib_x86.a");
 			File.file_delete("macos/raylib_arm64.a");
-		} else #if OS == .WINDOWS {
+		} else {
 			config_command := Process.break_command_into_strings(config_command_string);
 			array_add(*config_command, "-DOPENGL_VERSION=4.3");
 			result := Process.run_command(..config_command, RAYLIB_PATH, print_captured_output = true);
@@ -142,21 +142,22 @@ generate_bindings :: (args: [] string) -> bool
 				print("CMake build failed with exit code : %", result.exit_code);
 				return false;
 			}
+		}
 
+		#if OS == .WINDOWS {
 			could_make_lib_dir := File.make_directory_if_it_does_not_exist("windows");
 			assert(could_make_lib_dir);
 
 			could_copy := FileUtils.copy_file(tprint("%/build/raylib/Release/raylib.lib", RAYLIB_PATH), "windows/raylib.lib");
 			assert(could_copy);
-		} else {
-			assert(false); // TODO LINUX
+		} else #if OS == .LINUX {
+			could_make_lib_dir := File.make_directory_if_it_does_not_exist("linux");
+			assert(could_make_lib_dir);
+
+			could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
+			assert(could_copy);
 		}
 
-		// could_make_lib_dir := File.make_directory_if_it_does_not_exist("linux");
-		// assert(could_make_lib_dir);
-
-		// could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
-		// assert(could_copy);
 	}
 
 	output_filename: string;
