@@ -2,3 +2,4 @@
 .vscode
 raylib/
 .DS_Store
+build/
