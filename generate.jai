@@ -60,9 +60,12 @@ generate_bindings :: (args: [] string) -> bool
             return false;
         }
 
-        could_delete_build_dir := File.delete_directory(tprint("%/build", RAYLIB_PATH));
-        assert(could_delete_build_dir);
-        could_make_dir := File.make_directory_if_it_does_not_exist(tprint("%/build", RAYLIB_PATH));
+        build_dir := tprint("%/build", RAYLIB_PATH);
+        if FileUtils.is_directory(build_dir) then {
+            could_delete_build_dir := File.delete_directory(build_dir);
+            assert(could_delete_build_dir);
+        }
+        could_make_dir := File.make_directory_if_it_does_not_exist(build_dir);
         assert(could_make_dir);
 
         build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
@@ -79,14 +82,14 @@ generate_bindings :: (args: [] string) -> bool
             array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0.0");
             array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=arm64");
 
-            result := Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+            result := Process.run_command(..config_command, RAYLIB_PATH, print_captured_output = true);
 	        if result.exit_code != 0 {
 	            print("CMake configuration failed with exit code : %", result.exit_code);
 	            return false;
 	        }
 
 	        build_command := Process.break_command_into_strings(tprint("cmake --build build/ -t raylib --config %", build_type));
-	        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        result = Process.run_command(..build_command, RAYLIB_PATH, print_captured_output = true);
 	        if result.exit_code != 0 {
 	            print("CMake build failed with exit code : %", result.exit_code);
 	            return false;
@@ -95,7 +98,7 @@ generate_bindings :: (args: [] string) -> bool
 	        could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib_arm64.a");
             assert(could_copy);
 
-	        could_delete_build_dir = File.delete_directory(tprint("%/build", RAYLIB_PATH));
+	        could_delete_build_dir = File.delete_directory(build_dir);
         	assert(could_delete_build_dir);
 
         	// Build x86
@@ -103,13 +106,13 @@ generate_bindings :: (args: [] string) -> bool
         	array_add(*config_command, "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.13.0");
             array_add(*config_command, "-DCMAKE_OSX_ARCHITECTURES=x86_64");
 
-            result = Process.run_command(..config_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+            result = Process.run_command(..config_command, RAYLIB_PATH, print_captured_output = true);
 	        if result.exit_code != 0 {
 	            print("CMake configuration failed with exit code : %", result.exit_code);
 	            return false;
 	        }
 
-	        result = Process.run_command(..build_command, RAYLIB_PATH, capture_and_return_output = true, print_captured_output = true);
+	        result = Process.run_command(..build_command, RAYLIB_PATH, print_captured_output = true);
 	        if result.exit_code != 0 {
 	            print("CMake build failed with exit code : %", result.exit_code);
 	            return false;
@@ -126,6 +129,7 @@ generate_bindings :: (args: [] string) -> bool
         } else {
         	config_command := Process.break_command_into_strings(config_command_string);
             array_add(*config_command, "-DOPENGL_VERSION=4.3");
+            assert(false); // TODO: Other platforms
         }
 
         #if OS == .WINDOWS {
@@ -140,12 +144,6 @@ generate_bindings :: (args: [] string) -> bool
 
             could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
             assert(could_copy);
-        } else #if OS == .MACOS {
-
-
-
-        } else {
-            assert(false);
         }
     }
 
@@ -158,7 +156,7 @@ generate_bindings :: (args: [] string) -> bool
         array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
 
         #if OS == .WINDOWS {
-            array_add(*libpaths, "windows");
+            array_add(*library_search_paths, "windows");
             output_filename = "windows.jai";
 
             // This will replace `#include <math.h>` with `#include "math.h"` in raymath.h and place it in raymath_pachted.h
@@ -170,13 +168,13 @@ generate_bindings :: (args: [] string) -> bool
             array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
             array_add(*extra_clang_arguments, "-Wno-microsoft-include");
         } else #if OS == .LINUX {
-            array_add(*libpaths, "linux");
+            array_add(*library_search_paths, "linux");
             output_filename = "linux.jai";
 
             // no need to patch raymath.h as we import the system math.h in module.jai
             array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
         } else #if OS == .MACOS {
-            array_add(*libpaths, "macos");
+            array_add(*library_search_paths, "macos");
             output_filename = "macos.jai";
 
             // no need to patch raymath.h as we import the system math.h in module.jai
@@ -185,7 +183,7 @@ generate_bindings :: (args: [] string) -> bool
             assert(false);
         }
 
-        array_add(*libnames, "raylib");
+        array_add(*libraries, .{filename="raylib"});
         array_add(*include_paths, RAYLIB_PATH);
         array_add(*include_paths, glfw_include);
         array_add(
@@ -208,6 +206,7 @@ generate_bindings :: (args: [] string) -> bool
 
         // This is because we want to be able to add function declarations in module.jai that are bound to functions in raylib.lib
         generate_library_declarations = false;
+        generate_compile_time_struct_checks = false;
 
         visitor   = raylib_visitor;
     }
