@@ -1,7 +1,4 @@
-using Basic :: #import "Basic";
-
 Raylib :: #import,file "../../module.jai";
-
 
 main :: () {
     WINDOW_WIDTH :: 1024;
