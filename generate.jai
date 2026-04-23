@@ -23,9 +23,6 @@ DECLARATIONS_TO_OMIT :: string.[
 	"rlShaderLocationIndex",
 	"rlShaderAttributeDataType",
 	"rlShaderUniformDataType",
-
-	// I don't know why, it is included when generating on windows
-	"fabsf",
 ];
 
 #if AT_COMPILE_TIME {
@@ -72,7 +69,7 @@ generate_bindings :: (args: [] string) -> bool
 		assert(could_make_dir);
 
 		build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
-		config_command_string := tprint("cmake -DBUILD_EXAMPLES=OFF -DINCLUDE_EVERYTHING=ON -DCMAKE_BUILD_TYPE=% -B build/", build_type);
+		config_command_string := tprint("cmake -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=% -B build/", build_type);
 
 		#if OS == .MACOS {
 			could_make_lib_dir := File.make_directory_if_it_does_not_exist("macos");
@@ -157,7 +154,6 @@ generate_bindings :: (args: [] string) -> bool
 			could_copy := FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "linux/raylib.a");
 			assert(could_copy);
 		}
-
 	}
 
 	output_filename: string;
@@ -167,31 +163,19 @@ generate_bindings :: (args: [] string) -> bool
 
 		array_add(*source_files, tprint("%/src/raylib.h", RAYLIB_PATH));
 		array_add(*source_files, tprint("%/src/rlgl.h", RAYLIB_PATH));
+		// raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
+		array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
 
 		#if OS == .WINDOWS {
 			array_add(*library_search_paths, "windows");
-			output_filename = "windows.jai";
-
-			// This will replace `#include <math.h>` with `#include "math.h"` in raymath.h and place it in raymath_pachted.h
-			// Needed because clang doesn't have math.h so we want it to use our local math.h.
-			could_patch := patch_raymath();
-			assert(could_patch);
-
-			// raymath.h must be added after raylib.h because otherwise it tries to generate multiple Vector2 etc
-			array_add(*source_files, tprint("%/src/raymath_patched.h", RAYLIB_PATH));
 			array_add(*extra_clang_arguments, "-Wno-microsoft-include");
+			output_filename = "windows.jai";
 		} else #if OS == .LINUX {
 			array_add(*library_search_paths, "linux");
 			output_filename = "linux.jai";
-
-			// no need to patch raymath.h as we import the system math.h in module.jai
-			array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
 		} else #if OS == .MACOS {
 			array_add(*library_search_paths, "macos");
 			output_filename = "macos.jai";
-
-			// no need to patch raymath.h as we import the system math.h in module.jai
-			array_add(*source_files, tprint("%/src/raymath.h", RAYLIB_PATH));
 		} else {
 			assert(false);
 		}
@@ -266,19 +250,6 @@ check_has_cmake :: () -> bool {
 	return result.exit_code == 0;
 }
 
-patch_raymath :: () -> bool {
-	// If this file is there, raylib was already patched
-	patched_raymath_path := tprint("%/src/raymath_patched.h", RAYLIB_PATH);
-	already_patched := FileUtils.file_exists(patched_raymath_path);
-	if already_patched then return true;
-
-	raymath_content := File.read_entire_file(tprint("%/src/raymath.h", RAYLIB_PATH));
-	patched_raymath_content := String.replace(raymath_content, "#include <math.h>", "#include \"math.h\"",, temp);
-	success := File.write_entire_file(patched_raymath_path, patched_raymath_content);
-
-	return success;
-}
-
 using Basic :: #import "Basic";
 Generator :: #import "Bindings_Generator";
 Compiler :: #import "Compiler";
@@ -287,4 +258,3 @@ BuildCpp :: #import "BuildCpp";
 File :: #import "File";
 Process :: #import "Process";
 FileUtils :: #import "File_Utilities";
-

@@ -6,6 +6,8 @@ main :: () {
     WINDOW_WIDTH : s32 = 800;
     WINDOW_HEIGHT : s32 = 450;
 
+    Raylib.SetConfigFlags(.FLAG_WINDOW_HIGHDPI);
+
     Raylib.InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "raylib [core] example - 3d camera free");
     defer Raylib.CloseWindow();
 

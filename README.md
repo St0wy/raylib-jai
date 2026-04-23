@@ -1,10 +1,10 @@
 # raylib bindings for Jai 🎮
 
-These are bindings of [raylib](https://github.com/raysan5/raylib) **5.5** for the Jai programming language.
+These are bindings of [raylib](https://github.com/raysan5/raylib) **6.0** for the Jai programming language.
 
 <p align="center">
     <img src="https://img.shields.io/badge/Jai-bindings-8A2BE2?style=flat" />
-    <img src="https://img.shields.io/badge/raylib-5.5-000000?style=flat-flat" />
+    <img src="https://img.shields.io/badge/raylib-6.0-000000?style=flat-flat" />
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-success?style=flat" />
 </p>
 
@@ -67,9 +67,9 @@ If you want to regenerate the bindings (e.g., when upgrading raylib), follow the
 - **Jai** — required to generate bindings
 - **CMake** — only needed if you want to compile raylib
 
-Download the raylib source code (version 5.5):
+Download the raylib source code (version 6.0):
 
-👉 https://github.com/raysan5/raylib/archive/refs/tags/5.5.zip
+👉 https://github.com/raysan5/raylib/archive/refs/tags/6.0.zip
 
 Extract it into the module directory under the name `raylib/`.
 
