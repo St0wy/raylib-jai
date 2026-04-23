@@ -62,10 +62,10 @@ SetTraceLogLevel :: (logLevel: TraceLogLevel) -> void { return SetTraceLogLevel(
 TraceLog :: (logLevel: TraceLogLevel, text: string, __args: ..Any) { TraceLog(cast(s32) logLevel, text, __args); }
 
 SetShaderValue :: (shader: Shader, locIndex: s32, value: *void, uniformType: ShaderUniformDataType) -> void {
-    return SetShaderValue(shader, locIndex, value, cast(s32) uniformType);
+	return SetShaderValue(shader, locIndex, value, cast(s32) uniformType);
 }
 SetShaderValueV :: (shader: Shader, locIndex: s32, value: *void, uniformType: ShaderUniformDataType, count: s32) -> void {
-    return SetShaderValue(shader, locIndex, value, cast(s32) uniformType, count);
+	return SetShaderValue(shader, locIndex, value, cast(s32) uniformType, count);
 }
 
 IsGamepadButtonPressed :: (gamepad: s32, button: GamepadButton) -> bool { return IsGamepadButtonPressed(gamepad, cast(s32) button); }
@@ -83,21 +83,21 @@ BeginBlendMode :: (mode: BlendMode) -> void { return BeginBlendMode(cast(s32) mo
 ImageFormat :: (image: *Image, newFormat: PixelFormat) -> void { return ImageFormat(image, cast(s32) newFormat); }
 
 LoadImageRaw :: (fileName: *u8, width: s32, height: s32, format: PixelFormat, headerSize: s32) -> Image {
-    return LoadImageRaw(fileName, width, height, cast(s32) format, headerSize);
+	return LoadImageRaw(fileName, width, height, cast(s32) format, headerSize);
 }
 
 LoadFontData :: (fileData: *u8, dataSize: s32, fontSize: s32, codepoints: *s32, codepointCount: s32, type: FontType) -> *GlyphInfo {
-    return LoadFontData(fileData, dataSize, fontSize, codepoints, codepointCount, cast(s32) type);
+	return LoadFontData(fileData, dataSize, fontSize, codepoints, codepointCount, cast(s32) type);
 }
 
 SetMouseCursor :: (cursor: MouseCursor) -> void { return SetMouseCursor(cast(s32) cursor); }
 
 LoadTexture :: (data: *void, width: s32, height: s32, format: PixelFormat, mipmapCount: s32) -> u32 {
-    return LoadTexture(data, width, height, cast(s32) format, mipmapCount);
+	return LoadTexture(data, width, height, cast(s32) format, mipmapCount);
 }
 
 FramebufferAttach :: (fboId: u32, texId: u32, attachType: FramebufferAttachType, texType: FramebufferAttachTextureType, mipLevel: s32) -> void {
-    return FramebufferAttach(fbiId, texId, cast(s32) attachType, cast(s32) texType, mipLevel);
+	return FramebufferAttach(fbiId, texId, cast(s32) attachType, cast(s32) texType, mipLevel);
 }
 
 SetUniform :: (locIndex: s32, value: *void, uniformType: ShaderUniformDataType, count: s32) -> void { return SetUniform(locIndex, value, cast(s32) uniformType, count); }
@@ -105,11 +105,11 @@ SetUniform :: (locIndex: s32, value: *void, uniformType: ShaderUniformDataType, 
 SetMaterialTexture :: (material: *Material, mapType: MaterialMapIndex, texture: Texture2D) -> void { return SetMaterialTexture(material, mapType, texture); }
 
 Camera3D :: struct {
-    position:   Vector3; // Camera position
-    target:     Vector3; // Camera target it looks-at
-    up:         Vector3; // Camera up vector (rotation over its axis)
-    fovy:       float; // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
-    projection: CameraProjection; // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+	position:   Vector3; // Camera position
+	target:     Vector3; // Camera target it looks-at
+	up:         Vector3; // Camera up vector (rotation over its axis)
+	fovy:       float; // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+	projection: CameraProjection; // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
 TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_call;
@@ -117,31 +117,32 @@ TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any) #c_
 #scope_module
 
 #if OS == .WINDOWS {
-    user32 :: #system_library,link_always "user32";
-    gdi32 :: #system_library,link_always "gdi32";
-    shell32 :: #system_library,link_always "shell32";
-    winmm :: #system_library,link_always "winmm";
+	user32 :: #system_library,link_always "user32";
+	gdi32 :: #system_library,link_always "gdi32";
+	shell32 :: #system_library,link_always "shell32";
+	winmm :: #system_library,link_always "winmm";
 
-    raylib :: #library,no_dll "windows/raylib";
+	raylib :: #library,no_dll "windows/raylib";
 
-    #load "windows.jai";
+	#load "windows.jai";
 } else #if OS == .LINUX {
-    math :: #system_library,link_always "m";
-    raylib :: #library,no_dll "linux/raylib";
+	math :: #system_library,link_always "m";
+	X11 :: #system_library,link_always "X11";
+	raylib :: #library,no_dll "linux/raylib";
 
-    #load "linux.jai";
+	#load "linux.jai";
 } else #if OS == .MACOS {
-    #system_library,link_always "Cocoa";
-    #system_library,link_always "OpenGL";
-    #system_library,link_always "CoreGraphics";
-    #system_library,link_always "AppKit";
-    #system_library,link_always "IOKit";
+	#system_library,link_always "Cocoa";
+	#system_library,link_always "OpenGL";
+	#system_library,link_always "CoreGraphics";
+	#system_library,link_always "AppKit";
+	#system_library,link_always "IOKit";
 
-    raylib :: #library,no_dll "macos/raylib";
+	raylib :: #library,no_dll "macos/raylib";
 
-    #load "macos.jai";
+	#load "macos.jai";
 } else {
-    assert(false);
+	assert(false);
 }
 
 #import "Basic";

@@ -169,7 +169,7 @@ build_raylib :: (compile_debug: bool, shared_lib: bool) -> bool {
 	could_make_dir := File.make_directory_if_it_does_not_exist(full_build_dir);
 	assert(could_make_dir);
 
-	build_type := ifx compile_debug then { "Debug"; } else { "Release"; }
+	build_type := ifx compile_debug "Debug" else "Release";
 	config_command_string := tprint("cmake -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=% -DCMAKE_BUILD_TYPE=% -B %", ifx shared_lib "ON" else "OFF", build_type, build_dir);
 
 	#if OS == .MACOS {
@@ -251,11 +251,11 @@ build_raylib :: (compile_debug: bool, shared_lib: bool) -> bool {
 		could_copy := FileUtils.copy_file(tprint("%/raylib/Release/raylib.%", full_build_dir, ext), tprint("windows/raylib.%", ext));
 		assert(could_copy);
 	} else #if OS == .LINUX {
-		assert(shared_lib == false); // TODO
 		could_make_lib_dir := File.make_directory_if_it_does_not_exist("linux");
 		assert(could_make_lib_dir);
 
-		could_copy := FileUtils.copy_file(tprint("%/raylib/libraylib.a", full_build_dir), "linux/raylib.a");
+		ext := ifx shared_lib "so" else "a";
+		could_copy := FileUtils.copy_file(tprint("%/raylib/libraylib.%", full_build_dir, ext), tprint("linux/raylib.%", ext));
 		assert(could_copy);
 	}
 
