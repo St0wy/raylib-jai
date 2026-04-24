@@ -173,7 +173,6 @@ build_raylib :: (compile_debug: bool, shared_lib: bool) -> bool {
 	config_command_string := tprint("cmake -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=% -DCMAKE_BUILD_TYPE=% -B %", ifx shared_lib "ON" else "OFF", build_type, build_dir);
 
 	#if OS == .MACOS {
-		assert(shared_lib == false); // TODO
 		could_make_lib_dir := File.make_directory_if_it_does_not_exist("macos");
 		assert(could_make_lib_dir);
 
@@ -195,10 +194,11 @@ build_raylib :: (compile_debug: bool, shared_lib: bool) -> bool {
 			return false;
 		}
 
-		could_copy := FileUtils.copy_file(tprint("%/raylib/libraylib.a", full_build_dir), "macos/raylib_arm64.a");
+		ext := ifx shared_lib "dylib" else "a";
+		could_copy := FileUtils.copy_file(tprint("%/raylib/libraylib.%", full_build_dir, ext), tprint("macos/raylib_arm64.%", ext));
 		assert(could_copy);
 
-		could_delete_build_dir = File.delete_directory(full_build_dir);
+		could_delete_build_dir := File.delete_directory(full_build_dir);
 		assert(could_delete_build_dir);
 
 		// Build x86
@@ -218,14 +218,14 @@ build_raylib :: (compile_debug: bool, shared_lib: bool) -> bool {
 			return false;
 		}
 
-		could_copy = FileUtils.copy_file(tprint("%/build/raylib/libraylib.a", RAYLIB_PATH), "macos/raylib_x86.a");
+		could_copy = FileUtils.copy_file(tprint("%/raylib/libraylib.%", full_build_dir, ext), tprint("macos/raylib_x86.%", ext));
 		assert(could_copy);
 
 		// Make universal binary
-		result = Process.run_command("lipo", "-create", "macos/raylib_x86.a", "macos/raylib_arm64.a", "-output", "macos/raylib.a");
+		result = Process.run_command("lipo", "-create", tprint("macos/raylib_x86.%", ext), tprint("macos/raylib_arm64.%", ext), "-output", tprint("macos/raylib.%", ext));
 		assert(result.exit_code == 0);
-		File.file_delete("macos/raylib_x86.a");
-		File.file_delete("macos/raylib_arm64.a");
+		File.file_delete(tprint("macos/raylib_x86.%", ext));
+		File.file_delete(tprint("macos/raylib_arm64.%", ext));
 	} else {
 		config_command := Process.break_command_into_strings(config_command_string);
 		array_add(*config_command, "-DOPENGL_VERSION=4.3");
